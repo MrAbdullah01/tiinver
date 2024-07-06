@@ -46,7 +46,7 @@ class ForgetPasswordScreen extends StatelessWidget {
               prefixIcon: Container(
                   padding: EdgeInsets.all(24),
                   height: 9.h,
-                  child: Image.asset(ImagesPath.email)),
+                  child: Image.asset(ImagesPath.emailIcon)),
               hintText: "Email",
             ),
             SizedBox(height: 30,),

@@ -6,13 +6,13 @@ import 'package:get/get_navigation/get_navigation.dart';
 import 'package:tiinver_project/constants/colors.dart';
 import 'package:tiinver_project/constants/images_path.dart';
 import 'package:tiinver_project/constants/text_widget.dart';
-import 'package:tiinver_project/screens/main_screens/dash_board_screen/dash_board_screen.dart';
 import 'package:tiinver_project/screens/start_screens/forget_password_screen/forget_password_screen.dart';
 import 'package:tiinver_project/screens/start_screens/sign_up_screen/sign_up_screen.dart';
 import 'package:tiinver_project/widgets/field_widget.dart';
 import 'package:tiinver_project/widgets/header.dart';
 import 'package:tiinver_project/widgets/submit_button.dart';
 
+import '../../main_screens/bottom_navbar_screen/bottom_navbar_screen.dart';
 import '../onboarding_screen/comp/navigate_button.dart';
 
 class SignInScreen extends StatelessWidget {
@@ -39,7 +39,7 @@ class SignInScreen extends StatelessWidget {
               prefixIcon: Container(
                   padding: EdgeInsets.all(24),
                   height: 9.h,
-                  child: Image.asset(ImagesPath.email)),
+                  child: Image.asset(ImagesPath.emailIcon)),
               hintText: "Email",
             ),
             SizedBox(height: 20,),
@@ -49,7 +49,7 @@ class SignInScreen extends StatelessWidget {
               prefixIcon: Container(
                 padding: EdgeInsets.all(24),
                   height: 9.h,
-                  child: Image.asset(ImagesPath.lock)),
+                  child: Image.asset(ImagesPath.lockIcon)),
               suffixIcon: Icon(Icons.visibility_off_outlined),
               hintText: "Password",
             ),
@@ -73,7 +73,7 @@ class SignInScreen extends StatelessWidget {
                 width: 70.w,
                   title: "Sign in",
                   press: (){
-                  Get.to(()=>DashBoardScreen());
+                  Get.to(()=>BottomNavbarScreen());
                   }
               ),
             ),

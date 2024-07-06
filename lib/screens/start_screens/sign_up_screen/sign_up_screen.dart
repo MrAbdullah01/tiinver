@@ -45,7 +45,7 @@ class SignUpScreen extends StatelessWidget {
             prefixIcon: Container(
                 padding: EdgeInsets.all(24),
                 height: 9.h,
-                child: Image.asset(ImagesPath.email)),
+                child: Image.asset(ImagesPath.emailIcon)),
             hintText: "Email",
           ),
           SizedBox(height: 20,),
@@ -55,7 +55,7 @@ class SignUpScreen extends StatelessWidget {
             prefixIcon: Container(
                 padding: EdgeInsets.all(24),
                 height: 9.h,
-                child: Image.asset(ImagesPath.lock)),
+                child: Image.asset(ImagesPath.lockIcon)),
             suffixIcon: Icon(Icons.visibility_off_outlined),
             hintText: "Password",
           ),
@@ -65,7 +65,7 @@ class SignUpScreen extends StatelessWidget {
             prefixIcon: Container(
                 padding: EdgeInsets.all(24),
                 height: 9.h,
-                child: Image.asset(ImagesPath.lock)),
+                child: Image.asset(ImagesPath.lockIcon)),
             suffixIcon: Icon(Icons.visibility_off_outlined),
             hintText: "Password",
           ),

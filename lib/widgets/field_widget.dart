@@ -11,6 +11,7 @@ class InputField extends StatelessWidget {
   var prefixIcon;
   var suffixIcon;
   double bdRadius;
+  bool autofocus;
 
   InputField({
     super.key,
@@ -23,6 +24,7 @@ class InputField extends StatelessWidget {
     this.prefixIcon,
     this.suffixIcon,
     this.bdRadius = 18,
+    this.autofocus = false,
 
   });
 
@@ -32,6 +34,7 @@ class InputField extends StatelessWidget {
       maxLines: maxLines,
       textInputAction: textInputAction,
       keyboardType: type,
+      autofocus: autofocus,
       style: TextStyle(
         fontSize: 12.dp,
         fontWeight: FontWeight.w500,
@@ -54,21 +57,21 @@ class InputField extends StatelessWidget {
         alignLabelWithHint: true,
         border: OutlineInputBorder(
           borderSide:  BorderSide(
-            color: bgColor,
+            color: tileColor,
             width: 1.5,
           ),
           borderRadius: BorderRadius.circular(bdRadius),
         ),
         focusedBorder: OutlineInputBorder(
           borderSide:  BorderSide(
-            color: bgColor,
+            color: tileColor,
             width: 1.5,
           ),
           borderRadius: BorderRadius.circular(bdRadius),
         ),
         enabledBorder: OutlineInputBorder(
           borderSide:  BorderSide(
-            color: bgColor,
+            color: tileColor,
             width: 1.5,
           ),
           borderRadius: BorderRadius.circular(bdRadius),

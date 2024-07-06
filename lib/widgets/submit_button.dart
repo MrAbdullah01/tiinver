@@ -66,7 +66,7 @@ class SubmitButton extends StatelessWidget {
               Text(
                 title!,
                 style: TextStyle(
-                    color: textC ?? bgColor, fontWeight: FontWeight.bold,fontSize: 16.dp),
+                    color: textC ?? bgColor, fontWeight: FontWeight.bold,fontSize: textSize ?? 16.dp),
               ),
 
           ],

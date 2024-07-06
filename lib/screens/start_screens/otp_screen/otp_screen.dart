@@ -77,7 +77,7 @@ class OtpScreen extends StatelessWidget {
                 children: [
                   SizedBox(
                       width: 8.w,
-                      child: Image.asset(ImagesPath.warning)),
+                      child: Image.asset(ImagesPath.warningIcon)),
                   SizedBox(width: 5,),
                   SizedBox(
                       width: 70.w,
