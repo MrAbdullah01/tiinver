@@ -8,22 +8,25 @@ class TextWidget1 extends StatelessWidget {
         required this.fontSize,
         required this.fontWeight,
         required this.isTextCenter,
-        this.maxLines = 1,
+        this.maxLines,
         this.decoration,
+        this.overFlow,
         required this.textColor});
   final String text;
   final double fontSize;
   final FontWeight fontWeight;
   final Color textColor;
   final bool isTextCenter;
-  final int maxLines;
+  final int? maxLines;
   final TextDecoration? decoration;
+  final TextOverflow? overFlow;
 
   @override
   Widget build(BuildContext context) {
     return Text(
       text,
-      maxLines: null,
+      maxLines: maxLines ?? null,
+      overflow: overFlow,
       textAlign: isTextCenter == true ? TextAlign.center: TextAlign.justify,
       style: TextStyle(
           fontSize: fontSize, fontWeight: fontWeight,
