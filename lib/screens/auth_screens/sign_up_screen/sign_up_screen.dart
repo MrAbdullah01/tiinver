@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_sizer/flutter_sizer.dart';
 import 'package:get/get.dart';
 import 'package:tiinver_project/constants/colors.dart';
-import 'package:tiinver_project/screens/start_screens/signin_screen/sign_in_screen.dart';
 import 'package:tiinver_project/widgets/header.dart';
 
 import '../../../constants/images_path.dart';
@@ -10,6 +9,7 @@ import '../../../constants/text_widget.dart';
 import '../../../widgets/field_widget.dart';
 import '../../../widgets/submit_button.dart';
 import '../otp_screen/otp_screen.dart';
+import '../signin_screen/sign_in_screen.dart';
 
 class SignUpScreen extends StatelessWidget {
   SignUpScreen({super.key});

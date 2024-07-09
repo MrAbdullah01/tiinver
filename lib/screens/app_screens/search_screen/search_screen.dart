@@ -2,9 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_sizer/flutter_sizer.dart';
 import 'package:tiinver_project/constants/colors.dart';
 import 'package:tiinver_project/constants/images_path.dart';
-import 'package:tiinver_project/screens/main_screens/search_screen/comp/searching_tile.dart';
 import 'package:tiinver_project/widgets/field_widget.dart';
 import 'package:tiinver_project/widgets/header.dart';
+
+import 'comp/searching_tile.dart';
 
 class SearchScreen extends StatelessWidget {
   SearchScreen({super.key});

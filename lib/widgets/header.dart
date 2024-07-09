@@ -6,14 +6,16 @@ import 'package:get/get_core/src/get_main.dart';
 import 'package:tiinver_project/constants/text_widget.dart';
 
 import '../constants/colors.dart';
-import '../screens/start_screens/onboarding_screen/comp/navigate_button.dart';
+import '../screens/auth_screens/onboarding_screen/comp/navigate_button.dart';
 
 class Header {
-  AppBar header1(String title,List<Widget> actionsList,{required bool isIconShow,bool isCenterTitle = false}){
+
+  AppBar header1(String title,List<Widget> actionsList,{required bool isIconShow,bool isCenterTitle = false,double? toolbarHeight}){
     return AppBar(
         backgroundColor: bgColor,
         surfaceTintColor: bgColor,
         centerTitle: isCenterTitle,
+        toolbarHeight: toolbarHeight,
         title: TextWidget1(text: title, fontSize: 24.dp, fontWeight: FontWeight.w700, isTextCenter: false, textColor: themeColor),
         actions: actionsList,
         leading: Visibility(
@@ -30,7 +32,7 @@ class Header {
     );
   }
 
-  AppBar header2(String title,List<Widget> actionsList,){
+  AppBar header2(String title,List<Widget> actionsList){
     return AppBar(
         backgroundColor: bgColor,
         surfaceTintColor: bgColor,
@@ -40,5 +42,6 @@ class Header {
         actions: actionsList,
     );
   }
+
 }
 

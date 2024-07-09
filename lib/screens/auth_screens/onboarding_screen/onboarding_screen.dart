@@ -7,9 +7,9 @@ import 'package:provider/provider.dart';
 import 'package:tiinver_project/constants/colors.dart';
 import 'package:tiinver_project/constants/text_widget.dart';
 import 'package:tiinver_project/providers/onboard_provider/onboard_provider.dart';
-import 'package:tiinver_project/screens/start_screens/signin_screen/sign_in_screen.dart';
 
 import '../../../constants/images_path.dart';
+import '../signin_screen/sign_in_screen.dart';
 import 'comp/navigate_button.dart';
 
 class OnboardingScreen extends StatelessWidget {

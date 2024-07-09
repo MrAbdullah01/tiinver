@@ -1,9 +1,7 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_sizer/flutter_sizer.dart';
 
 import '../../../../constants/colors.dart';
-import '../../../../constants/images_path.dart';
 import '../../../../constants/text_widget.dart';
 
 class ChatTile extends StatelessWidget {

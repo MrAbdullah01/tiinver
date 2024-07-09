@@ -14,6 +14,7 @@ class SubmitButton extends StatelessWidget {
     this.bdColor,
     this.iconColor,
     this.textSize,
+    this.iconSize,
     this.bdRadius,
     this.textC,
     this.gradientColors,
@@ -27,6 +28,7 @@ class SubmitButton extends StatelessWidget {
   final Color? bdColor, textC;
   final Color? iconColor;
   final double? textSize;
+  final double? iconSize;
   final double? bdRadius;
   LinearGradient? gradientColors;
 
@@ -60,6 +62,7 @@ class SubmitButton extends StatelessWidget {
                 child: Icon(
                   icon,
                   color: iconColor ?? bgColor,
+                  size: iconSize,
                 ),
               ),
             if (title != null)

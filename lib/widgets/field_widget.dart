@@ -7,6 +7,7 @@ class InputField extends StatelessWidget {
   final TextInputType? type;
   final TextInputAction? textInputAction;
   final String? hintText;
+  final Color? fillColor;
   final int? maxLines, maxLength;
   var prefixIcon;
   var suffixIcon;
@@ -23,6 +24,7 @@ class InputField extends StatelessWidget {
     this.maxLength,
     this.prefixIcon,
     this.suffixIcon,
+    this.fillColor,
     this.bdRadius = 18,
     this.autofocus = false,
 
@@ -52,7 +54,7 @@ class InputField extends StatelessWidget {
           fontSize: 12,
           fontWeight: FontWeight.w500,
         ),
-        fillColor: tileColor,
+        fillColor: fillColor ?? tileColor,
         filled: true,
         alignLabelWithHint: true,
         border: OutlineInputBorder(

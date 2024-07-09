@@ -6,14 +6,14 @@ import 'package:get/get_navigation/get_navigation.dart';
 import 'package:tiinver_project/constants/colors.dart';
 import 'package:tiinver_project/constants/images_path.dart';
 import 'package:tiinver_project/constants/text_widget.dart';
-import 'package:tiinver_project/screens/start_screens/forget_password_screen/forget_password_screen.dart';
-import 'package:tiinver_project/screens/start_screens/sign_up_screen/sign_up_screen.dart';
 import 'package:tiinver_project/widgets/field_widget.dart';
 import 'package:tiinver_project/widgets/header.dart';
 import 'package:tiinver_project/widgets/submit_button.dart';
 
-import '../../main_screens/bottom_navbar_screen/bottom_navbar_screen.dart';
+import '../../app_screens/bottom_navbar_screen/bottom_navbar_screen.dart';
+import '../forget_password_screen/forget_password_screen.dart';
 import '../onboarding_screen/comp/navigate_button.dart';
+import '../sign_up_screen/sign_up_screen.dart';
 
 class SignInScreen extends StatelessWidget {
   SignInScreen({super.key});

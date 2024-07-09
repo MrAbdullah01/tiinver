@@ -23,6 +23,8 @@ class ImagesPath{
   static String galleryIcon = "images/gallery.webp";
   static String voiceIcon = "images/voice.webp";
   static String phoneIcon = "images/phone.webp";
+  static String cameraIcon = "images/camera.webp";
+  static String addUserIcon = "images/add-user.webp";
 
 
 }

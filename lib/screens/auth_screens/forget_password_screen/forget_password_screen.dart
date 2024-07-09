@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_sizer/flutter_sizer.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_navigation/get_navigation.dart';
-import 'package:tiinver_project/screens/start_screens/new_password_screen/new_password_screen.dart';
 import 'package:tiinver_project/widgets/header.dart';
 
 import '../../../constants/colors.dart';
@@ -10,6 +9,7 @@ import '../../../constants/images_path.dart';
 import '../../../constants/text_widget.dart';
 import '../../../widgets/field_widget.dart';
 import '../../../widgets/submit_button.dart';
+import '../new_password_screen/new_password_screen.dart';
 
 class ForgetPasswordScreen extends StatelessWidget {
   ForgetPasswordScreen({super.key});
