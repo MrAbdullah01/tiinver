@@ -24,10 +24,8 @@ class OtpServices {
       'message': message,
     };
 
-    String encodedBody = body.entries
-        .map((entry) =>
-    '${Uri.encodeComponent(entry.key)}=${Uri.encodeComponent(entry.value)}')
-        .join('&');
+    String encodedBody = body.entries.map((entry) =>
+    '${Uri.encodeComponent(entry.key)}=${Uri.encodeComponent(entry.value)}').join('&');
 
     final response = await http.post(
       Uri.parse('$baseUrl/mail'),

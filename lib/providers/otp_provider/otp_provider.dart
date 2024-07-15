@@ -4,6 +4,8 @@ import 'dart:math';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:provider/provider.dart';
+import 'package:tiinver_project/api/api_services/api_services.dart';
+import 'package:tiinver_project/api/endpoint/endpoint.dart';
 
 import '../../api_services/otp_services/otp_services.dart';
 import '../../models/otp_model/otp_model.dart';
@@ -37,10 +39,25 @@ class OtpProvider extends ChangeNotifier{
     isLoading = true;
     notifyListeners();
     try {
-      final response = await _apiService.otp(email, code.toString())
-          .whenComplete((){
-        startTimer();
-      });
+      var body = {
+        'to': "toMsg",
+        'subject': "OTP",
+        'message': "message",
+      };
+
+      String encodedBody = body.entries.map((entry) =>
+      '${Uri.encodeComponent(entry.key)}=${Uri.encodeComponent(entry.value)}').join('&');
+
+      final response = await ApiService.post(
+          requestBody: encodedBody,
+          headers: headers,
+          endPoint: Endpoint.mail
+      );
+
+      // final response = await _apiService.otp(email, code.toString())
+      //     .whenComplete((){
+      //   startTimer();
+      // });
       _user = OtpModel.fromJson(response);
       notifyListeners();
     } catch (error) {

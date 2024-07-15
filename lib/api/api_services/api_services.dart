@@ -61,7 +61,7 @@ class ApiService {
   }
 
   static Future<http.Response> post({
-    required Map<String, dynamic> requestBody,
+    required String requestBody,
     required headers,
     required String endPoint,
   }) async {
@@ -70,7 +70,7 @@ class ApiService {
       http.Response response = await http.post(
         url,
         headers: headers,
-        body: json.encode(requestBody),
+        body: requestBody,
       );
       log('hears:: $headers');
       log('url:: $url');
