@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_sizer/flutter_sizer.dart';
 import 'package:get/get.dart';
+import 'package:provider/provider.dart';
 import 'package:tiinver_project/constants/colors.dart';
 import 'package:tiinver_project/constants/images_path.dart';
 import 'package:tiinver_project/constants/text_widget.dart';
+import 'package:tiinver_project/providers/sign_in_provider/sign_in_provider.dart';
+import 'package:tiinver_project/screens/app_screens/other_user_profile_screen/comp/dialogue_box.dart';
 
 import 'package:tiinver_project/widgets/header.dart';
 
@@ -35,10 +38,49 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
                   child: Image.asset(ImagesPath.searchingIcon)),
             ),
             SizedBox(width: 10,),
-            SizedBox(
-                width: 7.w,
-                child: Image.asset(ImagesPath.menuIcon)),
-            SizedBox(width: 15,),
+        PopupMenuButton(
+          surfaceTintColor: bgColor,
+          color: bgColor,
+          child: SizedBox(
+              width: 7.w,
+              child: Image.asset(ImagesPath.menuIcon)),
+          itemBuilder: (context) =>[
+            PopupMenuItem(
+              onTap: (){
+                showDialog(context: context, builder: (context) {
+                  return DialogueBox().customDialogue(
+                      context,
+                      title: 'Logout',
+                      subTitle: "Are you sure you want to logout?",
+                      primaryButtonText: "logout",
+                      primaryTap: (){
+                        Provider.of<SignInProvider>(context,listen: false).logout();
+                      });
+                },);
+              },
+              value: 'Item 1',
+              child: TextWidget1(text: "Logout", fontSize: 16.dp,
+                  fontWeight: FontWeight.w700, isTextCenter: false, textColor: themeColor),),
+            PopupMenuItem(
+              onTap: (){
+                // showDialog(
+                //   context: context,
+                //   builder: (context) {
+                //     return DialogueBox().customDialogue(
+                //         context,
+                //         title: "Block Reminder ?",
+                //         subTitle: "If you block the user you are not gona "
+                //             "see his activity on tinver",
+                //         primaryButtonText: "Block",
+                //         primaryTap: (){}
+                //     );
+                //   },);
+              },
+              value: 'Item 2',
+              child: TextWidget1(text: "Parameter", fontSize: 16.dp,
+                  fontWeight: FontWeight.w700, isTextCenter: false, textColor: themeColor),),
+          ],),
+        SizedBox(width: 15,),
           ],
       ),
       body: GridView.builder(

@@ -21,7 +21,7 @@ class OnboardingScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     var onBoardP = Provider.of<OnboardProvider>(context,listen: false);
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: bgColor,
       appBar: AppBar(
         backgroundColor: bgColor,
         surfaceTintColor: bgColor,
@@ -90,7 +90,7 @@ class OnboardingScreen extends StatelessWidget {
       floatingActionButton: GestureDetector(
         onTap: (){
           debugPrint("Tap");
-          Get.to(()=> SignInScreen());
+          Get.off(()=> SignInScreen());
         },
         child: SizedBox(
           height: 50,

@@ -1,16 +1,33 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_sizer/flutter_sizer.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:pinput/pinput.dart';
+import 'package:provider/provider.dart';
 import 'package:tiinver_project/constants/colors.dart';
 import 'package:tiinver_project/constants/images_path.dart';
 import 'package:tiinver_project/constants/text_widget.dart';
+import 'package:tiinver_project/providers/otp_provider/otp_provider.dart';
 import 'package:tiinver_project/widgets/header.dart';
+
+import '../../../providers/sign_up_provider/sign_up_provider.dart';
 
 class OtpScreen extends StatelessWidget {
   const OtpScreen({super.key});
 
+  void signUp(BuildContext context) async {
+    await Provider.of<SignUpProvider>(context, listen: false).signUp().whenComplete(()async{
+      Provider.of<SignUpProvider>(context, listen: false).storeUserApiKey();
+    }).onError((error, stackTrace) {
+      Get.snackbar("Error", "$error");
+    },);
+  }
+
   @override
   Widget build(BuildContext context) {
+    var otpP = Provider.of<OtpProvider>(context,listen: false);
     return Scaffold(
       backgroundColor: bgColor,
       resizeToAvoidBottomInset: true,
@@ -34,7 +51,9 @@ class OtpScreen extends StatelessWidget {
                 FocusScope.of(context).unfocus();
               },
               length: 4,
-              onCompleted: (pin) => print('Entered PIN: $pin'),
+              onCompleted: (pin) {
+                otpP.otpVerification(int.parse(pin), context);
+              },
               defaultPinTheme: PinTheme(
                 width: 20.w,
                 height: 56,
@@ -51,7 +70,11 @@ class OtpScreen extends StatelessWidget {
             ),
           ),
           SizedBox(height: 30,),
-          TextWidget1(text: "Tiinver will send the code to you in : 1:00", fontSize: 16.dp, fontWeight: FontWeight.w500, isTextCenter: false, textColor: darkGreyColor),
+          Consumer<OtpProvider>(builder: (context, value, child) {
+            return TextWidget1(text: "Tiinver will send the code to you in : ${otpP.start}",
+                fontSize: 16.dp, fontWeight: FontWeight.w500,
+                isTextCenter: false, textColor: darkGreyColor);
+          },),
           SizedBox(height: 30,),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,

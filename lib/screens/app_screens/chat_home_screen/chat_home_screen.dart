@@ -20,9 +20,23 @@ class ChatHomeScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: bgColor,
       appBar: Header().header1("Chats", [
-        SizedBox(
-            width: 7.w,
-            child: Image.asset(ImagesPath.menuIcon)),
+        PopupMenuButton(
+          surfaceTintColor: bgColor,
+          color: bgColor,
+          child: SizedBox(
+              width: 7.w,
+              child: Image.asset(ImagesPath.menuIcon)),
+          itemBuilder: (context) =>[
+            PopupMenuItem(
+              onTap: (){
+                // Navigator.push(
+                //     context,
+                //     MaterialPageRoute(builder: (context)=>ReportScreen()));
+              },
+              value: 'Item 1',
+              child: TextWidget1(text: "New Message", fontSize: 16.dp,
+                  fontWeight: FontWeight.w700, isTextCenter: false, textColor: themeColor),),
+          ],),
         SizedBox(width: 15,),
       ],isCenterTitle: true, isIconShow: false),
       body: Column(

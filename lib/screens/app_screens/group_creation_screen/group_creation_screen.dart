@@ -17,10 +17,8 @@ class GroupCreationScreen extends StatefulWidget {
 
 class _GroupCreationScreenState extends State<GroupCreationScreen> {
 
-  // Define a variable to hold the selected value
   String? _selectedValue;
 
-  // List of items in the dropdown
   final List<String> _dropdownItems = [
     '100 coins',
     '200 coins',
@@ -134,7 +132,7 @@ class _GroupCreationScreenState extends State<GroupCreationScreen> {
                       borderRadius: BorderRadius.circular(50)
                     ),
                     child: DropdownButton<String>(
-                      hint: Text('Select Prize'),
+                      hint: Text('Select Prize',style: TextStyle(color: bgColor),),
                       dropdownColor: themeColor,
                       underline: SizedBox(),
                       isExpanded: true,

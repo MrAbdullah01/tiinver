@@ -31,7 +31,7 @@ class TextWidget1 extends StatelessWidget {
       style: TextStyle(
           fontSize: fontSize, fontWeight: fontWeight,
           color: textColor,decoration: decoration,
-        decorationColor: themeColor,decorationThickness: 2
+        decorationColor: themeColor,decorationThickness: 1
       ),
     );
   }

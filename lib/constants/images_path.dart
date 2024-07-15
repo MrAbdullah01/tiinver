@@ -8,6 +8,11 @@ class ImagesPath{
   static String dashBoardImage = "images/dashBoardImage.webp";
   static String profileImage = "images/profile.webp";
   static String aiImage = "images/ai_image.webp";
+  static String earnImage = "images/earn_coin_image.png";
+  static String buyImage = "images/buy_coin_image.png";
+  static String transferImage = "images/transfer_coin_image.png";
+  static String withDrawImage = "images/withdraw_coin_image.png";
+  static String rechargeImage = "images/recharge_coin_image.png";
 
 
   static String searchingIcon = "images/search.webp";
@@ -25,6 +30,16 @@ class ImagesPath{
   static String phoneIcon = "images/phone.webp";
   static String cameraIcon = "images/camera.webp";
   static String addUserIcon = "images/add-user.webp";
+  static String businessIcon = "images/business_icon.png";
+  static String educationIcon = "images/education_icon.png";
+  static String locationIcon = "images/location_icon.png";
+  static String personIcon = "images/person_icon.png";
+  static String qualificationIcon = "images/qualificatino_icon.png";
+  static String checkIcon = "images/check_icon.png";
+  static String addIcon = "images/add.png";
+  static String profileEditIcon = "images/edit_icon.png";
+  static String walletIcon = "images/wallet_icon.png";
+  static String exchangeIcon = "images/exchange_icon.png";
 
 
 }

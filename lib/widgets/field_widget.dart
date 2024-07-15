@@ -13,6 +13,7 @@ class InputField extends StatelessWidget {
   var suffixIcon;
   double bdRadius;
   bool autofocus;
+  bool? obscureText;
 
   InputField({
     super.key,
@@ -27,12 +28,20 @@ class InputField extends StatelessWidget {
     this.fillColor,
     this.bdRadius = 18,
     this.autofocus = false,
+    this.obscureText,
 
   });
 
   @override
   Widget build(BuildContext context) {
-    return TextField(
+    return TextFormField(
+      validator: (value) {
+        if(value!.isEmpty){
+          return "Enter the Field";
+        }else{
+          return null;
+        }
+      },
       maxLines: maxLines,
       textInputAction: textInputAction,
       keyboardType: type,
@@ -43,6 +52,7 @@ class InputField extends StatelessWidget {
       ),
       cursorColor: themeColor,
       controller: inputController,
+      obscureText: obscureText ?? false,
       maxLength: maxLength,
       textAlign: TextAlign.start,
       decoration: InputDecoration(

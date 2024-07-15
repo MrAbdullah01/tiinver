@@ -46,6 +46,9 @@ class SubmitButton extends StatelessWidget {
             color: bdColor ?? themeColor,
             borderRadius: BorderRadius.circular(radius ?? 10.0),
             gradient: gradientColors,
+            border: Border.all(
+              color: themeColor
+            ),
             boxShadow: [
               BoxShadow(
                   offset: const Offset(0, 2),

@@ -4,9 +4,11 @@ import 'package:tiinver_project/constants/colors.dart';
 import 'package:tiinver_project/constants/images_path.dart';
 import 'package:tiinver_project/screens/app_screens/other_user_profile_screen/comp/following_status.dart';
 import 'package:tiinver_project/screens/app_screens/other_user_profile_screen/comp/profile_container.dart';
+import 'package:tiinver_project/screens/app_screens/report_screen/report_screen.dart';
 import 'package:tiinver_project/widgets/header.dart';
 
 import '../../../constants/text_widget.dart';
+import 'comp/dialogue_box.dart';
 
 class OtherUserProfileScreen extends StatelessWidget {
   const OtherUserProfileScreen({super.key});
@@ -17,9 +19,41 @@ class OtherUserProfileScreen extends StatelessWidget {
       backgroundColor: bgColor,
       appBar: Header().header1("Profile",
           [
-            SizedBox(
-                width: 7.w,
-                child: Image.asset(ImagesPath.menuIcon)),
+            PopupMenuButton(
+              surfaceTintColor: bgColor,
+              color: bgColor,
+              child: SizedBox(
+                  width: 7.w,
+                  child: Image.asset(ImagesPath.menuIcon)),
+              itemBuilder: (context) =>[
+              PopupMenuItem(
+                onTap: (){
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context)=>ReportScreen()));
+                },
+                value: 'Item 1',
+                child: TextWidget1(text: "Report", fontSize: 16.dp,
+                    fontWeight: FontWeight.w700, isTextCenter: false, textColor: themeColor),),
+                PopupMenuItem(
+                  onTap: (){
+                    showDialog(
+                        context: context, 
+                        builder: (context) {
+                          return DialogueBox().customDialogue(
+                              context,
+                              title: "Block Reminder ?",
+                              subTitle: "If you block the user you are not gona "
+                                  "see his activity on tinver",
+                              primaryButtonText: "Block",
+                              primaryTap: (){}
+                          );
+                        },);
+                  },
+                  value: 'Item 2',
+                  child: TextWidget1(text: "Block", fontSize: 16.dp,
+                      fontWeight: FontWeight.w700, isTextCenter: false, textColor: themeColor),),
+            ],),
             SizedBox(width: 10,),
           ],
           isIconShow: true, isCenterTitle: true),
