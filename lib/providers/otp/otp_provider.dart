@@ -1,15 +1,15 @@
 import 'dart:async';
+import 'dart:convert';
 import 'dart:math';
-
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 import 'package:tiinver_project/api/api_services/api_services.dart';
 import 'package:tiinver_project/api/endpoint/endpoint.dart';
+import 'package:tiinver_project/constant.dart';
+import 'package:tiinver_project/routes/routes_name.dart';
 
-import '../../api_services/otp_services/otp_services.dart';
-import '../../models/otp_model/otp_model.dart';
-import '../sign_up_provider/sign_up_provider.dart';
+import '../signUp/sign_up_provider.dart';
 
 class OtpProvider extends ChangeNotifier{
 
@@ -17,48 +17,42 @@ class OtpProvider extends ChangeNotifier{
   int _start = 60;
 
   int get start => _start;
-
-  OtpModel? _otpModel;
-
   int? code;
-
-  OtpModel? get otpModel => _otpModel;
 
   bool isLoading = false;
 
-  OtpModel? _user;
-
-  final OtpServices _apiService = OtpServices();
-
-  OtpModel? get user => _user;
-
-  Future<void> otp(email) async {
+  Future<void> otpSend(email) async {
     Random random = Random();
     code = random.nextInt(9000) + 1000; // Ensures the code is 4 digits
     code.toString();
     isLoading = true;
     notifyListeners();
     try {
+
       var body = {
-        'to': "toMsg",
+        'to': email,
         'subject': "OTP",
-        'message': "message",
+        'message': code.toString(),
       };
 
-      String encodedBody = body.entries.map((entry) =>
-      '${Uri.encodeComponent(entry.key)}=${Uri.encodeComponent(entry.value)}').join('&');
-
-      final response = await ApiService.post(
-          requestBody: encodedBody,
+      final res = await ApiService.post(
+          requestBody: postEncode(body),
           headers: headers,
           endPoint: Endpoint.mail
       );
 
-      // final response = await _apiService.otp(email, code.toString())
-      //     .whenComplete((){
-      //   startTimer();
-      // });
-      _user = OtpModel.fromJson(response);
+      debugPrint(res.body);
+      var error = jsonDecode(res.body)["error"];
+      if(res.statusCode == 200 || res.statusCode == 201){
+        var message = jsonDecode(res.body)["message"];
+        if(error){
+          Get.snackbar("error", message);
+        }else{
+          startTimer();
+          Get.toNamed(RoutesName.otpVerificationScreen);
+          Get.snackbar("success", message);
+        }
+      }
       notifyListeners();
     } catch (error) {
       debugPrint(error.toString());
@@ -72,8 +66,8 @@ class OtpProvider extends ChangeNotifier{
     if(code == otp){
       isLoading = true;
       notifyListeners();
-      await Provider.of<SignUpProvider>(context, listen: false).signUp().whenComplete(()async{
-        Provider.of<SignUpProvider>(context, listen: false).storeUserApiKey();
+      await Provider.of<SignUpProvider>(context, listen: false).signUp().whenComplete(() async{
+        // Provider.of<SignUpProvider>(context, listen: false).storeUserApiKey();
         isLoading = false;
         notifyListeners();
       }).onError((error, stackTrace) {
@@ -103,15 +97,13 @@ class OtpProvider extends ChangeNotifier{
   void performFunction() {
     code = 0;
     notifyListeners();
-    // Your function logic here
-    print("One minute is up!");
   }
 
-  // @override
-  // void dispose() {
-  //   _timer.cancel();
-  //   super.dispose();
-  // }
+@override
+void dispose() {
+  _timer.cancel();
+  super.dispose();
+}
 
 
 }

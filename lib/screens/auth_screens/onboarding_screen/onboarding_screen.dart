@@ -6,9 +6,9 @@ import 'package:get/get_navigation/get_navigation.dart';
 import 'package:provider/provider.dart';
 import 'package:tiinver_project/constants/colors.dart';
 import 'package:tiinver_project/constants/text_widget.dart';
-import 'package:tiinver_project/providers/onboard_provider/onboard_provider.dart';
 
 import '../../../constants/images_path.dart';
+import '../../../providers/onboard/onboard_provider.dart';
 import '../signin_screen/sign_in_screen.dart';
 import 'comp/navigate_button.dart';
 

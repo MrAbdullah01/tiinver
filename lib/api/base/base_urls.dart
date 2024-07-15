@@ -1,4 +1,3 @@
 class BaseUrls{
- static const BASEURL = 'https://tiinver.com/api/v1/';
-
+  static const BASEURL = 'https://tiinver.com/api/v1/';
 }

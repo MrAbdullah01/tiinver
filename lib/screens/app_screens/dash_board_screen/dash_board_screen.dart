@@ -5,11 +5,11 @@ import 'package:provider/provider.dart';
 import 'package:tiinver_project/constants/colors.dart';
 import 'package:tiinver_project/constants/images_path.dart';
 import 'package:tiinver_project/constants/text_widget.dart';
-import 'package:tiinver_project/providers/sign_in_provider/sign_in_provider.dart';
 import 'package:tiinver_project/screens/app_screens/other_user_profile_screen/comp/dialogue_box.dart';
 
 import 'package:tiinver_project/widgets/header.dart';
 
+import '../../../providers/signIn/sign_in_provider.dart';
 import '../search_screen/search_screen.dart';
 
 class DashBoardScreen extends StatefulWidget {

@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_sizer/flutter_sizer.dart';
+import 'package:provider/provider.dart';
 import 'package:tiinver_project/constants/colors.dart';
 import 'package:tiinver_project/constants/text_widget.dart';
+import 'package:tiinver_project/providers/signIn/sign_in_provider.dart';
 import 'package:tiinver_project/screens/app_screens/user_followers_screen/user_followers_screen.dart';
 import 'package:tiinver_project/screens/app_screens/user_following_screen/user_following_screen.dart';
 import 'package:tiinver_project/widgets/header.dart';
-
 import '../../../constants/images_path.dart';
 import 'media_screen/media_screen.dart';
 import 'my_profile_screen/my_profile_screen.dart';
@@ -15,7 +16,7 @@ class ProfileScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
+    final provider = Provider.of<SignInProvider>(context, listen: false);
     return DefaultTabController(
         length: 2,
         child: Scaffold(
@@ -49,7 +50,7 @@ class ProfileScreen extends StatelessWidget {
                     child: CircleAvatar(
                       radius: 8.h,
                       backgroundColor: lightGreyColor,
-                      backgroundImage: AssetImage(ImagesPath.profileImage),
+                      backgroundImage: provider.user != null ? NetworkImage(provider.user!.user!.profile.toString()) : AssetImage(ImagesPath.profileImage),
                     ),
                   ),
                   Positioned(
@@ -71,11 +72,11 @@ class ProfileScreen extends StatelessWidget {
             ),
             SizedBox(height: 20,),
             Center(
-              child: TextWidget1(text: "Lelsi Alexandra", fontSize: 24.dp, fontWeight: FontWeight.w700,
+              child: TextWidget1(text: provider.user != null ? provider.user!.user!.firstname.toString() : "name", fontSize: 24.dp, fontWeight: FontWeight.w700,
                   isTextCenter: false, textColor: themeColor),
             ),
             Center(
-              child: TextWidget1(text: "Designer @inspiration", fontSize: 10.dp, fontWeight: FontWeight.w500,
+              child: TextWidget1(text: provider.user != null ? provider.user!.user!.username.toString() : "name", fontSize: 10.dp, fontWeight: FontWeight.w500,
                   isTextCenter: false, textColor: darkGreyColor),
             ),
             SizedBox(height: 20,),
@@ -88,7 +89,7 @@ class ProfileScreen extends StatelessWidget {
                   },
                   child: Column(
                     children: [
-                      TextWidget1(text: "0", fontSize: 20.dp, fontWeight: FontWeight.w500,
+                      TextWidget1(text: provider.user != null ? provider.user!.user!.following.toString() : "0", fontSize: 20.dp, fontWeight: FontWeight.w500,
                           isTextCenter: false, textColor: darkGreyColor),
                       TextWidget1(text: "Following", fontSize: 16.dp, fontWeight: FontWeight.w500,
                           isTextCenter: false, textColor: themeColor),
@@ -101,7 +102,7 @@ class ProfileScreen extends StatelessWidget {
                   },
                   child: Column(
                     children: [
-                      TextWidget1(text: "0", fontSize: 20.dp, fontWeight: FontWeight.w500,
+                      TextWidget1(text: provider.user != null ? provider.user!.user!.followers.toString() : "0", fontSize: 20.dp, fontWeight: FontWeight.w500,
                           isTextCenter: false, textColor: darkGreyColor),
                       TextWidget1(text: "Followers", fontSize: 16.dp, fontWeight: FontWeight.w500,
                           isTextCenter: false, textColor: themeColor),
@@ -130,7 +131,7 @@ class ProfileScreen extends StatelessWidget {
                 width: 100.w,
                 child: TabBarView(
                     children: [
-                      MyProfileScreen(),
+                      MyProfileScreen(model: provider.user!,),
                       MediaScreen()
             ]))
           ],

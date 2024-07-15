@@ -1,17 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:get/get_core/src/get_main.dart';
-import 'package:get/get_navigation/get_navigation.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:stream_chat_flutter/stream_chat_flutter.dart';
 import 'package:tiinver_project/api_services/forgot_password_services/forgot_password_services.dart';
-import 'package:tiinver_project/models/forgot_password_model/forgot_password_model.dart';
-import 'package:tiinver_project/models/user_login_model/user_login_model.dart';
-import 'package:tiinver_project/screens/app_screens/bottom_navbar_screen/bottom_navbar_screen.dart';
-import 'package:tiinver_project/screens/auth_screens/onboarding_screen/onboarding_screen.dart';
-import 'package:tiinver_project/screens/auth_screens/signin_screen/sign_in_screen.dart';
-
-import '../../api_services/sign_in_api_services/sign_in_api_services.dart';
-import '../../db_keys.dart';
+import '../../models/forgotPassword/forgot_password_model.dart';
 
 
 class ForgotProvider with ChangeNotifier {

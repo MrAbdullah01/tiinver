@@ -1,33 +1,29 @@
-import 'dart:math';
+import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_sizer/flutter_sizer.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 import 'package:pinput/pinput.dart';
 import 'package:provider/provider.dart';
+import 'package:tiinver_project/constant.dart';
 import 'package:tiinver_project/constants/colors.dart';
 import 'package:tiinver_project/constants/images_path.dart';
 import 'package:tiinver_project/constants/text_widget.dart';
-import 'package:tiinver_project/providers/otp_provider/otp_provider.dart';
-import 'package:tiinver_project/widgets/header.dart';
+import 'package:tiinver_project/db_keys.dart';
 
-import '../../../providers/sign_up_provider/sign_up_provider.dart';
+import '../../../api_services/sp_services.dart';
+import '../../../providers/otp/otp_provider.dart';
+import '../../../providers/signUp/sign_up_provider.dart';
+
 
 class OtpScreen extends StatelessWidget {
   const OtpScreen({super.key});
 
-  void signUp(BuildContext context) async {
-    await Provider.of<SignUpProvider>(context, listen: false).signUp().whenComplete(()async{
-      Provider.of<SignUpProvider>(context, listen: false).storeUserApiKey();
-    }).onError((error, stackTrace) {
-      Get.snackbar("Error", "$error");
-    },);
-  }
 
   @override
   Widget build(BuildContext context) {
     var otpP = Provider.of<OtpProvider>(context,listen: false);
+    final signUpProvider =   Provider.of<SignUpProvider>(context, listen: false);
     return Scaffold(
       backgroundColor: bgColor,
       resizeToAvoidBottomInset: true,
@@ -52,7 +48,11 @@ class OtpScreen extends StatelessWidget {
               },
               length: 4,
               onCompleted: (pin) {
-                otpP.otpVerification(int.parse(pin), context);
+                if(otpP.code == int.parse(pin)){
+                  signUpProvider.signUp();
+                }else{
+                  Get.snackbar("error", "invalid OTP");
+                }
               },
               defaultPinTheme: PinTheme(
                 width: 20.w,
@@ -82,9 +82,14 @@ class OtpScreen extends StatelessWidget {
               SizedBox(
                   width: 63.w,
                   child: TextWidget1(text: "If you have not received the code", fontSize: 16.dp, fontWeight: FontWeight.w500, isTextCenter: false, textColor: darkGreyColor,maxLines: 2,)),
-              SizedBox(
-                  width: 20.w,
-                  child: Center(child: TextWidget1(text: "Click here", fontSize: 16.dp, fontWeight: FontWeight.w500, isTextCenter: false, textColor: themeColor))),
+              GestureDetector(
+                onTap: () async{
+
+                },
+                child: SizedBox(
+                    width: 20.w,
+                    child: Center(child: TextWidget1(text: "Click here", fontSize: 16.dp, fontWeight: FontWeight.w500, isTextCenter: false, textColor: themeColor))),
+              ),
             ],
           ),
           SizedBox(height: 30,),

@@ -34,6 +34,7 @@ class Endpoint{
 
   static const report = "${BaseUrls.BASEURL}report";
   static const updateUser = "${BaseUrls.BASEURL}user";
+  static const updateProfile = "${BaseUrls.BASEURL}updateProfile";
   static const updatePassword = "${BaseUrls.BASEURL}updatepassword";
   static const unfollow = "${BaseUrls.BASEURL}unfollow";
   static const follow = "${BaseUrls.BASEURL}follow";

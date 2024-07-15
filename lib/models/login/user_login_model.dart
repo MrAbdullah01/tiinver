@@ -95,28 +95,28 @@ class UserSignIn {
   }
 
   UserSignIn.fromJson(dynamic json) {
-    _id = json['id'];
-    _apiKey = json['apiKey'];
-    _email = json['email'];
-    _phone = json['phone'];
-    _subscribe = json['subscribe'];
+    _id = json['id'] ?? "";
+    _apiKey = json['apiKey'] ?? "";
+    _email = json['email'] ?? "";
+    _phone = json['phone'] ?? "No Phone Number";
+    _subscribe = json['subscribe'] ?? "";
     _blockedUsers = json['blocked_users'] != null ? List<dynamic>.from(json['blocked_users']) : null;
-    _type = json['type'];
-    _username = json['username'];
-    _firstname = json['firstname'];
-    _lastname = json['lastname'];
-    _profile = json['profile'];
-    _verify = json['verify'];
-    _active = json['active'];
-    _followers = json['followers'];
-    _following = json['following'];
-    _location = json['location'];
-    _school = json['school'];
-    _qualification = json['qualification'];
-    _birthday = json['birthday'];
-    _work = json['work'];
-    _coinsAmount = json['coinsAmount'];
-    _stamp = json['stamp'];
+    _type = json['type'] ?? "";
+    _username = json['username'] ?? "";
+    _firstname = json['firstname'] ?? "";
+    _lastname = json['lastname'] ?? "";
+    _profile = json['profile'] ?? "";
+    _verify = json['verify'] ?? "";
+    _active = json['active'] ?? "";
+    _followers = json['followers'] ?? "";
+    _following = json['following'] ?? "";
+    _location = json['location'] ?? "No Address";
+    _school = json['school'] ?? "No School";
+    _qualification = json['qualification'] ?? "No Qualification";
+    _birthday = json['birthday'] ?? "No Birthday";
+    _work = json['work'] ?? "No Work";
+    _coinsAmount = json['coinsAmount'] ?? "";
+    _stamp = json['stamp'] ?? "";
   }
 
   num? _id;

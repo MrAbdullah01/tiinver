@@ -1,10 +1,16 @@
+import 'dart:convert';
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:tiinver_project/api_services/sign_up_api_services/sign_up_api_services.dart';
-
+import 'package:tiinver_project/api/api_services/api_services.dart';
+import 'package:tiinver_project/constant.dart';
+import 'package:tiinver_project/routes/routes_name.dart';
+import '../../api/endpoint/endpoint.dart';
+import '../../api_services/sp_services.dart';
 import '../../db_keys.dart';
-import '../../models/user_sign_up_model/user_sign_up_model.dart';
+import '../../models/register/user_sign_up_model.dart';
 import '../../screens/app_screens/bottom_navbar_screen/bottom_navbar_screen.dart';
 
 class SignUpProvider extends ChangeNotifier{
@@ -27,7 +33,6 @@ class SignUpProvider extends ChangeNotifier{
   bool isLoading = false;
 
   UserSignUpModel? _user;
-  final SignUpApiServices _apiService = SignUpApiServices();
 
   UserSignUpModel? get user => _user;
 
@@ -35,8 +40,37 @@ class SignUpProvider extends ChangeNotifier{
     isLoading = true;
     notifyListeners();
     try {
-      final response = await _apiService.signUp(emailC.text, passwordC.text, nameC.text);
-      _user = UserSignUpModel.fromJson(response);
+
+      final body = {
+        'email': emailC.text,
+        'password': passwordC.text,
+        'firstname': "",
+        'lastname': "",
+        'phoneNumber': "",
+        'username': "",
+        'fullname': nameC.text,
+        'auth_by_email': 'email',
+      };
+
+      final res = await ApiService.post(
+          requestBody: postEncode(body),
+          headers: headers,
+          endPoint: Endpoint.register
+      );
+
+      final error = jsonDecode(res.body)["error"];
+      if(res.statusCode == 200 || res.statusCode == 201){
+        final message = jsonDecode(res.body)["message"];
+        log("message: ${res.body}");
+        if(error){
+          Get.snackbar("error", message);
+        }else{
+          Get.snackbar("success", message);
+         var sp = await SharedPreferencesService.getInstance();
+          sp.setString(DbKeys.userApiKey, jsonDecode(res.body)["user"]["apiKey"].toString());
+          Get.offAllNamed(RoutesName.bottomNavigationBar);
+        }
+      }
       notifyListeners();
     } catch (error) {
       debugPrint(error.toString());
@@ -46,12 +80,6 @@ class SignUpProvider extends ChangeNotifier{
     }
   }
 
-  storeUserApiKey()async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.setString(DbKeys.userApiKey, _apiService.data["user"]["apiKey"]);
-    Get.offAll(()=>BottomNavbarScreen());
-    notifyListeners();
-  }
 
   // getUserApiKey()async {
   //   SharedPreferences prefs = await SharedPreferences.getInstance();

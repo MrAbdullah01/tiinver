@@ -8,7 +8,7 @@ import 'package:tiinver_project/widgets/header.dart';
 import '../../../constants/colors.dart';
 import '../../../constants/images_path.dart';
 import '../../../constants/text_widget.dart';
-import '../../../providers/forgot_provider/forgot_provider.dart';
+import '../../../providers/forgot/forgot_provider.dart';
 import '../../../widgets/field_widget.dart';
 import '../../../widgets/submit_button.dart';
 import '../new_password_screen/new_password_screen.dart';

@@ -8,11 +8,13 @@ class EditProfileTile extends StatelessWidget {
     super.key,
     this.text,
     this.image,
+    this.hint = "",
     this.controller,
   });
 
   final String? text;
   final String? image;
+  final String? hint;
   final TextEditingController? controller;
 
   @override
@@ -30,21 +32,22 @@ class EditProfileTile extends StatelessWidget {
         ),
         TextFormField(
           controller: controller,
-          decoration: const InputDecoration(
-            hintStyle: TextStyle(
+          decoration:  InputDecoration(
+            hintText: hint,
+            hintStyle: const TextStyle(
               fontSize: 12,
               fontWeight: FontWeight.w500,
             ),
             fillColor: bgColor,
             filled: true,
             alignLabelWithHint: true,
-            border: UnderlineInputBorder(
+            border: const UnderlineInputBorder(
               borderSide:  BorderSide(
                 color: themeColor,
                 width: 1.5,
               ),
             ),
-            enabledBorder: UnderlineInputBorder(
+            enabledBorder: const UnderlineInputBorder(
               borderSide:  BorderSide(
                 color: themeColor,
                 width: 1.5,

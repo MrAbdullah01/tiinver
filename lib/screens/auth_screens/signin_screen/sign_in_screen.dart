@@ -6,17 +6,17 @@ import 'package:provider/provider.dart';
 import 'package:tiinver_project/constants/colors.dart';
 import 'package:tiinver_project/constants/images_path.dart';
 import 'package:tiinver_project/constants/text_widget.dart';
-import 'package:tiinver_project/providers/sign_in_provider/sign_in_provider.dart';
-import 'package:tiinver_project/screens/app_screens/bottom_navbar_screen/bottom_navbar_screen.dart';
 import 'package:tiinver_project/widgets/field_widget.dart';
 import 'package:tiinver_project/widgets/header.dart';
 import 'package:tiinver_project/widgets/submit_button.dart';
 
+import '../../../providers/signIn/sign_in_provider.dart';
+import '../../../providers/signIn/sign_in_provider.dart';
 import '../forget_password_screen/forget_password_screen.dart';
 import '../sign_up_screen/sign_up_screen.dart';
 
 class SignInScreen extends StatefulWidget {
-  SignInScreen({super.key});
+ const SignInScreen({super.key});
 
   @override
   State<SignInScreen> createState() => _SignInScreenState();
@@ -30,20 +30,10 @@ class _SignInScreenState extends State<SignInScreen> {
 
   var passwordC = TextEditingController();
 
-  void _login(BuildContext context) async {
-      await Provider.of<SignInProvider>(context, listen: false).login(
-        emailC.text.toString(),
-        passwordC.text.toString(),
-      ).whenComplete(()async{
-        Provider.of<SignInProvider>(context, listen: false).storeUserApiKey();
-      }).onError((error, stackTrace) {
-        Get.snackbar("Error", "$error");
-      },);
-  }
 
   @override
   Widget build(BuildContext context) {
-
+ final signInProvider = Provider.of<SignInProvider>(context,listen: false);
     return Scaffold(
       backgroundColor: bgColor,
       appBar: Header().header1("", [], isIconShow: true),
@@ -120,9 +110,10 @@ class _SignInScreenState extends State<SignInScreen> {
                       title: "Sign in",
                       press: (){
                         if(formKey.currentState!.validate()){
-                          _login(context);
+
+                            signInProvider.login(emailC.text, passwordC.text);
+
                         }
-                        // Get.to(()=>BottomNavbarScreen());
                       }
                   );
                 }),

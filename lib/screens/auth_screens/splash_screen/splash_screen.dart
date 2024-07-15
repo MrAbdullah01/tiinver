@@ -2,14 +2,12 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_sizer/flutter_sizer.dart';
-import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 import 'package:tiinver_project/constants/colors.dart';
 import 'package:tiinver_project/constants/images_path.dart';
 import 'package:tiinver_project/constants/text_widget.dart';
 
-import '../../../providers/sign_in_provider/sign_in_provider.dart';
-import '../onboarding_screen/onboarding_screen.dart';
+import '../../../providers/signIn/sign_in_provider.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});

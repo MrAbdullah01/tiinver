@@ -3,15 +3,14 @@ import 'package:flutter_sizer/flutter_sizer.dart';
 import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 import 'package:tiinver_project/constants/colors.dart';
-import 'package:tiinver_project/providers/otp_provider/otp_provider.dart';
-import 'package:tiinver_project/providers/sign_up_provider/sign_up_provider.dart';
 import 'package:tiinver_project/widgets/header.dart';
 
 import '../../../constants/images_path.dart';
 import '../../../constants/text_widget.dart';
+import '../../../providers/otp/otp_provider.dart';
+import '../../../providers/signUp/sign_up_provider.dart';
 import '../../../widgets/field_widget.dart';
 import '../../../widgets/submit_button.dart';
-import '../otp_screen/otp_screen.dart';
 
 class SignUpScreen extends StatelessWidget {
   SignUpScreen({super.key});
@@ -111,16 +110,11 @@ class SignUpScreen extends StatelessWidget {
                   press: (){
                     if(signUpP.passwordC.text == signUpP.confirmPasswordC.text){
                       if(formKey.currentState!.validate()){
-                        Provider.of<OtpProvider>(context,listen: false).otp(signUpP.emailC.text)
-                            .whenComplete((){
-                          Get.to(()=>OtpScreen());
-                        });
+                        otpP.otpSend(signUpP.emailC.text);
                       }
                     }else{
                      Get.snackbar("Error", "Passwords are not same!");
                     }
-                    //signUp(context);
-                    // Get.to(()=>OtpScreen());
                   }
               );
             },),
