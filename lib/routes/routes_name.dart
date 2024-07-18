@@ -3,6 +3,7 @@ class RoutesName{
   static const signIn = "/sign_in";
   static const signUp = "/sign_up";
   static const forgotPassword = "/forgot_password";
+  static const newPassword = "/new_password";
   static const otpVerificationScreen = "/otp_verification_screen";
   static const bottomNavigationBar = "/bottom_navigation_bar";
 }

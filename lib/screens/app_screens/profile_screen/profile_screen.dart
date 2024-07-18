@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:tiinver_project/constants/colors.dart';
 import 'package:tiinver_project/constants/text_widget.dart';
 import 'package:tiinver_project/providers/signIn/sign_in_provider.dart';
+import 'package:tiinver_project/providers/updateProfile/update_profile_provider.dart';
 import 'package:tiinver_project/screens/app_screens/user_followers_screen/user_followers_screen.dart';
 import 'package:tiinver_project/screens/app_screens/user_following_screen/user_following_screen.dart';
 import 'package:tiinver_project/widgets/header.dart';
@@ -17,6 +18,8 @@ class ProfileScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final provider = Provider.of<SignInProvider>(context, listen: false);
+    var updateP = Provider.of<UpdateProfileProvider>(context, listen: false);
+    //Provider.of<UpdateProfileProvider>(context, listen: false).getConnectedUsers(provider.user!.user!.id.toString());
     return DefaultTabController(
         length: 2,
         child: Scaffold(
@@ -83,31 +86,39 @@ class ProfileScreen extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                GestureDetector(
+                InkWell(
+                  splashColor: Colors.transparent,
+                  highlightColor: Colors.transparent,
                   onTap: (){
                     Navigator.push(context, MaterialPageRoute(builder: (context) => UserFollowingScreen(),));
                   },
-                  child: Column(
-                    children: [
-                      TextWidget1(text: provider.user != null ? provider.user!.user!.following.toString() : "0", fontSize: 20.dp, fontWeight: FontWeight.w500,
-                          isTextCenter: false, textColor: darkGreyColor),
-                      TextWidget1(text: "Following", fontSize: 16.dp, fontWeight: FontWeight.w500,
-                          isTextCenter: false, textColor: themeColor),
-                    ],
-                  ),
+                  child: Consumer<UpdateProfileProvider>(builder: (context, value, child) {
+                    return Column(
+                      children: [
+                        TextWidget1(text: value.followingsList.length.toString(), fontSize: 20.dp, fontWeight: FontWeight.w500,
+                            isTextCenter: false, textColor: darkGreyColor),
+                        TextWidget1(text: "Following", fontSize: 16.dp, fontWeight: FontWeight.w500,
+                            isTextCenter: false, textColor: themeColor),
+                      ],
+                    );
+                  },)
                 ),
-                GestureDetector(
+                InkWell(
+                  splashColor: Colors.transparent,
+                  highlightColor: Colors.transparent,
                   onTap: (){
                     Navigator.push(context, MaterialPageRoute(builder: (context) => UserFollowersScreen(),));
                   },
-                  child: Column(
-                    children: [
-                      TextWidget1(text: provider.user != null ? provider.user!.user!.followers.toString() : "0", fontSize: 20.dp, fontWeight: FontWeight.w500,
-                          isTextCenter: false, textColor: darkGreyColor),
-                      TextWidget1(text: "Followers", fontSize: 16.dp, fontWeight: FontWeight.w500,
-                          isTextCenter: false, textColor: themeColor),
-                    ],
-                  ),
+                  child: Consumer<UpdateProfileProvider>(builder: (context, value, child) {
+                    return Column(
+                      children: [
+                        TextWidget1(text: value.followersList.length.toString(), fontSize: 20.dp, fontWeight: FontWeight.w500,
+                            isTextCenter: false, textColor: darkGreyColor),
+                        TextWidget1(text: "Followers", fontSize: 16.dp, fontWeight: FontWeight.w500,
+                            isTextCenter: false, textColor: themeColor),
+                      ],
+                    );
+                  },),
                 ),
               ],
             ),

@@ -30,7 +30,6 @@ class _SignInScreenState extends State<SignInScreen> {
 
   var passwordC = TextEditingController();
 
-
   @override
   Widget build(BuildContext context) {
  final signInProvider = Provider.of<SignInProvider>(context,listen: false);

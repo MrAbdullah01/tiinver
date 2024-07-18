@@ -22,6 +22,7 @@ class EditProfileScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final provider = Provider.of<SignInProvider>(context, listen: false);
+    // Provider.of<UpdateProfileProvider>(context, listen: false).loadUserFromPreferences();
     return Scaffold(
       backgroundColor: bgColor,
       appBar: Header().header1("", [], isIconShow: true),

@@ -9,10 +9,12 @@ import '../../../../constants/text_widget.dart';
 
 class SearchingTile extends StatelessWidget {
   SearchingTile({super.key,required this.name,required this.userName,
-    required this.buttonText,required this.buttonAction});
+    required this.buttonText,required this.buttonAction,
+    required this.imageUrl});
 
   String name;
   String userName;
+  String imageUrl;
   String buttonText;
   VoidCallback buttonAction;
 
@@ -25,7 +27,8 @@ class SearchingTile extends StatelessWidget {
         children: [
           CircleAvatar(
             radius: 4.h,
-            backgroundImage: AssetImage(ImagesPath.profileImage),
+            backgroundImage: imageUrl.isNotEmpty ? NetworkImage(imageUrl)
+                : AssetImage(ImagesPath.profileImage),
           ),
           SizedBox(width: 10,),
           SizedBox(
@@ -33,8 +36,16 @@ class SearchingTile extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                TextWidget1(text: name, fontSize: 16.dp, fontWeight: FontWeight.w500, isTextCenter: false, textColor: textColor),
-                TextWidget1(text: userName, fontSize: 11.dp, fontWeight: FontWeight.w300, isTextCenter: false, textColor: textColor),
+                TextWidget1(
+                  text: name, fontSize: 16.dp,
+                  fontWeight: FontWeight.w500, isTextCenter: false,
+                  textColor: textColor,maxLines: 1,),
+
+                TextWidget1(
+                  text: userName, fontSize: 11.dp,
+                  fontWeight: FontWeight.w300, isTextCenter: false,
+                  textColor: textColor,maxLines: 1,
+                  overFlow: TextOverflow.ellipsis,),
               ],
             ),
           ),

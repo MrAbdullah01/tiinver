@@ -47,7 +47,7 @@ class SearchScreen extends StatelessWidget {
             name: "Dreaming",
             userName: "Dreaming087",
             buttonText: "following",
-            buttonAction: (){}
+            buttonAction: (){}, imageUrl: '',
         );
       },),
     );

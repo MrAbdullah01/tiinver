@@ -1,8 +1,4 @@
-import 'dart:convert';
-
 import 'package:shared_preferences/shared_preferences.dart';
-
-import '../models/login/user_login_model.dart';
 
 class SharedPreferencesService {
   static SharedPreferencesService? _instance;
@@ -13,7 +9,6 @@ class SharedPreferencesService {
     _preferences ??= await SharedPreferences.getInstance();
     return _instance!;
   }
-
 
   Future<bool> setBool(String key, bool value) async {
     return await _preferences!.setBool(key, value);
@@ -66,6 +61,5 @@ class SharedPreferencesService {
   Future<bool> clear() async {
     return await _preferences!.clear();
   }
-
 
 }

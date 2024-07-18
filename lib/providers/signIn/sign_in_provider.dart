@@ -12,7 +12,6 @@ import 'package:tiinver_project/screens/auth_screens/signin_screen/sign_in_scree
 
 import '../../api/api_services/api_services.dart';
 import '../../api/endpoint/endpoint.dart';
-import '../../api_services/sign_in_api_services/sign_in_api_services.dart';
 import '../../constant.dart';
 import '../../db_keys.dart';
 import '../../models/login/user_login_model.dart';
@@ -23,11 +22,6 @@ class SignInProvider with ChangeNotifier {
 
   bool obscureText = true;
 
-  UserLoginModel? _userLoginModel;
-  UserLoginModel? get userLoginModel => _userLoginModel;
-
-  UserSignIn userApiKeys = UserSignIn();
-
   String? userApiKey;
 
   bool isLoading = false;
@@ -36,12 +30,11 @@ class SignInProvider with ChangeNotifier {
 
   UserLoginModel? get user => _user;
 
-
   SignInProvider() {
-    _loadUserFromPreferences();
+    loadUserFromPreferences();
   }
 
-  Future<void> _loadUserFromPreferences() async {
+  Future<void> loadUserFromPreferences() async {
     var sp = await SharedPreferences.getInstance();
     String? userJson = sp.getString('userModel');
     if (userJson != null) {
@@ -63,10 +56,9 @@ class SignInProvider with ChangeNotifier {
 
       final res = await ApiService.post(
           requestBody: postEncode(body),
-          headers: headers,
+          headers: header1,
           endPoint: Endpoint.login
       );
-
 
       if(res.statusCode == 200 || res.statusCode == 201){
 
@@ -94,29 +86,14 @@ class SignInProvider with ChangeNotifier {
       notifyListeners();
     }
   }
-  //
-  // Future<void> login(String email, String password) async {
-  //   isLoading = true;
-  //   notifyListeners();
-  //   try {
-  //     final response = await _apiService.login(email, password);
-  //     _user = UserLoginModel.fromJson(response);
-  //     notifyListeners();
-  //   } catch (error) {
-  //     debugPrint(error.toString());
-  //   }finally{
-  //     isLoading = false;
-  //     notifyListeners();
-  //   }
-  // }
 
   logout()async {
+
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.setString(DbKeys.userApiKey, "");
     Get.offAll(()=>SignInScreen());
     notifyListeners();
   }
-
 
   getUserApiKey()async {
     var  prefs = await SharedPreferencesService.getInstance();
@@ -134,6 +111,5 @@ class SignInProvider with ChangeNotifier {
     obscureText = !obscureText;
     notifyListeners();
   }
-
 
 }

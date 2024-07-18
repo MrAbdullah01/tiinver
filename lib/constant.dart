@@ -1,14 +1,24 @@
 import 'dart:convert';
-
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tiinver_project/api_services/sp_services.dart';
 import 'package:tiinver_project/db_keys.dart';
-
 import 'models/login/user_login_model.dart';
 
-String postEncode(Map<String,dynamic> body){
+String customEncode(String input) {
+  const String encodeSet = " ~`!#\$%^&*()=+[]{}|;:'\",<>/?";
+  return input.split('').map((char) {
+    if (encodeSet.contains(char)) {
+      return Uri.encodeComponent(char);
+    } else {
+      return char;
+    }
+  }).join('');
+}
+
+String postEncode(Map<String, dynamic> body) {
   return body.entries.map((entry) =>
-  '${Uri.encodeComponent(entry.key)}=${Uri.encodeComponent(entry.value)}').join('&');
+  '${customEncode(entry.key)}=${customEncode(entry.value.toString())}'
+  ).join('&');
 }
 
 Future<String> getApiKey() async{

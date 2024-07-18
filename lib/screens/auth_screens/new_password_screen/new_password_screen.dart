@@ -3,7 +3,6 @@ import 'package:flutter_sizer/flutter_sizer.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_navigation/get_navigation.dart';
 import 'package:provider/provider.dart';
-
 import '../../../constants/colors.dart';
 import '../../../constants/images_path.dart';
 import '../../../constants/text_widget.dart';
@@ -83,7 +82,7 @@ class NewPasswordScreen extends StatelessWidget {
                     title: "Confirm Password",
                     press: (){
                       if(value.passwordC.text == value.confirmPasswordC.text){
-                        value.forgotPassword();
+                        value.newPasswordReset();
                       }else{
                         Get.snackbar("Error", "Passwords are not same!");
                       }

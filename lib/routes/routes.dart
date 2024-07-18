@@ -2,6 +2,7 @@ import 'package:get/get.dart';
 import 'package:tiinver_project/routes/routes_name.dart';
 import 'package:tiinver_project/screens/app_screens/bottom_navbar_screen/bottom_navbar_screen.dart';
 import 'package:tiinver_project/screens/auth_screens/forget_password_screen/forget_password_screen.dart';
+import 'package:tiinver_project/screens/auth_screens/new_password_screen/new_password_screen.dart';
 import 'package:tiinver_project/screens/auth_screens/otp_screen/otp_screen.dart';
 import 'package:tiinver_project/screens/auth_screens/sign_up_screen/sign_up_screen.dart';
 import 'package:tiinver_project/screens/auth_screens/signin_screen/sign_in_screen.dart';
@@ -24,6 +25,10 @@ class Routes{
     GetPage(
         name: RoutesName.forgotPassword,
         page: ()=> ForgetPasswordScreen()
+    ),
+    GetPage(
+        name: RoutesName.newPassword,
+        page: ()=> NewPasswordScreen()
     ),
     GetPage(
         name: RoutesName.otpVerificationScreen,

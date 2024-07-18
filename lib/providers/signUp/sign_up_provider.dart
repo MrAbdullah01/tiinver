@@ -10,6 +10,7 @@ import 'package:tiinver_project/routes/routes_name.dart';
 import '../../api/endpoint/endpoint.dart';
 import '../../api_services/sp_services.dart';
 import '../../db_keys.dart';
+import '../../models/login/user_login_model.dart';
 import '../../models/register/user_sign_up_model.dart';
 import '../../screens/app_screens/bottom_navbar_screen/bottom_navbar_screen.dart';
 
@@ -54,21 +55,28 @@ class SignUpProvider extends ChangeNotifier{
 
       final res = await ApiService.post(
           requestBody: postEncode(body),
-          headers: headers,
+          headers: header1,
           endPoint: Endpoint.register
       );
 
       final error = jsonDecode(res.body)["error"];
       if(res.statusCode == 200 || res.statusCode == 201){
-        final message = jsonDecode(res.body)["message"];
+
+        final jsonResponse = jsonDecode(res.body);
+        final error = jsonResponse['error'];
+        final message = jsonResponse['message'];
         log("message: ${res.body}");
+
         if(error){
           Get.snackbar("error", message);
         }else{
           Get.snackbar("success", message);
-         var sp = await SharedPreferencesService.getInstance();
+          final user = UserLoginModel.fromJson(jsonResponse);
+          var sp = await SharedPreferences.getInstance();
           sp.setString(DbKeys.userApiKey, jsonDecode(res.body)["user"]["apiKey"].toString());
+          sp.setString('userModel', json.encode(user.toJson()));
           Get.offAllNamed(RoutesName.bottomNavigationBar);
+          notifyListeners();
         }
       }
       notifyListeners();

@@ -10,7 +10,12 @@ import '../screens/auth_screens/onboarding_screen/comp/navigate_button.dart';
 
 class Header {
 
-  AppBar header1(String title,List<Widget> actionsList,{required bool isIconShow,bool isCenterTitle = false,double? toolbarHeight}){
+  AppBar header1(
+      String title,
+      List<Widget> actionsList,
+      {required bool isIconShow,
+        bool isCenterTitle = false,
+        double? toolbarHeight}){
     return AppBar(
         backgroundColor: bgColor,
         surfaceTintColor: bgColor,

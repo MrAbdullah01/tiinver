@@ -1,28 +1,33 @@
 import 'dart:convert';
 import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_navigation/get_navigation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:tiinver_project/api_services/sp_services.dart';
-import 'package:tiinver_project/screens/app_screens/bottom_navbar_screen/bottom_navbar_screen.dart';
-import 'package:tiinver_project/screens/auth_screens/onboarding_screen/onboarding_screen.dart';
-import 'package:tiinver_project/screens/auth_screens/signin_screen/sign_in_screen.dart';
-
 import '../../api/api_services/api_services.dart';
 import '../../api/endpoint/endpoint.dart';
-import '../../api_services/sign_in_api_services/sign_in_api_services.dart';
 import '../../constant.dart';
-import '../../db_keys.dart';
+import '../../models/connectedUsers/connected_users_model.dart';
+import '../../models/followersModel/followers_model.dart';
+import '../../models/followingModel/following_model.dart';
 import '../../models/login/user_login_model.dart';
-import '../../routes/routes_name.dart';
-
+import '../../models/register/user_sign_up_model.dart';
 
 class UpdateProfileProvider with ChangeNotifier {
 
-
   bool isLoading = false;
+
+  UserSignUpModel? _user;
+
+  UserSignUpModel? get user => _user;
+
+  List<Users> _followersList = [];
+
+  List<Users> get followersList => _followersList;
+
+  List<FollowingUsers> _followingsList = [];
+
+  List<FollowingUsers> get followingsList => _followingsList;
 
   Future<void> updateProfile({
     required String id,
@@ -48,7 +53,7 @@ class UpdateProfileProvider with ChangeNotifier {
 
       final res = await ApiService.post(
           requestBody: postEncode(body),
-          headers: headers,
+          headers: header2,
           endPoint: Endpoint.updateProfile
       );
 
@@ -72,6 +77,58 @@ class UpdateProfileProvider with ChangeNotifier {
     }finally{
       isLoading = false;
       notifyListeners();
+    }
+  }
+
+  followers()async{
+    try{
+
+      isLoading = true;
+
+      var res = await ApiService.get(Endpoint.followers(197, 197),header2);
+
+        if (res.statusCode == 200) {
+          Map<String, dynamic> jsonResponse = json.decode(res.body);
+          if (jsonResponse['error'] == false) {
+            List<dynamic> data = jsonResponse['users'];
+            _followersList = data.map((item) => Users.fromJson(item)).toList();
+            notifyListeners();
+          } else {
+            throw Exception('Failed to load users');
+          }
+
+          log(followersList.toString());
+        }
+    }catch(e){
+      print(e);
+    }
+    finally{
+    }
+  }
+
+  following()async{
+    try{
+
+      isLoading = true;
+
+      var res = await ApiService.get(Endpoint.following(197, 197),header2);
+
+        if (res.statusCode == 200) {
+          Map<String, dynamic> jsonResponse = json.decode(res.body);
+          if (jsonResponse['error'] == false) {
+            List<dynamic> data = jsonResponse['users'];
+            _followingsList = data.map((item) => FollowingUsers.fromJson(item)).toList();
+            notifyListeners();
+          } else {
+            throw Exception('Failed to load users');
+          }
+
+          log(followingsList.toString());
+        }
+    }catch(e){
+      print(e);
+    }
+    finally{
     }
   }
 

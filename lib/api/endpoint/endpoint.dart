@@ -1,7 +1,11 @@
 import 'package:tiinver_project/api/base/base_urls.dart';
 
-const headers = {
+const header1 = {
   'Content-Type': 'application/x-www-form-urlencoded',
+};
+const header2 = {
+  'Content-Type': 'application/x-www-form-urlencoded',
+  'Authorization' : 'c1e3ff561abad9884973836565af1fa7'
 };
 class Endpoint{
   static const forgotPassword = "${BaseUrls.BASEURL}forgotpassword";
@@ -22,6 +26,14 @@ class Endpoint{
   static const search = "${BaseUrls.BASEURL}usersbykey";
   static const mail = "${BaseUrls.BASEURL}mail";
   static const isPhoneOrEmailExists = "${BaseUrls.BASEURL}isPhoneOrEmailExiste";
+
+  static String followers(int userId, int followerId) {
+    return 'https://tiinver.com/api/v1/followers/$userId/$followerId';
+  }
+
+  static String following(int userId, int followerId) {
+    return 'https://tiinver.com/api/v1/following/$userId/$followerId';
+  }
 
   static String blockUser({
     required String usernameBlocked,
