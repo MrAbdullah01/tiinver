@@ -3,17 +3,24 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_navigation/get_navigation.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:tiinver_project/models/getUserModel/get_user_model.dart';
+import 'package:tiinver_project/providers/signIn/sign_in_provider.dart';
 import '../../api/api_services/api_services.dart';
 import '../../api/endpoint/endpoint.dart';
 import '../../constant.dart';
-import '../../models/connectedUsers/connected_users_model.dart';
 import '../../models/followersModel/followers_model.dart';
 import '../../models/followingModel/following_model.dart';
-import '../../models/login/user_login_model.dart';
 import '../../models/register/user_sign_up_model.dart';
 
-class UpdateProfileProvider with ChangeNotifier {
+class ProfileProvider with ChangeNotifier {
+
+  var nameController = TextEditingController();
+  var locationController = TextEditingController();
+  var workController = TextEditingController();
+  var qualificationController = TextEditingController();
+  var schoolController = TextEditingController();
 
   bool isLoading = false;
 
@@ -29,6 +36,66 @@ class UpdateProfileProvider with ChangeNotifier {
 
   List<FollowingUsers> get followingsList => _followingsList;
 
+  GetUserModel? userModel;
+
+  Users? followerUser;
+
+  // Future<void> loadUserProfileFromPreferences() async {
+  //   var sp = await SharedPreferences.getInstance();
+  //   String? userJson = sp.getString('userProfileData');
+  //   if (userJson != null) {
+  //     userModel = GetUserModel.fromJson(json.decode(userJson));
+  //   }
+  //   notifyListeners();
+  // }
+
+  Future<void> loadUserFromPreferences() async {
+    var sp = await SharedPreferences.getInstance();
+    String? userJson = sp.getString('getUserModel');
+    if (userJson != null) {
+      userModel = GetUserModel.fromJson(json.decode(userJson));
+    }
+    notifyListeners();
+  }
+
+  getUserProfile(userId,context) async {
+    try{
+
+      isLoading = true;
+
+      var res = await ApiService.get(Endpoint.getUser(userId),header2(Provider.of<SignInProvider>(context,listen: false).userApiKey));
+
+      if (res.statusCode == 200 || res.statusCode == 201) {
+        Map<String, dynamic> jsonResponse = json.decode(res.body);
+        if (jsonResponse['error'] == false) {
+
+          final user = GetUserModel.fromJson(jsonResponse);
+          var sp = await SharedPreferences.getInstance();
+          sp.setString('getUserModel', json.encode(user.toJson()));
+
+          var data = userModel!.userData;
+          // Assign values to variables
+          nameController.text = data.firstname;
+          qualificationController.text = data.qualification;
+          workController.text = data.work;
+          schoolController.text = data.school;
+          locationController.text = data.location;
+
+          //log("*******${name}******");
+
+          notifyListeners();
+        } else {
+          throw Exception('Failed to load users');
+        }
+        //log(followingsList.toString());
+      }
+    }catch(e){
+      print(e);
+    }
+    finally{
+    }
+  }
+
   Future<void> updateProfile({
     required String id,
     required String name,
@@ -36,6 +103,7 @@ class UpdateProfileProvider with ChangeNotifier {
     required String workAt,
     required String school,
     required String location,
+    required String userApiKey,
   }) async {
     isLoading = true;
     notifyListeners();
@@ -53,7 +121,7 @@ class UpdateProfileProvider with ChangeNotifier {
 
       final res = await ApiService.post(
           requestBody: postEncode(body),
-          headers: header2,
+          headers: header2(userApiKey),
           endPoint: Endpoint.updateProfile
       );
 
@@ -80,14 +148,14 @@ class UpdateProfileProvider with ChangeNotifier {
     }
   }
 
-  followers()async{
+  followers(int userId,context)async{
     try{
 
       isLoading = true;
 
-      var res = await ApiService.get(Endpoint.followers(197, 197),header2);
+      var res = await ApiService.get(Endpoint.followers(userId, userId),header2(Provider.of<SignInProvider>(context,listen: false).userApiKey));
 
-        if (res.statusCode == 200) {
+        if (res.statusCode == 200 || res.statusCode == 201) {
           Map<String, dynamic> jsonResponse = json.decode(res.body);
           if (jsonResponse['error'] == false) {
             List<dynamic> data = jsonResponse['users'];
@@ -97,7 +165,7 @@ class UpdateProfileProvider with ChangeNotifier {
             throw Exception('Failed to load users');
           }
 
-          log(followersList.toString());
+          log("{followersList.toString()}");
         }
     }catch(e){
       print(e);
@@ -106,12 +174,12 @@ class UpdateProfileProvider with ChangeNotifier {
     }
   }
 
-  following()async{
+  following(int userId,context)async{
     try{
 
       isLoading = true;
 
-      var res = await ApiService.get(Endpoint.following(197, 197),header2);
+      var res = await ApiService.get(Endpoint.following(userId, userId),header2(Provider.of<SignInProvider>(context,listen: false).userApiKey));
 
         if (res.statusCode == 200) {
           Map<String, dynamic> jsonResponse = json.decode(res.body);

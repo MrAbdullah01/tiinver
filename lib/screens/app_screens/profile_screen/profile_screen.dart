@@ -1,14 +1,17 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_sizer/flutter_sizer.dart';
+import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 import 'package:tiinver_project/constants/colors.dart';
 import 'package:tiinver_project/constants/text_widget.dart';
 import 'package:tiinver_project/providers/signIn/sign_in_provider.dart';
-import 'package:tiinver_project/providers/updateProfile/update_profile_provider.dart';
 import 'package:tiinver_project/screens/app_screens/user_followers_screen/user_followers_screen.dart';
 import 'package:tiinver_project/screens/app_screens/user_following_screen/user_following_screen.dart';
 import 'package:tiinver_project/widgets/header.dart';
 import '../../../constants/images_path.dart';
+import '../../../providers/profile/profile_provider.dart';
 import 'media_screen/media_screen.dart';
 import 'my_profile_screen/my_profile_screen.dart';
 
@@ -18,8 +21,8 @@ class ProfileScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final provider = Provider.of<SignInProvider>(context, listen: false);
-    var updateP = Provider.of<UpdateProfileProvider>(context, listen: false);
-    //Provider.of<UpdateProfileProvider>(context, listen: false).getConnectedUsers(provider.user!.user!.id.toString());
+    final profileP = Provider.of<ProfileProvider>(context, listen: false);
+    Provider.of<ProfileProvider>(context, listen: false).loadUserFromPreferences();
     return DefaultTabController(
         length: 2,
         child: Scaffold(
@@ -53,7 +56,9 @@ class ProfileScreen extends StatelessWidget {
                     child: CircleAvatar(
                       radius: 8.h,
                       backgroundColor: lightGreyColor,
-                      backgroundImage: provider.user != null ? NetworkImage(provider.user!.user!.profile.toString()) : AssetImage(ImagesPath.profileImage),
+                      backgroundImage: profileP.userModel != null ?
+                      NetworkImage(profileP.userModel!.userData.profile.toString())
+                          : AssetImage(ImagesPath.profileImage),
                     ),
                   ),
                   Positioned(
@@ -74,14 +79,20 @@ class ProfileScreen extends StatelessWidget {
               ),
             ),
             SizedBox(height: 20,),
-            Center(
-              child: TextWidget1(text: provider.user != null ? provider.user!.user!.firstname.toString() : "name", fontSize: 24.dp, fontWeight: FontWeight.w700,
-                  isTextCenter: false, textColor: themeColor),
-            ),
-            Center(
-              child: TextWidget1(text: provider.user != null ? provider.user!.user!.username.toString() : "name", fontSize: 10.dp, fontWeight: FontWeight.w500,
-                  isTextCenter: false, textColor: darkGreyColor),
-            ),
+            Consumer<ProfileProvider>(builder: (context, value, child) {
+              return Center(
+                child: TextWidget1(text: profileP.userModel!.userData.firstname.toString(), fontSize: 24.dp, fontWeight: FontWeight.w700,
+                  isTextCenter: true, textColor: themeColor,maxLines: 2,),
+              );
+            },),
+            Consumer<ProfileProvider>(builder: (context, value, child) {
+              return Center(
+                child: TextWidget1(
+                    text: profileP.userModel!.userData.username.toString(),
+                    fontSize: 10.dp, fontWeight: FontWeight.w500,
+                    isTextCenter: false, textColor: darkGreyColor),
+              );
+            },),
             SizedBox(height: 20,),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -90,12 +101,14 @@ class ProfileScreen extends StatelessWidget {
                   splashColor: Colors.transparent,
                   highlightColor: Colors.transparent,
                   onTap: (){
-                    Navigator.push(context, MaterialPageRoute(builder: (context) => UserFollowingScreen(),));
+                    Get.to(()=>UserFollowingScreen(userId: int.parse(provider.userId)));
                   },
-                  child: Consumer<UpdateProfileProvider>(builder: (context, value, child) {
+                  child: Consumer<ProfileProvider>(builder: (context, value, child) {
                     return Column(
                       children: [
-                        TextWidget1(text: value.followingsList.length.toString(), fontSize: 20.dp, fontWeight: FontWeight.w500,
+                        TextWidget1(
+                            text: profileP.userModel!.userData.following.toString(),
+                            fontSize: 20.dp, fontWeight: FontWeight.w500,
                             isTextCenter: false, textColor: darkGreyColor),
                         TextWidget1(text: "Following", fontSize: 16.dp, fontWeight: FontWeight.w500,
                             isTextCenter: false, textColor: themeColor),
@@ -107,12 +120,14 @@ class ProfileScreen extends StatelessWidget {
                   splashColor: Colors.transparent,
                   highlightColor: Colors.transparent,
                   onTap: (){
-                    Navigator.push(context, MaterialPageRoute(builder: (context) => UserFollowersScreen(),));
+                    Get.to(()=>UserFollowersScreen(userId: int.parse(provider.userId),));
                   },
-                  child: Consumer<UpdateProfileProvider>(builder: (context, value, child) {
+                  child: Consumer<ProfileProvider>(builder: (context, value, child) {
                     return Column(
                       children: [
-                        TextWidget1(text: value.followersList.length.toString(), fontSize: 20.dp, fontWeight: FontWeight.w500,
+                        TextWidget1(
+                            text: profileP.userModel!.userData.followers.toString(),
+                            fontSize: 20.dp, fontWeight: FontWeight.w500,
                             isTextCenter: false, textColor: darkGreyColor),
                         TextWidget1(text: "Followers", fontSize: 16.dp, fontWeight: FontWeight.w500,
                             isTextCenter: false, textColor: themeColor),
@@ -142,7 +157,7 @@ class ProfileScreen extends StatelessWidget {
                 width: 100.w,
                 child: TabBarView(
                     children: [
-                      MyProfileScreen(model: provider.user!,),
+                      MyProfileScreen(model1: profileP.userModel!,model2: provider.user!,),
                       MediaScreen()
             ]))
           ],
@@ -152,3 +167,5 @@ class ProfileScreen extends StatelessWidget {
     );
   }
 }
+ //model1: profileP.userModel!,model2: provider.user!,
+//value.userModel!.userData.username.toString()

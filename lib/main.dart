@@ -5,9 +5,10 @@ import 'package:provider/provider.dart';
 import 'package:tiinver_project/providers/forgot/forgot_provider.dart';
 import 'package:tiinver_project/providers/onboard/onboard_provider.dart';
 import 'package:tiinver_project/providers/otp/otp_provider.dart';
+import 'package:tiinver_project/providers/profile/profile_provider.dart';
+import 'package:tiinver_project/providers/search/search_provider.dart';
 import 'package:tiinver_project/providers/signIn/sign_in_provider.dart';
 import 'package:tiinver_project/providers/signUp/sign_up_provider.dart';
-import 'package:tiinver_project/providers/updateProfile/update_profile_provider.dart';
 import 'package:tiinver_project/routes/routes.dart';
 import 'package:tiinver_project/routes/routes_name.dart';
 
@@ -31,7 +32,8 @@ class MyApp extends StatelessWidget {
             ChangeNotifierProvider(create: (_)=> SignUpProvider()),
             ChangeNotifierProvider(create: (_)=> ForgotProvider()),
             ChangeNotifierProvider(create: (_)=> OtpProvider()),
-            ChangeNotifierProvider(create: (_)=> UpdateProfileProvider()),
+            ChangeNotifierProvider(create: (_)=> ProfileProvider()),
+            ChangeNotifierProvider(create: (_)=> SearchProvider()),
           ],
             child: GetMaterialApp(
               debugShowCheckedModeBanner: false,

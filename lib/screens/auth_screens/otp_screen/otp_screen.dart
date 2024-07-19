@@ -49,7 +49,7 @@ class OtpScreen extends StatelessWidget {
               length: 4,
               onCompleted: (pin) {
                 if(otpP.code == int.parse(pin)){
-                  signUpProvider.signUp();
+                  signUpProvider.signUp(context);
                 }else{
                   Get.snackbar("error", "invalid OTP");
                 }

@@ -66,7 +66,7 @@ class OtpProvider extends ChangeNotifier{
     if(code == otp){
       isLoading = true;
       notifyListeners();
-      await Provider.of<SignUpProvider>(context, listen: false).signUp().whenComplete(() async{
+      await Provider.of<SignUpProvider>(context, listen: false).signUp(context).whenComplete(() async{
         // Provider.of<SignUpProvider>(context, listen: false).storeUserApiKey();
         isLoading = false;
         notifyListeners();

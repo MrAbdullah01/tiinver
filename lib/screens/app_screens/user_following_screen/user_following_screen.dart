@@ -4,16 +4,18 @@ import 'package:provider/provider.dart';
 
 import '../../../constants/colors.dart';
 import '../../../constants/images_path.dart';
-import '../../../providers/updateProfile/update_profile_provider.dart';
+import '../../../providers/profile/profile_provider.dart';
 import '../../../widgets/header.dart';
 import '../search_screen/comp/searching_tile.dart';
 
 class UserFollowingScreen extends StatelessWidget {
-  const UserFollowingScreen({super.key});
+  UserFollowingScreen({super.key,required this.userId});
+
+  int userId;
 
   @override
   Widget build(BuildContext context) {
-    var updateP = Provider.of<UpdateProfileProvider>(context, listen: false);
+    var updateP = Provider.of<ProfileProvider>(context, listen: false);
     return Scaffold(
       backgroundColor: bgColor,
       appBar: Header().header1("Following",
@@ -26,17 +28,17 @@ class UserFollowingScreen extends StatelessWidget {
           isCenterTitle: true,
           isIconShow: true),
       body: FutureBuilder(
-        future: Provider.of<UpdateProfileProvider>(context, listen: false).followers(),
+        future: Provider.of<ProfileProvider>(context, listen: false).following(userId,context),
         builder: (ctx, snapshot) => snapshot.connectionState == ConnectionState.waiting
             ? Center(child: CircularProgressIndicator())
-            : Consumer<UpdateProfileProvider>(
+            : Consumer<ProfileProvider>(
           builder: (ctx, userProvider, child) => ListView.builder(
-            itemCount: updateP.followersList.length,
+            itemCount: updateP.followingsList.length,
             itemBuilder: (context, index) {
               return SearchingTile(
-                  name: '${userProvider.followersList[index].firstname} ${userProvider.followersList[index].lastname}',
-                  userName: userProvider.followersList[index].username.toString(),
-                  imageUrl: userProvider.followersList[index].profile.toString(),
+                  name: '${userProvider.followingsList[index]} ${userProvider.followingsList[index].lastname}',
+                  userName: userProvider.followingsList[index].username.toString(),
+                  imageUrl: userProvider.followingsList[index].profile.toString(),
                   buttonText: "Follow Back", buttonAction: (){}
               );
             },),

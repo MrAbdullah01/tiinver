@@ -3,9 +3,11 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tiinver_project/api/api_services/api_services.dart';
 import 'package:tiinver_project/constant.dart';
+import 'package:tiinver_project/providers/signIn/sign_in_provider.dart';
 import 'package:tiinver_project/routes/routes_name.dart';
 import '../../api/endpoint/endpoint.dart';
 import '../../api_services/sp_services.dart';
@@ -31,13 +33,15 @@ class SignUpProvider extends ChangeNotifier{
 
   String? userApiKey;
 
+  String? userId;
+
   bool isLoading = false;
 
   UserSignUpModel? _user;
 
   UserSignUpModel? get user => _user;
 
-  Future<void> signUp() async {
+  Future<void> signUp(BuildContext context) async {
     isLoading = true;
     notifyListeners();
     try {
@@ -74,7 +78,12 @@ class SignUpProvider extends ChangeNotifier{
           final user = UserLoginModel.fromJson(jsonResponse);
           var sp = await SharedPreferences.getInstance();
           sp.setString(DbKeys.userApiKey, jsonDecode(res.body)["user"]["apiKey"].toString());
+          sp.setString(DbKeys.userId, jsonDecode(res.body)["user"]["id"].toString());
           sp.setString('userModel', json.encode(user.toJson()));
+          Provider.of<SignInProvider>(context,listen: false).
+          storeApiKeyAndId(
+              userApiKey: jsonDecode(res.body)["user"]["apiKey"].toString(),
+              userId: jsonDecode(res.body)["user"]["id"].toString());
           Get.offAllNamed(RoutesName.bottomNavigationBar);
           notifyListeners();
         }
@@ -87,8 +96,6 @@ class SignUpProvider extends ChangeNotifier{
       notifyListeners();
     }
   }
-
-
   // getUserApiKey()async {
   //   SharedPreferences prefs = await SharedPreferences.getInstance();
   //   userApiKey = prefs.getString(DbKeys.userApiKey);

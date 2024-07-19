@@ -39,6 +39,7 @@ class SearchingTile extends StatelessWidget {
                 TextWidget1(
                   text: name, fontSize: 16.dp,
                   fontWeight: FontWeight.w500, isTextCenter: false,
+                  overFlow: TextOverflow.ellipsis,
                   textColor: textColor,maxLines: 1,),
 
                 TextWidget1(

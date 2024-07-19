@@ -24,6 +24,8 @@ class SignInProvider with ChangeNotifier {
 
   String? userApiKey;
 
+  String userId = "2177";
+
   bool isLoading = false;
 
   UserLoginModel? _user;
@@ -74,6 +76,7 @@ class SignInProvider with ChangeNotifier {
           final user = UserLoginModel.fromJson(jsonResponse);
           var sp = await SharedPreferences.getInstance();
           sp.setString(DbKeys.userApiKey, jsonDecode(res.body)["user"]["apiKey"].toString());
+          sp.setString(DbKeys.userId, jsonDecode(res.body)["user"]["id"].toString());
           sp.setString('userModel', json.encode(user.toJson()));
           Get.offAllNamed(RoutesName.bottomNavigationBar);
         }
@@ -87,6 +90,12 @@ class SignInProvider with ChangeNotifier {
     }
   }
 
+  storeApiKeyAndId({required String userApiKey,required String userId}) async {
+    var sp = await SharedPreferences.getInstance();
+    sp.setString(DbKeys.userApiKey, userApiKey);
+    sp.setString(DbKeys.userId, userId);
+  }
+
   logout()async {
 
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -98,7 +107,9 @@ class SignInProvider with ChangeNotifier {
   getUserApiKey()async {
     var  prefs = await SharedPreferencesService.getInstance();
     userApiKey = prefs.getString(DbKeys.userApiKey).toString();
+    userId = prefs.getString(DbKeys.userId).toString();
     debugPrint(userApiKey);
+    debugPrint(userId);
     if(userApiKey != null && userApiKey!.isNotEmpty){
       Get.to(()=>BottomNavbarScreen());
     }else{

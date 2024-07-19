@@ -1,12 +1,21 @@
 import 'package:tiinver_project/api/base/base_urls.dart';
 
+import '../../models/login/user_login_model.dart';
+
+UserLoginModel? _user;
+
 const header1 = {
   'Content-Type': 'application/x-www-form-urlencoded',
 };
-const header2 = {
-  'Content-Type': 'application/x-www-form-urlencoded',
-  'Authorization' : 'c1e3ff561abad9884973836565af1fa7'
-};
+
+Map<String,String> header2(userApiKey){
+  Map<String, String> header;
+  return  header = {
+    'Content-Type': 'application/x-www-form-urlencoded',
+    'Authorization' : userApiKey
+  };
+}
+
 class Endpoint{
   static const forgotPassword = "${BaseUrls.BASEURL}forgotpassword";
   static const geolocation = "${BaseUrls.BASEURL}geolocation";
@@ -33,6 +42,10 @@ class Endpoint{
 
   static String following(int userId, int followerId) {
     return 'https://tiinver.com/api/v1/following/$userId/$followerId';
+  }
+
+  static String getUser(int userId) {
+    return 'https://tiinver.com/api/v1/getuserbyid/$userId';
   }
 
   static String blockUser({
