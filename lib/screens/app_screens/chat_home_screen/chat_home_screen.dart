@@ -95,8 +95,7 @@ class ChatHomeScreen extends StatelessWidget {
             splashColor: Colors.transparent,
             highlightColor: Colors.transparent,
             onTap: (){
-              print("tap");
-              Navigator.push(context, MaterialPageRoute(builder: (context)=>InviteContactScreen()));
+              Get.to(()=>InviteContactScreen());
             },
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -116,6 +115,16 @@ class ChatHomeScreen extends StatelessWidget {
             ),
           )
         ],
+      ),
+      floatingActionButton: FloatingActionButton(
+          shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(100)
+          ),
+          child: Image.asset(ImagesPath.addUserIcon,height: 3.h,),
+          backgroundColor: themeColor,
+          onPressed: (){
+            Get.to(()=>InviteContactScreen());
+          }
       ),
     );
   }

@@ -11,6 +11,7 @@ import '../../../constants/text_widget.dart';
 import 'comp/dialogue_box.dart';
 
 class OtherUserProfileScreen extends StatelessWidget {
+
   const OtherUserProfileScreen({super.key});
 
   @override

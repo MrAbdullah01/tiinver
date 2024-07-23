@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_sizer/flutter_sizer.dart';
+import 'package:provider/provider.dart';
 import 'package:tiinver_project/constants/colors.dart';
 import 'package:tiinver_project/constants/text_widget.dart';
 import 'package:tiinver_project/screens/app_screens/group_creation_screen/group_creation_screen.dart';
@@ -7,6 +8,7 @@ import 'package:tiinver_project/widgets/field_widget.dart';
 import 'package:tiinver_project/widgets/header.dart';
 
 import '../../../constants/images_path.dart';
+import '../../../providers/connectedUsers/connected_users_provider.dart';
 
 class InviteContactScreen extends StatelessWidget {
   InviteContactScreen({super.key});
@@ -15,6 +17,7 @@ class InviteContactScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       backgroundColor: bgColor,
       appBar: Header().header1("Contacts",
@@ -69,23 +72,39 @@ class InviteContactScreen extends StatelessWidget {
             ),
           ),
           Expanded(
-            child: ListView.builder(
-              itemCount: 20,
-              itemBuilder: (context, index) {
-                return Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 8.0),
-                  child: ListTile(
-                    leading: CircleAvatar(
-                      radius: 3.5.h,
-                      backgroundImage: AssetImage(ImagesPath.profileImage),
-                    ),
-                    title: TextWidget1(text: "Alexandra", fontSize: 16.dp,
-                        fontWeight: FontWeight.w600, isTextCenter: false, textColor: themeColor),
-                    subtitle: TextWidget1(text: "Alex@73456", fontSize: 12.dp,
-                        fontWeight: FontWeight.w600, isTextCenter: false, textColor: darkGreyColor),
-                  ),
-                );
-              },),
+            child: ChangeNotifierProvider(
+              create: (_) => ConnectedUsersProvider()..getUserProfile(context),
+              child: Consumer<ConnectedUsersProvider>(
+                builder: (context, provider, child) {
+                  if (provider.isLoading) {
+                    return Center(child: CircularProgressIndicator());
+                  }
+
+                  if (provider.errorMessage != null) {
+                    return Center(child: Text(provider.errorMessage!));
+                  }
+
+                  return ListView.builder(
+                    itemCount: 20,
+                    itemBuilder: (context, index) {
+                      final user = provider.connectedUsers[index];
+                      return Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 8.0),
+                        child: ListTile(
+                          leading: CircleAvatar(
+                            radius: 3.5.h,
+                            backgroundImage: NetworkImage(user.profile!),
+                          ),
+                          title: TextWidget1(text: "${user.firstname} ${user.lastname}", fontSize: 16.dp,
+                              fontWeight: FontWeight.w600, isTextCenter: false, textColor: themeColor),
+                          subtitle: TextWidget1(text: user.username ?? '', fontSize: 12.dp,
+                              fontWeight: FontWeight.w600, isTextCenter: false, textColor: darkGreyColor),
+                        ),
+                      );
+                    },);
+                },
+              ),
+            ),
           ),
         ],
       ),

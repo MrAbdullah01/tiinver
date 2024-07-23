@@ -32,7 +32,9 @@ class EditProfileScreen extends StatelessWidget {
                   CircleAvatar(
                     radius: 8.h,
                     backgroundColor: lightGreyColor,
-                    backgroundImage: provider.userModel != null ? NetworkImage(provider.userModel!.userData!.profile.toString()) : AssetImage(ImagesPath.profileImage),
+                    backgroundImage: provider.userModel != null ?
+                    NetworkImage(provider.userModel!.profile.toString())
+                        : AssetImage(ImagesPath.profileImage),
                   ),
                   Container(
                     padding: EdgeInsets.all(10),

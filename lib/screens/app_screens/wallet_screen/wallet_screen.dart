@@ -19,7 +19,7 @@ class WalletScreen extends StatelessWidget {
     final provider = Provider.of<SignInProvider>(context, listen: false);
     return Scaffold(
       backgroundColor: bgColor,
-      appBar: Header().header1(provider.user !=null ? "${provider.user!.user!.coinsAmount.toString()} Coins" : "0 Coins",
+      appBar: Header().header1(provider.user !=null ? "${provider.user!.coinsAmount.toString()} Coins" : "0 Coins",
           [
             SizedBox(
                 width: 7.w,

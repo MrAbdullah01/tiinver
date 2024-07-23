@@ -43,6 +43,7 @@ dependencies:
   http: ^1.2.1
   modal_progress_hud_nsn: ^0.5.1
   shared_preferences: ^2.2.3
+  video_player: ^2.9.1
 
 
 dev_dependencies:

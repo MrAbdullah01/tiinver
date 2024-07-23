@@ -42,11 +42,10 @@ class _BottomNavbarScreenState extends State<BottomNavbarScreen> {
 
   @override
   Widget build(BuildContext context) {
+    Provider.of<SignInProvider>(context,listen: false).getUserApiKey();
     var signP = Provider.of<SignInProvider>(context,listen: false);
-    Provider.of<SignInProvider>(context,listen: false).loadUserFromPreferences();
-    Provider.of<ProfileProvider>(context,listen: false).loadUserFromPreferences();
-    Provider.of<ProfileProvider>(context,listen: false).getUserProfile(int.parse(signP.userId),context);
-    debugPrint(signP.userId);
+    Provider.of<ProfileProvider>(context,listen: false).getUserProfile(context);
+    debugPrint(signP.userId.toString());
     return Scaffold(
       backgroundColor: themeColor,
       body: PageView(

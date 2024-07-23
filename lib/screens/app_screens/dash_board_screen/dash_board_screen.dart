@@ -5,12 +5,17 @@ import 'package:provider/provider.dart';
 import 'package:tiinver_project/constants/colors.dart';
 import 'package:tiinver_project/constants/images_path.dart';
 import 'package:tiinver_project/constants/text_widget.dart';
+import 'package:tiinver_project/providers/dashboard/dashboard_provider.dart';
 import 'package:tiinver_project/screens/app_screens/other_user_profile_screen/comp/dialogue_box.dart';
 
 import 'package:tiinver_project/widgets/header.dart';
 
+import '../../../models/feedTimeLineModel/feed_time_line_model.dart';
+import '../../../providers/search/search_provider.dart';
 import '../../../providers/signIn/sign_in_provider.dart';
+import '../detailScreen/detail_screen.dart';
 import '../search_screen/search_screen.dart';
+import 'comp/media_widget.dart';
 
 class DashBoardScreen extends StatefulWidget {
   DashBoardScreen({super.key});
@@ -26,11 +31,16 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
 
   @override
   Widget build(BuildContext context) {
+    var signInP = Provider.of<SignInProvider>(context,listen: false);
+    Provider.of<DashboardProvider>(context,listen: false).fetchTimeline(
+        int.parse(signInP.userId.toString()),
+        500, 0, signInP.userApiKey);
     return Scaffold(
       backgroundColor: bgColor,
       appBar: Header().header2("Tiinver", [
             GestureDetector(
               onTap: (){
+                Provider.of<SearchProvider>(context,listen: false).clearSearch();
                 Get.to(()=>SearchScreen());
               },
               child: SizedBox(
@@ -83,69 +93,103 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
         SizedBox(width: 15,),
           ],
       ),
-      body: GridView.builder(
-        padding: EdgeInsets.symmetric(horizontal: 20),
-        itemCount: 10,
-        itemBuilder: (BuildContext context, int index) {
-          return Stack(
-            children: [
-              ClipRRect(
-                borderRadius: BorderRadius.circular(20),
-                child: Container(
-                  width: 45.w,
-                  child: Image.asset(ImagesPath.dashBoardImage,fit: BoxFit.cover,),
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 8.0,vertical: 10),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Row(
-                      children: [
-                        CircleAvatar(
-                          radius: 2.5.h,
-                          backgroundImage: AssetImage(ImagesPath.profileImage),
-                        ),
-                        SizedBox(width: 10,),
-                        TextWidget1(text: "Dreaming", fontSize: 10.dp, fontWeight: FontWeight.w700, isTextCenter: false, textColor: bgColor),
-                      ],
-                    ),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        TextWidget1(text: "Infinity Image", fontSize: 10.dp, fontWeight: FontWeight.w700, isTextCenter: false, textColor: bgColor),
-                        SizedBox(height: 6,),
-                        Row(
-                          children: [
-                            SizedBox(
-                                width: 4.w,
-                                child: Image.asset(ImagesPath.likeIcon)),
-                            SizedBox(width: 5,),
-                            TextWidget1(text: "10k", fontSize: 10.dp, fontWeight: FontWeight.w700, isTextCenter: false, textColor: bgColor),
-                            SizedBox(width: 5,),
-                            SizedBox(
-                                width: 4.w,
-                                child: Image.asset(ImagesPath.chatIcon)),
-                            SizedBox(width: 10,),
-                            TextWidget1(text: "1278", fontSize: 10.dp, fontWeight: FontWeight.w700, isTextCenter: false, textColor: bgColor),
+      body: Consumer<DashboardProvider>(builder: (context, value, child) {
+        return StreamBuilder<List<Activity>>(
+          stream: value.timelineStream,
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return Center(child: CircularProgressIndicator());
+            }
 
+            if (snapshot.hasError) {
+              return Center(child: Text('Error: ${snapshot.error}'));
+            }
+
+            if (!snapshot.hasData || snapshot.data!.isEmpty) {
+              return Center(child: Text('No activities found.'));
+            }
+
+            List<Activity> activities = snapshot.data!;
+
+            return GridView.builder(
+              padding: EdgeInsets.symmetric(horizontal: 20),
+              itemCount: activities.length,
+              itemBuilder: (BuildContext context, int index) {
+                final activity = activities[index];
+                return GestureDetector(
+                  onTap: () {
+                    Get.to(() => DetailScreen(
+                        activity: activity,
+                    ));
+                  },
+                  child: Stack(
+                    children: [
+                      ClipRRect(
+                        borderRadius: BorderRadius.circular(20),
+                        child: Container(
+                          height: 27.h,
+                          width: 45.w,
+                          child: MediaWidget(activity: activity),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 5.0,vertical: 10),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Row(
+                              children: [
+                                CircleAvatar(
+                                  radius: 2.5.h,
+                                  backgroundImage: NetworkImage(activity.profile ?? ''),
+                                ),
+                                SizedBox(width: 10,),
+                                TextWidget1(text: '${activity.firstname} ${activity.lastname}',
+                                    fontSize: 10.dp, fontWeight: FontWeight.w700,
+                                    isTextCenter: false, textColor: bgColor),
+                              ],
+                            ),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                TextWidget1(text: "${activity.message}", fontSize: 10.dp,
+                                    fontWeight: FontWeight.w700, isTextCenter: false,
+                                    textColor: bgColor),
+                                SizedBox(height: 6,),
+                                Row(
+                                  children: [
+                                    SizedBox(
+                                        width: 4.w,
+                                        child: Image.asset(ImagesPath.likeIcon,color: activity.isLiked! ? Colors.red : bgColor,)),
+                                    SizedBox(width: 5,),
+                                    TextWidget1(text: "${activity.likes ?? ''}", fontSize: 10.dp, fontWeight: FontWeight.w700, isTextCenter: false, textColor: bgColor),
+                                    SizedBox(width: 5,),
+                                    SizedBox(
+                                        width: 4.w,
+                                        child: Image.asset(ImagesPath.chatIcon)),
+                                    SizedBox(width: 10,),
+                                    TextWidget1(text: activity.comment.toString() ?? '', fontSize: 10.dp, fontWeight: FontWeight.w700, isTextCenter: false, textColor: bgColor),
+
+                                  ],
+                                )
+                              ],
+                            )
                           ],
-                        )
-                      ],
-                    )
-                  ],
-                ),
-              )
-            ],
-          );
-        }, gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 2,
-          mainAxisExtent: 25.h,
-          crossAxisSpacing: 10,
-          mainAxisSpacing: 10
-      ),
-      ),
+                        ),
+                      )
+                    ],
+                  ),
+                );
+              }, gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 2,
+                mainAxisExtent: 27.h,
+                crossAxisSpacing: 10,
+                mainAxisSpacing: 10
+            ),
+            );
+          },
+        );
+      },),
       floatingActionButton: FloatingActionButton(
         shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(100)
@@ -157,3 +201,23 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
     );
   }
 }
+
+
+
+
+
+
+//ListView.builder(
+//               itemCount: activities.length,
+//               itemBuilder: (context, index) {
+//                 final activity = activities[index];
+//                 return ListTile(
+//                   leading: CircleAvatar(
+//                     backgroundImage: NetworkImage(activity.profile ?? ''),
+//                   ),
+//                   title: Text('${activity.firstname} ${activity.lastname}'),
+//                   subtitle: Text(activity.message ?? ''),
+//                   trailing: Text(activity.stamp ?? ''),
+//                 );
+//               },
+//             )

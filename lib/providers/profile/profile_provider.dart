@@ -36,7 +36,9 @@ class ProfileProvider with ChangeNotifier {
 
   List<FollowingUsers> get followingsList => _followingsList;
 
-  GetUserModel? userModel;
+  GetUserModel? _userModel;
+
+  GetUserModel? get userModel => _userModel;
 
   Users? followerUser;
 
@@ -49,37 +51,36 @@ class ProfileProvider with ChangeNotifier {
   //   notifyListeners();
   // }
 
-  Future<void> loadUserFromPreferences() async {
-    var sp = await SharedPreferences.getInstance();
-    String? userJson = sp.getString('getUserModel');
-    if (userJson != null) {
-      userModel = GetUserModel.fromJson(json.decode(userJson));
-    }
-    notifyListeners();
-  }
+  // Future<void> loadUserFromPreferences() async {
+  //   var sp = await SharedPreferences.getInstance();
+  //   String? userJson = sp.getString('getUserModel');
+  //   if (userJson != null) {
+  //     _userModel = GetUserModel.fromJson(json.decode(userJson));
+  //   }
+  //   notifyListeners();
+  // }
 
-  getUserProfile(userId,context) async {
+  getUserProfile(context) async {
     try{
 
       isLoading = true;
 
-      var res = await ApiService.get(Endpoint.getUser(userId),header2(Provider.of<SignInProvider>(context,listen: false).userApiKey));
+      var res = await ApiService.get(
+          Endpoint.getUser(int.parse(Provider.of<SignInProvider>(context,listen: false).userId!)),
+          header2(Provider.of<SignInProvider>(context,listen: false).userApiKey));
 
       if (res.statusCode == 200 || res.statusCode == 201) {
         Map<String, dynamic> jsonResponse = json.decode(res.body);
         if (jsonResponse['error'] == false) {
 
-          final user = GetUserModel.fromJson(jsonResponse);
-          var sp = await SharedPreferences.getInstance();
-          sp.setString('getUserModel', json.encode(user.toJson()));
+          _userModel = GetUserModel.fromJson(jsonResponse['userData']);
 
-          var data = userModel!.userData;
           // Assign values to variables
-          nameController.text = data.firstname;
-          qualificationController.text = data.qualification;
-          workController.text = data.work;
-          schoolController.text = data.school;
-          locationController.text = data.location;
+          nameController.text = _userModel!.firstname!;
+          qualificationController.text = _userModel!.qualification!;
+          workController.text = _userModel!.work!;
+          schoolController.text = _userModel!.school!;
+          locationController.text = _userModel!.location!;
 
           //log("*******${name}******");
 
@@ -181,7 +182,7 @@ class ProfileProvider with ChangeNotifier {
 
       var res = await ApiService.get(Endpoint.following(userId, userId),header2(Provider.of<SignInProvider>(context,listen: false).userApiKey));
 
-        if (res.statusCode == 200) {
+        if (res.statusCode == 200 || res.statusCode == 201) {
           Map<String, dynamic> jsonResponse = json.decode(res.body);
           if (jsonResponse['error'] == false) {
             List<dynamic> data = jsonResponse['users'];

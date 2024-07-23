@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_sizer/flutter_sizer.dart';
+import 'package:provider/provider.dart';
 import 'package:tiinver_project/constants/colors.dart';
 import 'package:tiinver_project/constants/text_widget.dart';
+import 'package:tiinver_project/providers/createGroup/create_group_provider.dart';
+import 'package:tiinver_project/providers/signIn/sign_in_provider.dart';
 import 'package:tiinver_project/widgets/field_widget.dart';
 import 'package:tiinver_project/widgets/header.dart';
 
@@ -29,7 +32,7 @@ class _GroupCreationScreenState extends State<GroupCreationScreen> {
     '1000 coins',
   ];
 
-  var groupC = TextEditingController();
+
 
   String selectedValue = "Private";
 
@@ -49,6 +52,8 @@ class _GroupCreationScreenState extends State<GroupCreationScreen> {
 
   @override
   Widget build(BuildContext context) {
+    var groupCreationP = Provider.of<CreateGroupProvider>(context,listen: false);
+    var signInP = Provider.of<SignInProvider>(context,listen: false);
     return Scaffold(
       backgroundColor: bgColor,
       appBar: Header().header1("Contacts",
@@ -66,7 +71,7 @@ class _GroupCreationScreenState extends State<GroupCreationScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               InputField(
-                  inputController: groupC,
+                  inputController: groupCreationP.groupC,
                 bdRadius: 50,
                 fillColor: lightGreyColor,
                 hintText: "Group Name",
@@ -204,7 +209,11 @@ class _GroupCreationScreenState extends State<GroupCreationScreen> {
             child: Image.asset(ImagesPath.sendIcon,color: bgColor),
           ),
           onPressed: (){
-            Navigator.push(context, MaterialPageRoute(builder: (context)=>GroupChatScreen()));
+            groupCreationP.createGroup(
+                creatorId: signInP.userId,
+                userApiKey: signInP.userApiKey,
+                groupType: selectedValue);
+            // Navigator.push(context, MaterialPageRoute(builder: (context)=>GroupChatScreen()));
           }
       ),
     );

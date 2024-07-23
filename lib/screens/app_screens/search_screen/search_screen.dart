@@ -110,7 +110,9 @@ class SearchScreen extends StatelessWidget {
                 name: user.firstname ?? '',
                 userName: user.username ?? '',
                 buttonText: user.isFollowed! ? "following" : "follow",
-                buttonAction: (){},
+                buttonAction: (){
+
+                },
                 imageUrl: user.profile.toString(),
               );
             },);

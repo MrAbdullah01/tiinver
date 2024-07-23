@@ -22,9 +22,7 @@ class SignInProvider with ChangeNotifier {
 
   bool obscureText = true;
 
-  String? userApiKey;
-
-  String userId = "2177";
+  String? userApiKey; String? userId; String? userEmail; String? userPhone;
 
   bool isLoading = false;
 
@@ -32,18 +30,18 @@ class SignInProvider with ChangeNotifier {
 
   UserLoginModel? get user => _user;
 
-  SignInProvider() {
-    loadUserFromPreferences();
-  }
+  // SignInProvider() {
+  //   loadUserFromPreferences();
+  // }
 
-  Future<void> loadUserFromPreferences() async {
-    var sp = await SharedPreferences.getInstance();
-    String? userJson = sp.getString('userModel');
-    if (userJson != null) {
-      _user = UserLoginModel.fromJson(json.decode(userJson));
-    }
-    notifyListeners();
-  }
+  // Future<void> loadUserFromPreferences() async {
+  //   var sp = await SharedPreferences.getInstance();
+  //   String? userJson = sp.getString('userModel');
+  //   if (userJson != null) {
+  //     _user = UserLoginModel.fromJson(json.decode(userJson));
+  //   }
+  //   notifyListeners();
+  // }
 
   Future<void> login(String email, String password) async {
     isLoading = true;
@@ -73,12 +71,13 @@ class SignInProvider with ChangeNotifier {
           Get.snackbar("error", message);
         }else{
           Get.snackbar("success", message);
-          final user = UserLoginModel.fromJson(jsonResponse);
-          var sp = await SharedPreferences.getInstance();
-          sp.setString(DbKeys.userApiKey, jsonDecode(res.body)["user"]["apiKey"].toString());
-          sp.setString(DbKeys.userId, jsonDecode(res.body)["user"]["id"].toString());
-          sp.setString('userModel', json.encode(user.toJson()));
           Get.offAllNamed(RoutesName.bottomNavigationBar);
+          _user = UserLoginModel.fromJson(jsonResponse['user']);
+          var sp = await SharedPreferences.getInstance();
+          sp.setString(DbKeys.userApiKey, _user!.apiKey!);
+          sp.setString(DbKeys.userId, _user!.id!.toString());
+          sp.setString(DbKeys.userEmail, _user!.email!);
+          sp.setString(DbKeys.userPhone, _user!.phone!);
         }
       }
       notifyListeners();
@@ -108,6 +107,8 @@ class SignInProvider with ChangeNotifier {
     var  prefs = await SharedPreferencesService.getInstance();
     userApiKey = prefs.getString(DbKeys.userApiKey).toString();
     userId = prefs.getString(DbKeys.userId).toString();
+    userPhone = prefs.getString(DbKeys.userPhone).toString();
+    userEmail = prefs.getString(DbKeys.userEmail).toString();
     debugPrint(userApiKey);
     debugPrint(userId);
     if(userApiKey != null && userApiKey!.isNotEmpty){

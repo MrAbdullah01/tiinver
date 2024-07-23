@@ -75,11 +75,13 @@ class SignUpProvider extends ChangeNotifier{
           Get.snackbar("error", message);
         }else{
           Get.snackbar("success", message);
-          final user = UserLoginModel.fromJson(jsonResponse);
+          final user = UserSignUpModel.fromJson(jsonResponse);
           var sp = await SharedPreferences.getInstance();
           sp.setString(DbKeys.userApiKey, jsonDecode(res.body)["user"]["apiKey"].toString());
           sp.setString(DbKeys.userId, jsonDecode(res.body)["user"]["id"].toString());
-          sp.setString('userModel', json.encode(user.toJson()));
+          sp.setString(DbKeys.userEmail, jsonDecode(res.body)["user"]["email"].toString());
+          sp.setString(DbKeys.userPhone, jsonDecode(res.body)["user"]["phone"].toString());
+          // sp.setString('userModel', json.encode(user.toJson()));
           Provider.of<SignInProvider>(context,listen: false).
           storeApiKeyAndId(
               userApiKey: jsonDecode(res.body)["user"]["apiKey"].toString(),

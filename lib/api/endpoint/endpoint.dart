@@ -23,7 +23,7 @@ class Endpoint{
   static const register = "${BaseUrls.BASEURL}register";
   static const logout = "${BaseUrls.BASEURL}logout";
   static const deleteAccount = "${BaseUrls.BASEURL}deleteaccount";
-  static const subscribeToGroup = "${BaseUrls.BASEURL}group";
+  static const createGroup = "${BaseUrls.BASEURL}group";
   static const deleteGroup = "${BaseUrls.BASEURL}deletegroup";
   static const updateGroup = "${BaseUrls.BASEURL}updategroup";
   static const membership = "${BaseUrls.BASEURL}membership";
@@ -46,6 +46,18 @@ class Endpoint{
 
   static String getUser(int userId) {
     return 'https://tiinver.com/api/v1/getuserbyid/$userId';
+  }
+
+  static String getFeedTimeLine(int id, int limit, int offset) {
+    return 'https://tiinver.com/api/v1/feedtimeline/$id/$limit/$offset';
+  }
+
+  static String getConnectedUser(int userId) {
+    return 'https://tiinver.com/api/v1/connectedusers/$userId';
+  }
+
+  static String getComment(int activityId) {
+    return 'https://tiinver.com/api/v1/allcomment/$activityId';
   }
 
   static String blockUser({

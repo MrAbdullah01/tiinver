@@ -1,35 +1,17 @@
-class ConnectedUsers {
-  final int userId;
-  final String? firstname;
-  final String? lastname;
-  final String username;
-  final String profile;
+class ConnectedUser {
+  int? userId;
+  String? firstname;
+  String? lastname;
+  String? username;
+  String? profile;
 
-  ConnectedUsers({
-    required this.userId,
-    required this.firstname,
-    required this.lastname,
-    required this.username,
-    required this.profile,
-  });
+  ConnectedUser({this.userId, this.firstname, this.lastname, this.username, this.profile});
 
-  factory ConnectedUsers.fromJson(Map<String, dynamic> json) {
-    return ConnectedUsers(
-      userId: json['userId'],
-      firstname: json['firstname'] as String?,
-      lastname: json['lastname'] as String?,
-      username: json['username'],
-      profile: json['profile'],
-    );
-  }
-
-  Map<String, dynamic> toJson() {
-    return {
-      'userId': userId,
-      'firstname': firstname,
-      'lastname': lastname,
-      'username': username,
-      'profile': profile,
-    };
+  ConnectedUser.fromJson(Map<String, dynamic> json) {
+    userId = json['userId'];
+    firstname = json['firstname'];
+    lastname = json['lastname'];
+    username = json['username'];
+    profile = json['profile'];
   }
 }

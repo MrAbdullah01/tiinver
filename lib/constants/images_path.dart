@@ -40,6 +40,11 @@ class ImagesPath{
   static String profileEditIcon = "images/edit_icon.png";
   static String walletIcon = "images/wallet_icon.png";
   static String exchangeIcon = "images/exchange_icon.png";
+  static String notificationIcon = "images/notification.png";
+  static String privacyIcon = "images/privacy.png";
+  static String infoIcon = "images/info.png";
+  static String helpIcon = "images/help.png";
+  static String storageIcon = "images/storage.png";
 
 
 }

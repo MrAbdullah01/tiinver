@@ -36,7 +36,7 @@ class UserFollowingScreen extends StatelessWidget {
             itemCount: updateP.followingsList.length,
             itemBuilder: (context, index) {
               return SearchingTile(
-                  name: '${userProvider.followingsList[index]} ${userProvider.followingsList[index].lastname}',
+                  name: '${userProvider.followingsList[index].firstname} ${userProvider.followingsList[index].lastname}',
                   userName: userProvider.followingsList[index].username.toString(),
                   imageUrl: userProvider.followingsList[index].profile.toString(),
                   buttonText: "Follow Back", buttonAction: (){}

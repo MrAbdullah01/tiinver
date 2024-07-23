@@ -13,13 +13,12 @@ import '../comp/profile_data_tile.dart';
 import '../comp/profile_editor_button.dart';
 
 class MyProfileScreen extends StatelessWidget {
-  final GetUserModel model1;
-  final UserLoginModel model2;
-  const MyProfileScreen({super.key, required this.model2, required this.model1,});
+  const MyProfileScreen({super.key,});
   // required this.model1, required this.model2,
   @override
   Widget build(BuildContext context) {
-    var profileP = Provider.of<ProfileProvider>(context,listen: false);
+    final profileP = Provider.of<ProfileProvider>(context,listen: false);
+    final signInP = Provider.of<SignInProvider>(context,listen: false);
     return Scaffold(
       backgroundColor: bgColor,
       body: Consumer<ProfileProvider>(builder: (context, value, child) {
@@ -60,14 +59,20 @@ class MyProfileScreen extends StatelessWidget {
               ],
             ),
             SizedBox(height: 20,),
-            ProfileDataTile(icon: ImagesPath.personIcon,title: model1.userData.firstname),
-            ProfileDataTile(icon: ImagesPath.personIcon,title: model1.userData.username),
-            ProfileDataTile(icon: ImagesPath.phoneIcon,title: model2.user!.phone,),
-            ProfileDataTile(icon: ImagesPath.emailIcon,title: model2.user!.email),
-            ProfileDataTile(icon: ImagesPath.locationIcon,title: model1.userData.location),
-            ProfileDataTile(icon: ImagesPath.businessIcon,title: model1.userData.work,),
-            ProfileDataTile(icon: ImagesPath.qualificationIcon,title: model1.userData.qualification),
-            ProfileDataTile(icon: ImagesPath.educationIcon,title: model1.userData.school),
+            ProfileDataTile(icon: ImagesPath.personIcon,title: profileP.userModel!.firstname ?? ""),
+            ProfileDataTile(icon: ImagesPath.personIcon,title: profileP.userModel!.username ?? ""),
+            Consumer(builder: (context, value, child) {
+              return Column(
+                children: [
+                  ProfileDataTile(icon: ImagesPath.phoneIcon,title: signInP.userPhone ?? "",),
+                  ProfileDataTile(icon: ImagesPath.emailIcon,title: signInP.userEmail ?? ""),
+                ],
+              );
+            },),
+            ProfileDataTile(icon: ImagesPath.locationIcon,title: profileP.userModel!.location ?? ""),
+            ProfileDataTile(icon: ImagesPath.businessIcon,title: profileP.userModel!.work ?? ""),
+            ProfileDataTile(icon: ImagesPath.qualificationIcon,title: profileP.userModel!.qualification ?? ""),
+            ProfileDataTile(icon: ImagesPath.educationIcon,title: profileP.userModel!.school ?? ""),
           ],
         );
       },),
