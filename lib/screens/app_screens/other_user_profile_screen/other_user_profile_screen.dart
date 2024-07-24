@@ -1,21 +1,30 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_sizer/flutter_sizer.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
+import 'package:provider/provider.dart';
 import 'package:tiinver_project/constants/colors.dart';
 import 'package:tiinver_project/constants/images_path.dart';
+import 'package:tiinver_project/providers/otherUserProfile/other_user_profile_provider.dart';
 import 'package:tiinver_project/screens/app_screens/other_user_profile_screen/comp/following_status.dart';
 import 'package:tiinver_project/screens/app_screens/other_user_profile_screen/comp/profile_container.dart';
 import 'package:tiinver_project/screens/app_screens/report_screen/report_screen.dart';
+import 'package:tiinver_project/screens/app_screens/user_following_screen/user_following_screen.dart';
 import 'package:tiinver_project/widgets/header.dart';
 
 import '../../../constants/text_widget.dart';
+import '../user_followers_screen/user_followers_screen.dart';
 import 'comp/dialogue_box.dart';
 
 class OtherUserProfileScreen extends StatelessWidget {
 
-  const OtherUserProfileScreen({super.key});
+  OtherUserProfileScreen({super.key,required this.userId});
+
+  int userId;
 
   @override
   Widget build(BuildContext context) {
+    Provider.of<OtherUserProfileProvider>(context,listen: false).getOtherUserProfile(context,userId);
     return Scaffold(
       backgroundColor: bgColor,
       appBar: Header().header1("Profile",
@@ -47,7 +56,9 @@ class OtherUserProfileScreen extends StatelessWidget {
                               subTitle: "If you block the user you are not gona "
                                   "see his activity on tinver",
                               primaryButtonText: "Block",
-                              primaryTap: (){}
+                              primaryTap: (){
+
+                              }
                           );
                         },);
                   },
@@ -61,40 +72,65 @@ class OtherUserProfileScreen extends StatelessWidget {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            Stack(
-              clipBehavior: Clip.none,
-              alignment: Alignment.bottomCenter,
-              children: [
-                Column(
-                  children: [
-                    ProfileContainer(),
-                    SizedBox(height: 8.h,)
-                  ],
-                ),
-                Container(
-                  padding: EdgeInsets.symmetric(vertical: 20),
-                  width: 80.w,
-                  decoration: BoxDecoration(
-                    color: bgColor,
-                    borderRadius: BorderRadius.circular(8),
-                    boxShadow: [
-                      BoxShadow(
-                        color: lightGreyColor,
-                        blurRadius: 2
-                      )
-                    ]
-                  ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
+            Consumer<OtherUserProfileProvider>(builder: (context, value, child) {
+              return value.isLoading ? CircularProgressIndicator()
+                  : Stack(
+                clipBehavior: Clip.none,
+                alignment: Alignment.bottomCenter,
+                children: [
+                  Column(
                     children: [
-                      FollowingStatus(followNumber: "0",followText: "Following",buttonText: "Follow",icon: Icons.person,),
-                      SizedBox(width: 10.w,),
-                      FollowingStatus(followNumber: "0",followText: "Followers",buttonText: "Message",),
+                      ProfileContainer(
+                        name: value.userModel!.firstname!,
+                        userName: value.userModel!.username!,
+                        image: value.userModel!.profile!,
+                      ),
+                      SizedBox(height: 8.h,)
                     ],
                   ),
-                )
-              ],
-            ),
+                  Container(
+                    padding: EdgeInsets.symmetric(vertical: 20),
+                    width: 80.w,
+                    decoration: BoxDecoration(
+                        color: bgColor,
+                        borderRadius: BorderRadius.circular(8),
+                        boxShadow: [
+                          BoxShadow(
+                              color: lightGreyColor,
+                              blurRadius: 2
+                          )
+                        ]
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        InkWell(
+                          onTap: () {
+                            Get.to(()=>UserFollowingScreen(userId: value.userModel!.id!,));
+                          },
+                          child: FollowingStatus(
+                            followNumber: value.userModel!.following!.toString(),
+                            followText: "Following",
+                            buttonText: "Follow",
+                            icon: Icons.person,),
+                        ),
+                        SizedBox(width: 10.w,),
+                        InkWell(
+                          onTap: () {
+                            Get.to(()=>UserFollowersScreen(userId: value.userModel!.id!,));
+                          },
+                          child: FollowingStatus(
+                            followNumber: value.userModel!.followers!.toString(),
+                            followText: "Followers",
+                            buttonText: "Message",
+                          ),
+                        ),
+                      ],
+                    ),
+                  )
+                ],
+              );
+            },),
             SizedBox(height: 30,),
             GridView.builder(
               physics: NeverScrollableScrollPhysics(),
@@ -160,7 +196,7 @@ class OtherUserProfileScreen extends StatelessWidget {
                 crossAxisSpacing: 10,
                 mainAxisSpacing: 10
             ),
-            )
+            ),
           ],
         ),
       ),

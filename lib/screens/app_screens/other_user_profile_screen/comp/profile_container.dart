@@ -2,11 +2,19 @@ import 'package:flutter/material.dart';
 import 'package:flutter_sizer/flutter_sizer.dart';
 
 import '../../../../constants/colors.dart';
-import '../../../../constants/images_path.dart';
 import '../../../../constants/text_widget.dart';
 
 class ProfileContainer extends StatelessWidget {
-  const ProfileContainer({super.key});
+  const ProfileContainer({
+    super.key,
+    required this.name,
+    required this.userName,
+    required this.image,
+  });
+
+  final String userName;
+  final String name;
+  final String image;
 
   @override
   Widget build(BuildContext context) {
@@ -33,11 +41,11 @@ class ProfileContainer extends StatelessWidget {
             child: CircleAvatar(
               radius: 9.h,
               backgroundColor: lightGreyColor,
-              backgroundImage: AssetImage(ImagesPath.profileImage),
+              backgroundImage: NetworkImage(image),
             ),
           ),
-          TextWidget1(text: "Reminder", fontSize: 24.dp, fontWeight: FontWeight.w600, isTextCenter: false, textColor: themeColor),
-          TextWidget1(text: "reminder@1234", fontSize: 10.dp, fontWeight: FontWeight.w400, isTextCenter: false, textColor: darkGreyColor),
+          TextWidget1(text: name, fontSize: 24.dp, fontWeight: FontWeight.w600, isTextCenter: false, textColor: themeColor),
+          TextWidget1(text: userName, fontSize: 10.dp, fontWeight: FontWeight.w400, isTextCenter: false, textColor: darkGreyColor),
         ],
       ),
     );

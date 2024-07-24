@@ -27,11 +27,11 @@ class _BottomNavbarScreenState extends State<BottomNavbarScreen> {
     _pageController = PageController();
   }
 
-  @override
-  void dispose() {
-    _pageController.dispose();
-    super.dispose();
-  }
+  // @override
+  // void dispose() {
+  //   _pageController.dispose();
+  //   super.dispose();
+  // }
 
   void _onItemTapped(int index) {
     setState(() {
@@ -43,9 +43,9 @@ class _BottomNavbarScreenState extends State<BottomNavbarScreen> {
   @override
   Widget build(BuildContext context) {
     Provider.of<SignInProvider>(context,listen: false).getUserApiKey();
-    var signP = Provider.of<SignInProvider>(context,listen: false);
+    //var signP = Provider.of<SignInProvider>(context,listen: false);
     Provider.of<ProfileProvider>(context,listen: false).getUserProfile(context);
-    debugPrint(signP.userId.toString());
+    //debugPrint(signP.userId.toString());
     return Scaffold(
       backgroundColor: themeColor,
       body: PageView(

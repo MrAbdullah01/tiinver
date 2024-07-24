@@ -29,7 +29,7 @@ class ChatScreen extends StatelessWidget {
                 splashColor: Colors.transparent,
                 highlightColor: Colors.transparent,
                 onTap: (){
-                  Navigator.push(context, MaterialPageRoute(builder: (context)=>OtherUserProfileScreen()));
+                  Navigator.push(context, MaterialPageRoute(builder: (context)=>OtherUserProfileScreen(userId: 2177,)));
                 },
                 child: Row(
                   children: [

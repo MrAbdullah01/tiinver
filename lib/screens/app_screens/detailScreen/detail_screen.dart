@@ -6,6 +6,8 @@ import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 import 'package:tiinver_project/constants/colors.dart';
 import 'package:tiinver_project/constants/text_widget.dart';
+import 'package:tiinver_project/screens/app_screens/other_user_profile_screen/other_user_profile_screen.dart';
+import 'package:tiinver_project/widgets/field_widget.dart';
 import 'package:video_player/video_player.dart';
 import 'package:tiinver_project/models/feedTimeLineModel/feed_time_line_model.dart';
 
@@ -14,6 +16,7 @@ import '../../../providers/dashboard/dashboard_provider.dart';
 import '../../../providers/signIn/sign_in_provider.dart';
 
 class DetailScreen extends StatefulWidget {
+
   final Activity activity;
 
   const DetailScreen({
@@ -26,8 +29,10 @@ class DetailScreen extends StatefulWidget {
 }
 
 class _DetailScreenState extends State<DetailScreen> {
+
   late VideoPlayerController _controller;
   late Future<List<Comment>> _commentsFuture;
+  var formKey = GlobalKey<FormState>();
 
   @override
   void initState() {
@@ -51,9 +56,9 @@ class _DetailScreenState extends State<DetailScreen> {
 
   @override
   Widget build(BuildContext context) {
-    log(widget.activity.id.toString());
     var signInP = Provider.of<SignInProvider>(context,listen: false);
-    final commentProvider = Provider.of<DashboardProvider>(context);
+    final commentProvider = Provider.of<DashboardProvider>(context,listen: false);
+    commentProvider.fetchComments(widget.activity.id!, signInP.userApiKey!);
     return Scaffold(
       backgroundColor: textColor,
       appBar: AppBar(
@@ -65,21 +70,26 @@ class _DetailScreenState extends State<DetailScreen> {
                 Get.back();
               },
               icon: Icon(Icons.arrow_back_ios_new_rounded,color: bgColor,)),
-          title: Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              CircleAvatar(
-                radius: 2.5.h,
-                backgroundImage: NetworkImage(widget.activity.profile ?? ''),
-              ),
-              SizedBox(width: 20,),
-              TextWidget1(
-                  text: widget.activity.message!,
-                  fontSize: 18.dp,
-                  fontWeight: FontWeight.w700,
-                  isTextCenter: false,
-                  textColor: bgColor),
-            ],
+          title: InkWell(
+            onTap: () {
+              Get.to(()=>OtherUserProfileScreen(userId: widget.activity.userId!));
+            },
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                CircleAvatar(
+                  radius: 2.5.h,
+                  backgroundImage: NetworkImage(widget.activity.profile ?? ''),
+                ),
+                SizedBox(width: 20,),
+                TextWidget1(
+                    text: widget.activity.username!,
+                    fontSize: 18.dp,
+                    fontWeight: FontWeight.w700,
+                    isTextCenter: false,
+                    textColor: bgColor),
+              ],
+            ),
           ),
       ),
       body: Center(
@@ -113,7 +123,9 @@ class _DetailScreenState extends State<DetailScreen> {
             SizedBox(width: 10,),
             InkWell(
               onTap: () {
+                commentProvider.fetchComments(widget.activity.id!, signInP.userApiKey!);
                 Get.bottomSheet(
+                  isScrollControlled: true,
                     Container(
                   height: 50.h,
                   width: 100.w,
@@ -134,36 +146,40 @@ class _DetailScreenState extends State<DetailScreen> {
                         ),
                         Spacer(),
                         SizedBox(
-                          height: 45.h,
-                          child:FutureBuilder(
-                            future: commentProvider.fetchComments(widget.activity.id!, signInP.userApiKey!), // Provide the actual userApiKey
+                          height: 40.h,
+                          child: StreamBuilder<List<Comment>>(
+                            stream: commentProvider.commentStream,
                             builder: (context, snapshot) {
-                              if (commentProvider.loading) {
+                              if (snapshot.connectionState == ConnectionState.waiting) {
                                 return Center(child: CircularProgressIndicator());
                               }
 
-                              if (commentProvider.error != null) {
-                                return Center(child: Text('Error: ${commentProvider.error}'));
+                              if (snapshot.hasError) {
+                                return Center(child: Text('Error: ${snapshot.error}'));
                               }
 
-                              if (commentProvider.comments.isEmpty) {
+                              if (!snapshot.hasData || snapshot.data!.isEmpty) {
                                 return Center(child: Text('No comments found.'));
                               }
 
+                              List<Comment> comments = snapshot.data!;
+
                               return ListView.builder(
-                                itemCount: commentProvider.comments.length,
+                                itemCount: comments.length,
                                 itemBuilder: (context, index) {
-                                  final comment = commentProvider.comments[index];
+                                  final comment = comments[index];
                                   return Container(
                                     padding: EdgeInsets.all(20),
                                     child: Row(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
                                       children: [
-                                      CircleAvatar(
-                                        radius: 2.5.h,
-                                      backgroundImage: NetworkImage(comment.profile!),
-                                    ),
-                                        SizedBox(width: 20,),
+                                        CircleAvatar(
+                                          radius: 2.5.h,
+                                          backgroundImage: NetworkImage(comment.profile!),
+                                        ),
+                                        SizedBox(width: 20),
                                         Container(
+                                          width: 70.w,
                                           padding: const EdgeInsets.all(10),
                                           decoration: const BoxDecoration(
                                             color: lightGreyColor,
@@ -172,25 +188,26 @@ class _DetailScreenState extends State<DetailScreen> {
                                               topRight: Radius.circular(20),
                                               bottomLeft: Radius.circular(20),
                                               bottomRight: Radius.circular(20),
-                                            )
+                                            ),
                                           ),
                                           child: Column(
                                             crossAxisAlignment: CrossAxisAlignment.start,
                                             children: [
                                               TextWidget1(
-                                                  text: "${comment.firstname} ${comment.lastname}",
-                                                  fontSize: 10.dp,
-                                                  fontWeight: FontWeight.w400,
-                                                  isTextCenter: false,
-                                                  textColor: themeColor
+                                                text: "${comment.firstname} ${comment.lastname}",
+                                                fontSize: 10.dp,
+                                                fontWeight: FontWeight.w400,
+                                                isTextCenter: false,
+                                                textColor: themeColor,
                                               ),
                                               TextWidget1(
-                                                  text: comment.commentText!,
-                                                  fontSize: 10.dp,
-                                                  fontWeight: FontWeight.w400,
-                                                  isTextCenter: false,
-                                                  textColor: darkGreyColor,
+                                                text: comment.commentText!,
+                                                fontSize: 10.dp,
+                                                fontWeight: FontWeight.w400,
+                                                isTextCenter: false,
+                                                textColor: darkGreyColor,
                                                 maxLines: 5,
+                                                overFlow: TextOverflow.ellipsis,
                                               ),
                                             ],
                                           ),
@@ -202,7 +219,36 @@ class _DetailScreenState extends State<DetailScreen> {
                               );
                             },
                           ),
-                        )
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 10.0,vertical: 5),
+                          child: Consumer<DashboardProvider>(builder: (context, value, child) {
+                            return Form(
+                              key: formKey,
+                              child: InputField(
+                                inputController: value.commentC,
+                                hintText: "Comment...",
+                                suffixIcon: InkWell(
+                                  onTap: () {
+                                    log(value.commentC.text);
+                                    if(value.commentC.text.isNotEmpty){
+                                      value.postComment(
+                                          activityId: widget.activity.id!.toString(),
+                                          userId: signInP.userId.toString(),
+                                          userApiKey: signInP.userApiKey.toString());
+                                    }
+                                  },
+                                  child: value.isLoading ? CircularProgressIndicator()
+                                      : Container(
+                                      padding: const EdgeInsets.symmetric(vertical: 10,horizontal: 20),
+                                      child: Image.asset(ImagesPath.sendIcon,height: 2.h,)),
+                                ),
+                                bdRadius: 50,
+                              ),
+                            );
+                          },),
+                        ),
+                        Spacer(),
                       ],
                     ),
                   ),
@@ -231,3 +277,81 @@ class _DetailScreenState extends State<DetailScreen> {
 //                                     title: Text('${comment.firstname} ${comment.lastname}'),
 //                                     subtitle: Text(comment.commentText!),
 //                                     // trailing: Text(comment.stamp!),
+
+
+
+
+
+
+
+
+
+
+
+//FutureBuilder(
+//                             future: commentProvider.fetchComments(widget.activity.id!, signInP.userApiKey!), // Provide the actual userApiKey
+//                             builder: (context, snapshot) {
+//                               if (commentProvider.loading) {
+//                                 return Center(child: CircularProgressIndicator());
+//                               }
+//
+//                               if (commentProvider.error != null) {
+//                                 return Center(child: Text('Error: ${commentProvider.error}'));
+//                               }
+//
+//                               if (commentProvider.comments.isEmpty) {
+//                                 return Center(child: Text('No comments found.'));
+//                               }
+//
+//                               return ListView.builder(
+//                                 itemCount: commentProvider.comments.length,
+//                                 itemBuilder: (context, index) {
+//                                   final comment = commentProvider.comments[index];
+//                                   return Container(
+//                                     padding: EdgeInsets.all(20),
+//                                     child: Row(
+//                                       children: [
+//                                         CircleAvatar(
+//                                           radius: 2.5.h,
+//                                           backgroundImage: NetworkImage(comment.profile!),
+//                                         ),
+//                                         SizedBox(width: 20,),
+//                                         Container(
+//                                           padding: const EdgeInsets.all(10),
+//                                           decoration: const BoxDecoration(
+//                                               color: lightGreyColor,
+//                                               borderRadius: BorderRadius.only(
+//                                                 topLeft: Radius.circular(5),
+//                                                 topRight: Radius.circular(20),
+//                                                 bottomLeft: Radius.circular(20),
+//                                                 bottomRight: Radius.circular(20),
+//                                               )
+//                                           ),
+//                                           child: Column(
+//                                             crossAxisAlignment: CrossAxisAlignment.start,
+//                                             children: [
+//                                               TextWidget1(
+//                                                   text: "${comment.firstname} ${comment.lastname}",
+//                                                   fontSize: 10.dp,
+//                                                   fontWeight: FontWeight.w400,
+//                                                   isTextCenter: false,
+//                                                   textColor: themeColor
+//                                               ),
+//                                               TextWidget1(
+//                                                 text: comment.commentText!,
+//                                                 fontSize: 10.dp,
+//                                                 fontWeight: FontWeight.w400,
+//                                                 isTextCenter: false,
+//                                                 textColor: darkGreyColor,
+//                                                 maxLines: 5,
+//                                               ),
+//                                             ],
+//                                           ),
+//                                         )
+//                                       ],
+//                                     ),
+//                                   );
+//                                 },
+//                               );
+//                             },
+//                           )

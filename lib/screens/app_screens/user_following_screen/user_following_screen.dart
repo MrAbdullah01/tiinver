@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_sizer/flutter_sizer.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:provider/provider.dart';
 
 import '../../../constants/colors.dart';
 import '../../../constants/images_path.dart';
 import '../../../providers/profile/profile_provider.dart';
 import '../../../widgets/header.dart';
+import '../other_user_profile_screen/other_user_profile_screen.dart';
 import '../search_screen/comp/searching_tile.dart';
 
 class UserFollowingScreen extends StatelessWidget {
@@ -35,11 +38,16 @@ class UserFollowingScreen extends StatelessWidget {
           builder: (ctx, userProvider, child) => ListView.builder(
             itemCount: updateP.followingsList.length,
             itemBuilder: (context, index) {
-              return SearchingTile(
-                  name: '${userProvider.followingsList[index].firstname} ${userProvider.followingsList[index].lastname}',
-                  userName: userProvider.followingsList[index].username.toString(),
-                  imageUrl: userProvider.followingsList[index].profile.toString(),
-                  buttonText: "Follow Back", buttonAction: (){}
+              return InkWell(
+                onTap: () {
+                  Get.to(()=>OtherUserProfileScreen(userId: userProvider.followingsList[index].id!,));
+                },
+                child: SearchingTile(
+                    name: '${userProvider.followingsList[index].firstname} ${userProvider.followingsList[index].lastname}',
+                    userName: userProvider.followingsList[index].username.toString(),
+                    imageUrl: userProvider.followingsList[index].profile.toString(),
+                    buttonText: "Follow Back", buttonAction: (){}
+                ),
               );
             },),
         ),

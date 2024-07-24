@@ -42,7 +42,7 @@ class UserFollowersScreen extends StatelessWidget {
           builder: (ctx, userProvider, child) => ListView.builder(
             itemCount: updateP.followersList.length,
             itemBuilder: (context, index) {
-              if(updateP.followersList.isEmpty){
+              if(userProvider.followersList.isEmpty){
                 Center(
                   child: TextWidget1(
                       text: "No Followers", fontSize: 24.dp,
@@ -52,7 +52,7 @@ class UserFollowersScreen extends StatelessWidget {
               }
               return InkWell(
                 onTap: () {
-                  Get.to(()=>OtherUserProfileScreen());
+                  Get.to(()=>OtherUserProfileScreen(userId: userProvider.followersList[index].id!,));
                 },
                 child: SearchingTile(
                     name: '${userProvider.followersList[index].firstname} ${userProvider.followersList[index].lastname}',

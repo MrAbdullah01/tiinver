@@ -60,6 +60,12 @@ class ProfileProvider with ChangeNotifier {
   //   notifyListeners();
   // }
 
+  clearList(){
+    _followingsList.clear();
+    _followersList.clear();
+    notifyListeners();
+  }
+
   getUserProfile(context) async {
     try{
 
@@ -180,7 +186,10 @@ class ProfileProvider with ChangeNotifier {
 
       isLoading = true;
 
-      var res = await ApiService.get(Endpoint.following(userId, userId),header2(Provider.of<SignInProvider>(context,listen: false).userApiKey));
+      var res = await ApiService.get(
+          Endpoint.following(
+              userId, userId),
+          header2(Provider.of<SignInProvider>(context,listen: false).userApiKey));
 
         if (res.statusCode == 200 || res.statusCode == 201) {
           Map<String, dynamic> jsonResponse = json.decode(res.body);

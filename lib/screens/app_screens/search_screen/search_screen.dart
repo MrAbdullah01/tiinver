@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_sizer/flutter_sizer.dart';
+import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 import 'package:tiinver_project/constants/colors.dart';
 import 'package:tiinver_project/constants/images_path.dart';
+import 'package:tiinver_project/providers/profile/profile_provider.dart';
 import 'package:tiinver_project/providers/search/search_provider.dart';
 import 'package:tiinver_project/providers/signIn/sign_in_provider.dart';
+import 'package:tiinver_project/screens/app_screens/other_user_profile_screen/other_user_profile_screen.dart';
 import 'package:tiinver_project/widgets/header.dart';
 
 import 'comp/searching_tile.dart';
@@ -106,14 +109,20 @@ class SearchScreen extends StatelessWidget {
             itemCount: value.users.length,
             itemBuilder: (context, index) {
               var user = value.users[index];
-              return SearchingTile(
-                name: user.firstname ?? '',
-                userName: user.username ?? '',
-                buttonText: user.isFollowed! ? "following" : "follow",
-                buttonAction: (){
-
+              return InkWell(
+                onTap: () {
+                  Provider.of<ProfileProvider>(context,listen: false).clearList();
+                  Get.to(()=>OtherUserProfileScreen(userId: user.id!));
                 },
-                imageUrl: user.profile.toString(),
+                child: SearchingTile(
+                  name: user.firstname ?? '',
+                  userName: user.username ?? '',
+                  buttonText: user.isFollowed! ? "following" : "follow",
+                  buttonAction: (){
+
+                  },
+                  imageUrl: user.profile.toString(),
+                ),
               );
             },);
         },)

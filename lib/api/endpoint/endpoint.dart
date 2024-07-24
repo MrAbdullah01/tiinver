@@ -34,6 +34,7 @@ class Endpoint{
   static const login = "${BaseUrls.BASEURL}login";
   static const search = "${BaseUrls.BASEURL}usersbykey";
   static const mail = "${BaseUrls.BASEURL}mail";
+  static const comment = "${BaseUrls.BASEURL}comment";
   static const isPhoneOrEmailExists = "${BaseUrls.BASEURL}isPhoneOrEmailExiste";
 
   static String followers(int userId, int followerId) {

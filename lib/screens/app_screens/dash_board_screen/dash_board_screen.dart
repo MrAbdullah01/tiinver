@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_sizer/flutter_sizer.dart';
 import 'package:get/get.dart';
@@ -30,11 +32,21 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
   bool isSearching = false;
 
   @override
-  Widget build(BuildContext context) {
+  void initState() {
+    // TODO: implement initState
+    super.initState();
     var signInP = Provider.of<SignInProvider>(context,listen: false);
     Provider.of<DashboardProvider>(context,listen: false).fetchTimeline(
         int.parse(signInP.userId.toString()),
-        500, 0, signInP.userApiKey);
+        100, 0, signInP.userApiKey);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    // var signInP = Provider.of<SignInProvider>(context,listen: false);
+    // Provider.of<DashboardProvider>(context,listen: false).fetchTimeline(
+    //     int.parse(signInP.userId.toString()),
+    //     100, 0, signInP.userApiKey);
     return Scaffold(
       backgroundColor: bgColor,
       appBar: Header().header2("Tiinver", [

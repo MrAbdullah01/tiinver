@@ -8,6 +8,7 @@ import 'package:tiinver_project/providers/createGroup/create_group_provider.dart
 import 'package:tiinver_project/providers/dashboard/dashboard_provider.dart';
 import 'package:tiinver_project/providers/forgot/forgot_provider.dart';
 import 'package:tiinver_project/providers/onboard/onboard_provider.dart';
+import 'package:tiinver_project/providers/otherUserProfile/other_user_profile_provider.dart';
 import 'package:tiinver_project/providers/otp/otp_provider.dart';
 import 'package:tiinver_project/providers/profile/profile_provider.dart';
 import 'package:tiinver_project/providers/search/search_provider.dart';
@@ -45,6 +46,7 @@ class MyApp extends StatelessWidget {
             ChangeNotifierProvider(create: (_)=> ConnectedUsersProvider()),
             ChangeNotifierProvider(create: (_)=> CreateGroupProvider()),
             ChangeNotifierProvider(create: (_)=> DashboardProvider()),
+            ChangeNotifierProvider(create: (_)=> OtherUserProfileProvider()),
           ],
             child: GetMaterialApp(
               debugShowCheckedModeBanner: false,
