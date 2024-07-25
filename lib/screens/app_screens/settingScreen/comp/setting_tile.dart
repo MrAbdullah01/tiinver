@@ -4,7 +4,7 @@ import 'package:tiinver_project/constants/colors.dart';
 import 'package:tiinver_project/constants/text_widget.dart';
 
 class SettingTile extends StatelessWidget {
-  SettingTile({
+  const SettingTile({
     super.key,
     this.image = "images/person_icon.png",
     this.title = "",
@@ -19,7 +19,7 @@ class SettingTile extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8.0),
       child: ListTile(
-        onTap: (){},
+        onTap: onTap,
         title: TextWidget1(
             text: title, fontSize: 16.dp,
             fontWeight: FontWeight.w600,

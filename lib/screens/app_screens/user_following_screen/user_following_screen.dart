@@ -7,6 +7,7 @@ import 'package:provider/provider.dart';
 import '../../../constants/colors.dart';
 import '../../../constants/images_path.dart';
 import '../../../providers/profile/profile_provider.dart';
+import '../../../providers/signIn/sign_in_provider.dart';
 import '../../../widgets/header.dart';
 import '../other_user_profile_screen/other_user_profile_screen.dart';
 import '../search_screen/comp/searching_tile.dart';
@@ -19,6 +20,7 @@ class UserFollowingScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var updateP = Provider.of<ProfileProvider>(context, listen: false);
+    var signInP = Provider.of<SignInProvider>(context, listen: false);
     return Scaffold(
       backgroundColor: bgColor,
       appBar: Header().header1("Following",
@@ -46,7 +48,14 @@ class UserFollowingScreen extends StatelessWidget {
                     name: '${userProvider.followingsList[index].firstname} ${userProvider.followingsList[index].lastname}',
                     userName: userProvider.followingsList[index].username.toString(),
                     imageUrl: userProvider.followingsList[index].profile.toString(),
-                    buttonText: "Follow Back", buttonAction: (){}
+                    buttonText: userProvider.followingsList[index].isFollowed == false ? "Follow Back" : "Friends",
+                    buttonAction: (){
+                      userProvider.follow(
+                          followId: signInP.userId.toString(),
+                          userId: userProvider.followingsList[index].id.toString(),
+                          userApiKey: signInP.userApiKey.toString()
+                      );
+                    }
                 ),
               );
             },),

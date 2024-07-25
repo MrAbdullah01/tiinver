@@ -15,6 +15,7 @@ import 'package:tiinver_project/widgets/header.dart';
 import '../../../models/feedTimeLineModel/feed_time_line_model.dart';
 import '../../../providers/search/search_provider.dart';
 import '../../../providers/signIn/sign_in_provider.dart';
+import '../../../widgets/image_loader_widget.dart';
 import '../detailScreen/detail_screen.dart';
 import '../search_screen/search_screen.dart';
 import 'comp/media_widget.dart';
@@ -151,14 +152,22 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
                           children: [
                             Row(
                               children: [
-                                CircleAvatar(
-                                  radius: 2.5.h,
-                                  backgroundImage: NetworkImage(activity.profile ?? ''),
+                                ClipRRect(
+                                  borderRadius: BorderRadius.circular(100),
+                                  child: SizedBox(
+                                    height: 40,
+                                    width: 40,
+                                    child: ImageLoaderWidget(imageUrl: activity.profile!),
+                                  ),
                                 ),
                                 SizedBox(width: 10,),
-                                TextWidget1(text: '${activity.firstname} ${activity.lastname}',
-                                    fontSize: 10.dp, fontWeight: FontWeight.w700,
-                                    isTextCenter: false, textColor: bgColor),
+                                SizedBox(
+                                  width: 100,
+                                  child: TextWidget1(text: '${activity.firstname} ${activity.lastname}',
+                                      fontSize: 10.dp, fontWeight: FontWeight.w700,
+                                      maxLines: 1, overFlow: TextOverflow.ellipsis,
+                                      isTextCenter: false, textColor: bgColor),
+                                ),
                               ],
                             ),
                             Column(

@@ -170,3 +170,5 @@ class DashboardProvider extends ChangeNotifier{
     super.dispose();
   }
 }
+
+final dashboardProvider = DashboardProvider();

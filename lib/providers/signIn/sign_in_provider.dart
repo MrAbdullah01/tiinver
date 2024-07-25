@@ -125,3 +125,6 @@ class SignInProvider with ChangeNotifier {
   }
 
 }
+
+
+final signProvider = SignInProvider();

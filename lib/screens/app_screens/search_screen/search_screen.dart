@@ -18,6 +18,7 @@ class SearchScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var signInP = Provider.of<SignInProvider>(context,listen: false);
+    var profileP = Provider.of<ProfileProvider>(context,listen: false);
     var searchP = Provider.of<SearchProvider>(context,listen: false);
     return Scaffold(
       backgroundColor: bgColor,
@@ -119,7 +120,10 @@ class SearchScreen extends StatelessWidget {
                   userName: user.username ?? '',
                   buttonText: user.isFollowed! ? "following" : "follow",
                   buttonAction: (){
-
+                    profileP.follow(
+                        followId: signInP.userId.toString(),
+                        userId: user.id.toString(),
+                        userApiKey: signInP.userApiKey.toString());
                   },
                   imageUrl: user.profile.toString(),
                 ),

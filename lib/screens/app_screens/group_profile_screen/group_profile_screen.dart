@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_sizer/flutter_sizer.dart';
-import 'package:get/get.dart';
 import 'package:tiinver_project/constants/colors.dart';
 import 'package:tiinver_project/constants/text_widget.dart';
 import 'package:tiinver_project/widgets/header.dart';
@@ -17,6 +16,7 @@ class GroupProfileScreen extends StatefulWidget {
 }
 
 class _GroupProfileScreenState extends State<GroupProfileScreen> {
+
   bool isCommentTrue = true;
 
   @override

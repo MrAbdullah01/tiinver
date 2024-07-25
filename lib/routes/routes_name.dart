@@ -6,4 +6,5 @@ class RoutesName{
   static const newPassword = "/new_password";
   static const otpVerificationScreen = "/otp_verification_screen";
   static const bottomNavigationBar = "/bottom_navigation_bar";
+  static const settingScreen = "/setting_screen";
 }

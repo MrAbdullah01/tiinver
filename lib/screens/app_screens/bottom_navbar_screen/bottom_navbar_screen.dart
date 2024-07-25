@@ -77,15 +77,15 @@ class _BottomNavbarScreenState extends State<BottomNavbarScreen> {
             ),
             BottomNavigationBarItem(
                 icon: Icon(Icons.chat_rounded,),
-                label: "Chat"
+                label: "Chat",
             ),
             BottomNavigationBarItem(
                 icon: Icon(Icons.notifications,),
-                label: "Notifications"
+                label: "Notifications",
             ),
             BottomNavigationBarItem(
                 icon: Icon(Icons.person,),
-                label: "My Profile"
+                label: "My Profile",
             ),
           ]),
     );

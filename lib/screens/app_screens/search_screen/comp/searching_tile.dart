@@ -4,12 +4,16 @@ import 'package:flutter_sizer/flutter_sizer.dart';
 import 'package:tiinver_project/widgets/submit_button.dart';
 
 import '../../../../constants/colors.dart';
-import '../../../../constants/images_path.dart';
 import '../../../../constants/text_widget.dart';
+import '../../../../widgets/image_loader_widget.dart';
 
 class SearchingTile extends StatelessWidget {
-  SearchingTile({super.key,required this.name,required this.userName,
-    required this.buttonText,required this.buttonAction,
+  SearchingTile({
+    super.key,
+    required this.name,
+    required this.userName,
+    required this.buttonText,
+    required this.buttonAction,
     required this.imageUrl});
 
   String name;
@@ -25,11 +29,14 @@ class SearchingTile extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
-          CircleAvatar(
-            radius: 4.h,
-            backgroundImage: imageUrl.isNotEmpty ? NetworkImage(imageUrl)
-                : AssetImage(ImagesPath.profileImage),
-          ),
+       ClipRRect(
+       borderRadius: BorderRadius.circular(100),
+       child: SizedBox(
+        height: 60,
+        width: 60,
+        child:  ImageLoaderWidget(imageUrl: imageUrl),
+       ),
+     ),
           SizedBox(width: 10,),
           SizedBox(
             width:55.w,

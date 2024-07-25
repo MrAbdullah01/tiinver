@@ -1,5 +1,7 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_sizer/flutter_sizer.dart';
+import 'package:tiinver_project/widgets/image_loader_widget.dart';
 
 import '../../../../constants/colors.dart';
 import '../../../../constants/text_widget.dart';
@@ -38,10 +40,13 @@ class ProfileContainer extends StatelessWidget {
                     width: 4
                 )
             ),
-            child: CircleAvatar(
-              radius: 9.h,
-              backgroundColor: lightGreyColor,
-              backgroundImage: NetworkImage(image),
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(100),
+              child: SizedBox(
+                height: 150,
+                width: 150,
+                child:  ImageLoaderWidget(imageUrl: image),
+              ),
             ),
           ),
           TextWidget1(text: name, fontSize: 24.dp, fontWeight: FontWeight.w600, isTextCenter: false, textColor: themeColor),

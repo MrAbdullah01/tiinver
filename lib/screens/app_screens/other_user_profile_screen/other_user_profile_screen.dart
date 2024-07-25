@@ -6,6 +6,7 @@ import 'package:provider/provider.dart';
 import 'package:tiinver_project/constants/colors.dart';
 import 'package:tiinver_project/constants/images_path.dart';
 import 'package:tiinver_project/providers/otherUserProfile/other_user_profile_provider.dart';
+import 'package:tiinver_project/providers/profile/profile_provider.dart';
 import 'package:tiinver_project/screens/app_screens/other_user_profile_screen/comp/following_status.dart';
 import 'package:tiinver_project/screens/app_screens/other_user_profile_screen/comp/profile_container.dart';
 import 'package:tiinver_project/screens/app_screens/report_screen/report_screen.dart';
@@ -13,6 +14,7 @@ import 'package:tiinver_project/screens/app_screens/user_following_screen/user_f
 import 'package:tiinver_project/widgets/header.dart';
 
 import '../../../constants/text_widget.dart';
+import '../../../providers/signIn/sign_in_provider.dart';
 import '../user_followers_screen/user_followers_screen.dart';
 import 'comp/dialogue_box.dart';
 
@@ -25,6 +27,9 @@ class OtherUserProfileScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Provider.of<OtherUserProfileProvider>(context,listen: false).getOtherUserProfile(context,userId);
+    var profileP = Provider.of<ProfileProvider>(context,listen: false);
+    var signInP = Provider.of<SignInProvider>(context, listen: false);
+    var otherUserProfileP = Provider.of<OtherUserProfileProvider>(context,listen: false);
     return Scaffold(
       backgroundColor: bgColor,
       appBar: Header().header1("Profile",
@@ -38,9 +43,10 @@ class OtherUserProfileScreen extends StatelessWidget {
               itemBuilder: (context) =>[
               PopupMenuItem(
                 onTap: (){
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context)=>ReportScreen()));
+                  Get.to(()=> ReportScreen(
+                    userId: otherUserProfileP.userModel!.id!.toString(),
+                    userName: otherUserProfileP.userModel!.username!.toString(),
+                  ));
                 },
                 value: 'Item 1',
                 child: TextWidget1(text: "Report", fontSize: 16.dp,
@@ -57,7 +63,13 @@ class OtherUserProfileScreen extends StatelessWidget {
                                   "see his activity on tinver",
                               primaryButtonText: "Block",
                               primaryTap: (){
-
+                                Get.back();
+                                otherUserProfileProvider.blockUser(
+                                    userId: signProvider.userId ?? "",
+                                    userName: profileP.userModel!.username ?? "",
+                                    userApiKey: signProvider.userApiKey ?? "",
+                                    blockUserName: otherUserProfileP.userModel!.username!.toString(),
+                                    blockUserId: otherUserProfileP.userModel!.id!.toString());
                               }
                           );
                         },);
@@ -94,11 +106,11 @@ class OtherUserProfileScreen extends StatelessWidget {
                     decoration: BoxDecoration(
                         color: bgColor,
                         borderRadius: BorderRadius.circular(8),
-                        boxShadow: [
-                          BoxShadow(
+                        boxShadow:  [
+                           BoxShadow(
                               color: lightGreyColor,
                               blurRadius: 2
-                          )
+                          ),
                         ]
                     ),
                     child: Row(
@@ -111,8 +123,16 @@ class OtherUserProfileScreen extends StatelessWidget {
                           child: FollowingStatus(
                             followNumber: value.userModel!.following!.toString(),
                             followText: "Following",
-                            buttonText: "Follow",
-                            icon: Icons.person,),
+                            buttonText: value.userModel!.isFollowed == false ? "Follow" : "Following",
+                            icon: Icon(Icons.person),
+                            onTap: () {
+                              profileP.follow(
+                                  followId: signInP.userId.toString(),
+                                  userId: value.userModel!.id.toString(),
+                                  userApiKey: signInP.userApiKey.toString()
+                              );
+                            },
+                          ),
                         ),
                         SizedBox(width: 10.w,),
                         InkWell(

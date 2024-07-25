@@ -14,6 +14,7 @@ import 'package:tiinver_project/models/feedTimeLineModel/feed_time_line_model.da
 import '../../../constants/images_path.dart';
 import '../../../providers/dashboard/dashboard_provider.dart';
 import '../../../providers/signIn/sign_in_provider.dart';
+import '../../../widgets/image_loader_widget.dart';
 
 class DetailScreen extends StatefulWidget {
 
@@ -77,9 +78,13 @@ class _DetailScreenState extends State<DetailScreen> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                CircleAvatar(
-                  radius: 2.5.h,
-                  backgroundImage: NetworkImage(widget.activity.profile ?? ''),
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(100),
+                  child: SizedBox(
+                    height: 40,
+                    width: 40,
+                    child:  ImageLoaderWidget(imageUrl: widget.activity.profile!),
+                  ),
                 ),
                 SizedBox(width: 20,),
                 TextWidget1(

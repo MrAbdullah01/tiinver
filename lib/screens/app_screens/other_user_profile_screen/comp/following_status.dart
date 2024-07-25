@@ -6,12 +6,13 @@ import '../../../../constants/text_widget.dart';
 import '../../../../widgets/submit_button.dart';
 
 class FollowingStatus extends StatelessWidget {
-  const FollowingStatus({super.key,this.followNumber,this.icon,this.buttonText,this.followText});
+  const FollowingStatus({super.key,this.followNumber,this.icon,this.buttonText,this.followText,this.onTap});
 
   final String? followNumber;
   final String? followText;
   final String? buttonText;
-  final IconData? icon;
+  final Widget? icon;
+  final VoidCallback? onTap;
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +27,7 @@ class FollowingStatus extends StatelessWidget {
             iconSize: 10,
             title: buttonText,
             icon: icon,
-            press: (){}
+            press: onTap ?? (){}
         )
       ],
     );

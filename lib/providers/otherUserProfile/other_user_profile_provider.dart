@@ -23,7 +23,9 @@ class OtherUserProfileProvider extends ChangeNotifier{
       isLoading = true;
 
       var res = await ApiService.get(
-          Endpoint.getUser(userId),
+          Endpoint.getUser(
+            userId,
+            int.parse(Provider.of<SignInProvider>(context,listen: false).userId!),),
           header2(Provider.of<SignInProvider>(context,listen: false).userApiKey));
 
       if (res.statusCode == 200 || res.statusCode == 201) {
@@ -55,60 +57,99 @@ class OtherUserProfileProvider extends ChangeNotifier{
     }
   }
 
-  // Future<void> updateProfile({
-  //   required String id,
-  //   required String name,
-  //   required String qualification,
-  //   required String workAt,
-  //   required String school,
-  //   required String location,
-  //   required String userApiKey,
-  // }) async {
-  //   isLoading = true;
-  //   notifyListeners();
-  //   try {
-  //
-  //     final body = {
-  //       'id': id,
-  //       'firstname': name,
-  //       'lastname': 'g',
-  //       'workAt': workAt,
-  //       'location': location,
-  //       'qualification': qualification,
-  //       'school': school,
-  //     };
-  //
-  //     final res = await ApiService.post(
-  //         requestBody: postEncode(body),
-  //         headers: header2(userApiKey),
-  //         endPoint: Endpoint.blockUser(
-  //             usernameBlocked: id,
-  //             username: username,
-  //             userBlockId: userBlockId,
-  //             userID: userID)
-  //     );
-  //
-  //     log("message: ${res.body}");
-  //     if(res.statusCode == 200 || res.statusCode == 201){
-  //
-  //       final jsonResponse = jsonDecode(res.body);
-  //       final error = jsonResponse['error'];
-  //       final message = jsonResponse['message'];
-  //       log("message: ${res.body}");
-  //
-  //       if(error){
-  //         Get.snackbar("error", message);
-  //       }else{
-  //         Get.snackbar("success", message);
-  //       }
-  //     }
-  //     notifyListeners();
-  //   } catch (error) {
-  //     debugPrint(error.toString());
-  //   }finally{
-  //     isLoading = false;
-  //     notifyListeners();
-  //   }
-  // }
+  Future<void> blockUser({
+    required String userId,
+    required String userName,
+    required String blockUserName,
+    required String blockUserId,
+    required String userApiKey,
+  }) async {
+    isLoading = true;
+    notifyListeners();
+    try {
+
+      final body = {
+        'username_blocked': blockUserName,
+        'username': userName,
+        'userId': userId,
+        'user_blocked_id': blockUserId,
+      };
+
+      final res = await ApiService.post(
+          requestBody: postEncode(body),
+          headers: header2(userApiKey),
+          endPoint: Endpoint.blockUser);
+
+      log("message: ${res.body}");
+      if(res.statusCode == 200 || res.statusCode == 201){
+
+        final jsonResponse = jsonDecode(res.body);
+        final error = jsonResponse['error'];
+        final message = jsonResponse['user'];
+        log("message: ${res.body}");
+
+        if(error){
+          Get.snackbar("error", message);
+        }else{
+          Get.snackbar("success", message);
+        }
+      }
+      notifyListeners();
+    } catch (error) {
+      debugPrint(error.toString());
+    }finally{
+      isLoading = false;
+      notifyListeners();
+    }
+  }
+
+
+  Future<void> reportUser({
+    required String userId,
+    required String userName,
+    required String msg,
+    required String userApiKey,
+  }) async {
+    isLoading = true;
+    notifyListeners();
+    try {
+
+      final body = {
+        'userId': userId,
+        'username': userName,
+        'message': msg,
+      };
+
+      final res = await ApiService.post(
+          requestBody: postEncode(body),
+          headers: header2(userApiKey),
+          endPoint: Endpoint.report);
+
+      log("message: ${res.body}");
+      if(res.statusCode == 200 || res.statusCode == 201){
+
+        final jsonResponse = jsonDecode(res.body);
+        final error = jsonResponse['error'];
+        final message = jsonResponse['message'];
+        log("message: ${res.body}");
+
+        if(error){
+          Get.snackbar("error", message);
+        }else{
+          Get.snackbar("success", message);
+        }
+      }
+      notifyListeners();
+    } catch (error) {
+      debugPrint(error.toString());
+    }finally{
+      isLoading = false;
+      notifyListeners();
+    }
+  }
 
 }
+
+
+// Global Instance
+final otherUserProfileProvider = OtherUserProfileProvider();

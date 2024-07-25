@@ -45,6 +45,9 @@ class MyApp extends StatelessWidget {
             ChangeNotifierProvider(create: (_)=> SearchProvider()),
             ChangeNotifierProvider(create: (_)=> ConnectedUsersProvider()),
             ChangeNotifierProvider(create: (_)=> CreateGroupProvider()),
+            // ChangeNotifierProvider<DashboardProvider>.value(value: dashboardProvider),
+            // ChangeNotifierProvider<SignInProvider>.value(value: signProvider),
+            // ChangeNotifierProvider<OtherUserProfileProvider>.value(value: otherUserProfileProvider),
             ChangeNotifierProvider(create: (_)=> DashboardProvider()),
             ChangeNotifierProvider(create: (_)=> OtherUserProfileProvider()),
           ],
@@ -55,7 +58,7 @@ class MyApp extends StatelessWidget {
                 colorScheme: ColorScheme.fromSeed(seedColor: themeColor,primary: themeColor),
                 useMaterial3: true,
               ),
-              initialRoute: RoutesName.splashScreen,
+              initialRoute: RoutesName.settingScreen,
               getPages: Routes.routes,
             ),
           );

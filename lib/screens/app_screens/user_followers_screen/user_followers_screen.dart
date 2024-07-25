@@ -6,6 +6,7 @@ import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 import 'package:tiinver_project/constants/colors.dart';
 import 'package:tiinver_project/constants/text_widget.dart';
+import 'package:tiinver_project/providers/signIn/sign_in_provider.dart';
 import 'package:tiinver_project/screens/app_screens/search_screen/comp/searching_tile.dart';
 import 'package:tiinver_project/widgets/header.dart';
 
@@ -58,7 +59,14 @@ class UserFollowersScreen extends StatelessWidget {
                     name: '${userProvider.followersList[index].firstname} ${userProvider.followersList[index].lastname}',
                     userName: userProvider.followersList[index].username.toString(),
                     imageUrl: userProvider.followersList[index].profile.toString(),
-                    buttonText: "Follow Back", buttonAction: (){
+                    buttonText: userProvider.followersList[index].isFollowed == false ? "Follow Back" : "Friends",
+                    buttonAction: (){
+                      userProvider.follow(
+                          followId: signProvider.userId.toString(),
+                          userId: userProvider.followersList[index].id.toString(),
+                          userApiKey: signProvider.userApiKey.toString()
+                      );
+
                       log("tap");
                 }
                 ),

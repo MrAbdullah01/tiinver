@@ -72,7 +72,10 @@ class ProfileProvider with ChangeNotifier {
       isLoading = true;
 
       var res = await ApiService.get(
-          Endpoint.getUser(int.parse(Provider.of<SignInProvider>(context,listen: false).userId!)),
+          Endpoint.getUser(
+              int.parse(Provider.of<SignInProvider>(context,listen: false).userId!),
+              int.parse(Provider.of<SignInProvider>(context,listen: false).userId!)
+          ),
           header2(Provider.of<SignInProvider>(context,listen: false).userApiKey));
 
       if (res.statusCode == 200 || res.statusCode == 201) {
@@ -207,6 +210,49 @@ class ProfileProvider with ChangeNotifier {
       print(e);
     }
     finally{
+    }
+  }
+
+  Future<void> follow({
+    required String followId,
+    required String userId,
+    required String userApiKey,
+  }) async {
+    isLoading = true;
+    notifyListeners();
+    try {
+
+      final body = {
+        'followId': followId,
+        'userId': userId,
+      };
+
+      final res = await ApiService.post(
+          requestBody: postEncode(body),
+          headers: header2(userApiKey),
+          endPoint: Endpoint.follow
+      );
+
+      log("message: ${res.body}");
+      if(res.statusCode == 200 || res.statusCode == 201){
+
+        final jsonResponse = jsonDecode(res.body);
+        final error = jsonResponse['error'];
+        final message = jsonResponse['message'];
+        log("message: ${res.body}");
+
+        if(error){
+          Get.snackbar("error", message);
+        }else{
+          Get.snackbar("success", message);
+        }
+      }
+      notifyListeners();
+    } catch (error) {
+      debugPrint(error.toString());
+    }finally{
+      isLoading = false;
+      notifyListeners();
     }
   }
 

@@ -20,7 +20,7 @@ class SubmitButton extends StatelessWidget {
     this.gradientColors,
   });
   final String? title;
-  final IconData? icon;
+  final Widget? icon;
   final Function() press;
   final double? height;
   final double? width;
@@ -62,11 +62,7 @@ class SubmitButton extends StatelessWidget {
             if (icon != null)
               Padding(
                 padding: EdgeInsets.only(right: title != null ? 8.0 : 0.0),
-                child: Icon(
-                  icon,
-                  color: iconColor ?? bgColor,
-                  size: iconSize,
-                ),
+                child: icon,
               ),
             if (title != null)
               Text(

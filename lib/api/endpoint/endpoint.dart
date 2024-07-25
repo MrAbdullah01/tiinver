@@ -36,6 +36,7 @@ class Endpoint{
   static const mail = "${BaseUrls.BASEURL}mail";
   static const comment = "${BaseUrls.BASEURL}comment";
   static const isPhoneOrEmailExists = "${BaseUrls.BASEURL}isPhoneOrEmailExiste";
+  static const blockUser = "${BaseUrls.BASEURL}block";
 
   static String followers(int userId, int followerId) {
     return 'https://tiinver.com/api/v1/followers/$userId/$followerId';
@@ -45,8 +46,8 @@ class Endpoint{
     return 'https://tiinver.com/api/v1/following/$userId/$followerId';
   }
 
-  static String getUser(int userId) {
-    return 'https://tiinver.com/api/v1/getuserbyid/$userId';
+  static String getUser(int userId,int followerId) {
+    return 'https://tiinver.com/api/v1/getuserbyid/$userId/$followerId';
   }
 
   static String getFeedTimeLine(int id, int limit, int offset) {
@@ -61,14 +62,14 @@ class Endpoint{
     return 'https://tiinver.com/api/v1/allcomment/$activityId';
   }
 
-  static String blockUser({
-    required String usernameBlocked,
-    required String username,
-    required String userBlockId,
-    required String userID,
-  }) {
-    return '${BaseUrls.BASEURL}block?username_blocked=$usernameBlocked&username=$username&userId=$userID&user_blocked_id=$userBlockId';
-  }
+  // static String blockUser({
+  //   required String usernameBlocked,
+  //   required String username,
+  //   required String userBlockId,
+  //   required String userID,
+  // }) {
+  //   return '${BaseUrls.BASEURL}block?username_blocked=$usernameBlocked&username=$username&userId=$userID&user_blocked_id=$userBlockId';
+  // }
 
   static const report = "${BaseUrls.BASEURL}report";
   static const updateUser = "${BaseUrls.BASEURL}user";
