@@ -13,9 +13,15 @@ import '../signin_screen/sign_in_screen.dart';
 import 'comp/navigate_button.dart';
 
 class OnboardingScreen extends StatelessWidget {
+
   OnboardingScreen({super.key});
 
-  List<String> images = [ImagesPath.onboard1, ImagesPath.onboard2, ImagesPath.onboard3,ImagesPath.onboard4];
+  final List<String> images = [
+    ImagesPath.onboard1,
+    ImagesPath.onboard2,
+    ImagesPath.onboard3,
+    ImagesPath.onboard4
+  ];
 
   @override
   Widget build(BuildContext context) {

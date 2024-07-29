@@ -33,7 +33,7 @@ class EditProfileScreen extends StatelessWidget {
                     radius: 8.h,
                     backgroundColor: lightGreyColor,
                     backgroundImage: provider.userModel != null ?
-                    NetworkImage(provider.userModel!.profile.toString())
+                    NetworkImage(provider.userModel.profile.toString())
                         : AssetImage(ImagesPath.profileImage),
                   ),
                   Container(

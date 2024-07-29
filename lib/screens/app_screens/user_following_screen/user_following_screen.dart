@@ -42,7 +42,7 @@ class UserFollowingScreen extends StatelessWidget {
             itemBuilder: (context, index) {
               return InkWell(
                 onTap: () {
-                  Get.to(()=>OtherUserProfileScreen(userId: userProvider.followingsList[index].id!,));
+                  Get.off(()=>OtherUserProfileScreen(userId: userProvider.followingsList[index].id!,));
                 },
                 child: SearchingTile(
                     name: '${userProvider.followingsList[index].firstname} ${userProvider.followingsList[index].lastname}',

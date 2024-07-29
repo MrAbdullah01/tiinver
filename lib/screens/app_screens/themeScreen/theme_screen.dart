@@ -22,14 +22,15 @@ class ThemeScreen extends StatelessWidget {
             SizedBox(width: 15,),
           ],
           isCenterTitle: true,
-          isIconShow: true),
+          isIconShow: true
+      ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal:20),
         child: Column(
           children: [
             SizedBox(height: 100,),
             SubmitButton(
-              icon: Image.asset(ImagesPath.person,height: 20,),
+              icon: Image.asset(ImagesPath.themeIcon,height: 30,),
               title: "Theme", press: () {
 
             },),

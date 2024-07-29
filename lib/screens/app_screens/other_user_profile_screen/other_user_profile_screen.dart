@@ -64,10 +64,10 @@ class OtherUserProfileScreen extends StatelessWidget {
                               primaryButtonText: "Block",
                               primaryTap: (){
                                 Get.back();
-                                otherUserProfileProvider.blockUser(
-                                    userId: signProvider.userId ?? "",
-                                    userName: profileP.userModel!.username ?? "",
-                                    userApiKey: signProvider.userApiKey ?? "",
+                                otherUserProfileP.blockUser(
+                                    userId: signInP.userId ?? "",
+                                    userName: profileP.userModel.username ?? "",
+                                    userApiKey: signInP.userApiKey ?? "",
                                     blockUserName: otherUserProfileP.userModel!.username!.toString(),
                                     blockUserId: otherUserProfileP.userModel!.id!.toString());
                               }
@@ -118,18 +118,18 @@ class OtherUserProfileScreen extends StatelessWidget {
                       children: [
                         InkWell(
                           onTap: () {
-                            Get.to(()=>UserFollowingScreen(userId: value.userModel!.id!,));
+                            Get.off(()=>UserFollowingScreen(userId: value.userModel!.id!,));
                           },
                           child: FollowingStatus(
                             followNumber: value.userModel!.following!.toString(),
                             followText: "Following",
                             buttonText: value.userModel!.isFollowed == false ? "Follow" : "Following",
-                            icon: Icon(Icons.person),
+                            icon: Icon(Icons.person,size: 14.dp,color: bgColor,),
                             onTap: () {
                               profileP.follow(
                                   followId: signInP.userId.toString(),
                                   userId: value.userModel!.id.toString(),
-                                  userApiKey: signInP.userApiKey.toString()
+                                  userApiKey: signInP.userApiKey.toString(),
                               );
                             },
                           ),
@@ -137,7 +137,7 @@ class OtherUserProfileScreen extends StatelessWidget {
                         SizedBox(width: 10.w,),
                         InkWell(
                           onTap: () {
-                            Get.to(()=>UserFollowersScreen(userId: value.userModel!.id!,));
+                            Get.off(()=>UserFollowersScreen(userId: value.userModel!.id!,));
                           },
                           child: FollowingStatus(
                             followNumber: value.userModel!.followers!.toString(),

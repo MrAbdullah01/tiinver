@@ -10,11 +10,10 @@ import 'package:tiinver_project/constant.dart';
 import 'package:tiinver_project/providers/signIn/sign_in_provider.dart';
 import 'package:tiinver_project/routes/routes_name.dart';
 import '../../api/endpoint/endpoint.dart';
-import '../../api_services/sp_services.dart';
 import '../../db_keys.dart';
-import '../../models/login/user_login_model.dart';
 import '../../models/register/user_sign_up_model.dart';
-import '../../screens/app_screens/bottom_navbar_screen/bottom_navbar_screen.dart';
+import '../dashboard/dashboard_provider.dart';
+import '../suggestions/suggestions_provider.dart';
 
 class SignUpProvider extends ChangeNotifier{
 
@@ -81,6 +80,17 @@ class SignUpProvider extends ChangeNotifier{
           sp.setString(DbKeys.userId, jsonDecode(res.body)["user"]["id"].toString());
           sp.setString(DbKeys.userEmail, jsonDecode(res.body)["user"]["email"].toString());
           sp.setString(DbKeys.userPhone, jsonDecode(res.body)["user"]["phone"].toString());
+          Provider.of<SuggestionsProvider>(context, listen: false).fetchSuggestions(
+            int.parse(jsonDecode(res.body)["user"]["id"].toString()),
+            jsonDecode(res.body)["user"]["apiKey"].toString(),
+          );
+
+          Provider.of<DashboardProvider>(context, listen: false).fetchTimeline(
+            int.parse(jsonDecode(res.body)["user"]["id"].toString()),
+            100,
+            0,
+            jsonDecode(res.body)["user"]["apiKey"].toString(),
+          );
           // sp.setString('userModel', json.encode(user.toJson()));
           Provider.of<SignInProvider>(context,listen: false).
           storeApiKeyAndId(

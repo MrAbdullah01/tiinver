@@ -23,6 +23,7 @@ class UserFollowersScreen extends StatelessWidget {
   Widget build(BuildContext context) {
 
     final updateP = Provider.of<ProfileProvider>(context, listen: false);
+    final signInP = Provider.of<SignInProvider>(context, listen: false);
 
     return Scaffold(
       backgroundColor: bgColor,
@@ -53,7 +54,7 @@ class UserFollowersScreen extends StatelessWidget {
               }
               return InkWell(
                 onTap: () {
-                  Get.to(()=>OtherUserProfileScreen(userId: userProvider.followersList[index].id!,));
+                  Get.off(()=>OtherUserProfileScreen(userId: userProvider.followersList[index].id!,));
                 },
                 child: SearchingTile(
                     name: '${userProvider.followersList[index].firstname} ${userProvider.followersList[index].lastname}',
@@ -62,9 +63,9 @@ class UserFollowersScreen extends StatelessWidget {
                     buttonText: userProvider.followersList[index].isFollowed == false ? "Follow Back" : "Friends",
                     buttonAction: (){
                       userProvider.follow(
-                          followId: signProvider.userId.toString(),
+                          followId: signInP.userId.toString(),
                           userId: userProvider.followersList[index].id.toString(),
-                          userApiKey: signProvider.userApiKey.toString()
+                          userApiKey: signInP.userApiKey.toString()
                       );
 
                       log("tap");

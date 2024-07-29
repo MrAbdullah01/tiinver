@@ -73,6 +73,9 @@ class _DetailScreenState extends State<DetailScreen> {
               icon: Icon(Icons.arrow_back_ios_new_rounded,color: bgColor,)),
           title: InkWell(
             onTap: () {
+              if (widget.activity.isVideo()) {
+                _controller.pause();
+              }
               Get.to(()=>OtherUserProfileScreen(userId: widget.activity.userId!));
             },
             child: Row(
@@ -101,10 +104,14 @@ class _DetailScreenState extends State<DetailScreen> {
         child: widget.activity.isImage()
             ? Image.network(widget.activity.objectUrl!, fit: BoxFit.cover)
             : widget.activity.isVideo() && _controller.value.isInitialized
-            ? AspectRatio(
-              aspectRatio: _controller.value.aspectRatio,
-              child: VideoPlayer(
-                _controller,
+            ? InkWell(
+          onTap: () {
+            _controller.play();
+          },child: AspectRatio(
+                aspectRatio: _controller.value.aspectRatio,
+                child: VideoPlayer(
+                  _controller,
+                ),
               ),
             )
             : Center(child: CircularProgressIndicator()),
@@ -240,10 +247,19 @@ class _DetailScreenState extends State<DetailScreen> {
                                       value.postComment(
                                           activityId: widget.activity.id!.toString(),
                                           userId: signInP.userId.toString(),
-                                          userApiKey: signInP.userApiKey.toString());
+                                          userApiKey: signInP.userApiKey.toString())
+                                          .whenComplete(() {
+                                        commentProvider.fetchComments(widget.activity.id!, signInP.userApiKey!);
+                                        Provider.of<DashboardProvider>(context,listen: false).fetchTimeline(
+                                            int.parse(signInP.userId.toString()),
+                                            100, 0, signInP.userApiKey);
+                                          },);
                                     }
                                   },
-                                  child: value.isLoading ? CircularProgressIndicator()
+                                  child: value.isLoading ? SizedBox(
+                                      height: 30,
+                                      width: 30,
+                                      child: CircularProgressIndicator())
                                       : Container(
                                       padding: const EdgeInsets.symmetric(vertical: 10,horizontal: 20),
                                       child: Image.asset(ImagesPath.sendIcon,height: 2.h,)),
@@ -275,88 +291,3 @@ class _DetailScreenState extends State<DetailScreen> {
     );
   }
 }
-
-//leading: CircleAvatar(
-//                                       backgroundImage: NetworkImage(comment.profile!),
-//                                     ),
-//                                     title: Text('${comment.firstname} ${comment.lastname}'),
-//                                     subtitle: Text(comment.commentText!),
-//                                     // trailing: Text(comment.stamp!),
-
-
-
-
-
-
-
-
-
-
-
-//FutureBuilder(
-//                             future: commentProvider.fetchComments(widget.activity.id!, signInP.userApiKey!), // Provide the actual userApiKey
-//                             builder: (context, snapshot) {
-//                               if (commentProvider.loading) {
-//                                 return Center(child: CircularProgressIndicator());
-//                               }
-//
-//                               if (commentProvider.error != null) {
-//                                 return Center(child: Text('Error: ${commentProvider.error}'));
-//                               }
-//
-//                               if (commentProvider.comments.isEmpty) {
-//                                 return Center(child: Text('No comments found.'));
-//                               }
-//
-//                               return ListView.builder(
-//                                 itemCount: commentProvider.comments.length,
-//                                 itemBuilder: (context, index) {
-//                                   final comment = commentProvider.comments[index];
-//                                   return Container(
-//                                     padding: EdgeInsets.all(20),
-//                                     child: Row(
-//                                       children: [
-//                                         CircleAvatar(
-//                                           radius: 2.5.h,
-//                                           backgroundImage: NetworkImage(comment.profile!),
-//                                         ),
-//                                         SizedBox(width: 20,),
-//                                         Container(
-//                                           padding: const EdgeInsets.all(10),
-//                                           decoration: const BoxDecoration(
-//                                               color: lightGreyColor,
-//                                               borderRadius: BorderRadius.only(
-//                                                 topLeft: Radius.circular(5),
-//                                                 topRight: Radius.circular(20),
-//                                                 bottomLeft: Radius.circular(20),
-//                                                 bottomRight: Radius.circular(20),
-//                                               )
-//                                           ),
-//                                           child: Column(
-//                                             crossAxisAlignment: CrossAxisAlignment.start,
-//                                             children: [
-//                                               TextWidget1(
-//                                                   text: "${comment.firstname} ${comment.lastname}",
-//                                                   fontSize: 10.dp,
-//                                                   fontWeight: FontWeight.w400,
-//                                                   isTextCenter: false,
-//                                                   textColor: themeColor
-//                                               ),
-//                                               TextWidget1(
-//                                                 text: comment.commentText!,
-//                                                 fontSize: 10.dp,
-//                                                 fontWeight: FontWeight.w400,
-//                                                 isTextCenter: false,
-//                                                 textColor: darkGreyColor,
-//                                                 maxLines: 5,
-//                                               ),
-//                                             ],
-//                                           ),
-//                                         )
-//                                       ],
-//                                     ),
-//                                   );
-//                                 },
-//                               );
-//                             },
-//                           )

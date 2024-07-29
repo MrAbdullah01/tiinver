@@ -45,6 +45,17 @@ class ImagesPath{
   static String infoIcon = "images/info.png";
   static String helpIcon = "images/help.png";
   static String storageIcon = "images/storage.png";
+  static String expandIcon = "images/expand_icon.png";
+  static String fontIcon = "images/font_icon.png";
+  static String loopIcon = "images/loop_icon.png";
+  static String paintingIcon = "images/painting_icon.png";
+  static String pencilIcon = "images/pencil_icon.png";
+  static String playIcon = "images/play_icon.png";
+  static String sidebarIcon = "images/sidebar_icon.png";
+  static String smileIcon = "images/smile_icon.png";
+  static String textIcon = "images/text_icon.png";
+  static String themeIcon = "images/theme_icon.png";
+  static String cancelIcon = "images/cancel_icon.png";
 
 
 }

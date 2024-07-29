@@ -149,7 +149,3 @@ class OtherUserProfileProvider extends ChangeNotifier{
   }
 
 }
-
-
-// Global Instance
-final otherUserProfileProvider = OtherUserProfileProvider();

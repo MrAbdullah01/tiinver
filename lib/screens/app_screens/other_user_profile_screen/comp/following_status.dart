@@ -22,7 +22,7 @@ class FollowingStatus extends StatelessWidget {
         TextWidget1(text: followText!, fontSize: 20.dp, fontWeight: FontWeight.w600, isTextCenter: false, textColor: darkGreyColor),
         SubmitButton(
             height: 3.h,
-            width: 18.w,
+            width: 20.w,
             textSize: 10.dp,
             iconSize: 10,
             title: buttonText,

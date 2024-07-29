@@ -59,8 +59,8 @@ class MyProfileScreen extends StatelessWidget {
               ],
             ),
             SizedBox(height: 20,),
-            ProfileDataTile(icon: ImagesPath.personIcon,title: profileP.userModel!.firstname ?? ""),
-            ProfileDataTile(icon: ImagesPath.personIcon,title: profileP.userModel!.username ?? ""),
+            ProfileDataTile(icon: ImagesPath.personIcon,title: profileP.userModel.firstname ?? ""),
+            ProfileDataTile(icon: ImagesPath.personIcon,title: profileP.userModel.username ?? ""),
             Consumer(builder: (context, value, child) {
               return Column(
                 children: [
@@ -69,10 +69,10 @@ class MyProfileScreen extends StatelessWidget {
                 ],
               );
             },),
-            ProfileDataTile(icon: ImagesPath.locationIcon,title: profileP.userModel!.location ?? ""),
-            ProfileDataTile(icon: ImagesPath.businessIcon,title: profileP.userModel!.work ?? ""),
-            ProfileDataTile(icon: ImagesPath.qualificationIcon,title: profileP.userModel!.qualification ?? ""),
-            ProfileDataTile(icon: ImagesPath.educationIcon,title: profileP.userModel!.school ?? ""),
+            ProfileDataTile(icon: ImagesPath.locationIcon,title: profileP.userModel.location ?? ""),
+            ProfileDataTile(icon: ImagesPath.businessIcon,title: profileP.userModel.work ?? ""),
+            ProfileDataTile(icon: ImagesPath.qualificationIcon,title: profileP.userModel.qualification ?? ""),
+            ProfileDataTile(icon: ImagesPath.educationIcon,title: profileP.userModel.school ?? ""),
           ],
         );
       },),

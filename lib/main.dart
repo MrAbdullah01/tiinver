@@ -7,6 +7,7 @@ import 'package:tiinver_project/providers/connectedUsers/connected_users_provide
 import 'package:tiinver_project/providers/createGroup/create_group_provider.dart';
 import 'package:tiinver_project/providers/dashboard/dashboard_provider.dart';
 import 'package:tiinver_project/providers/forgot/forgot_provider.dart';
+import 'package:tiinver_project/providers/graphic/graphic_provider.dart';
 import 'package:tiinver_project/providers/onboard/onboard_provider.dart';
 import 'package:tiinver_project/providers/otherUserProfile/other_user_profile_provider.dart';
 import 'package:tiinver_project/providers/otp/otp_provider.dart';
@@ -14,6 +15,7 @@ import 'package:tiinver_project/providers/profile/profile_provider.dart';
 import 'package:tiinver_project/providers/search/search_provider.dart';
 import 'package:tiinver_project/providers/signIn/sign_in_provider.dart';
 import 'package:tiinver_project/providers/signUp/sign_up_provider.dart';
+import 'package:tiinver_project/providers/suggestions/suggestions_provider.dart';
 import 'package:tiinver_project/routes/routes.dart';
 import 'package:tiinver_project/routes/routes_name.dart';
 
@@ -36,6 +38,7 @@ class MyApp extends StatelessWidget {
         builder: (context, orientation, screenType) {
           return MultiProvider(
               providers: [
+
             ChangeNotifierProvider(create: (_)=> OnboardProvider()),
             ChangeNotifierProvider(create: (_)=> SignInProvider()),
             ChangeNotifierProvider(create: (_)=> SignUpProvider()),
@@ -45,11 +48,11 @@ class MyApp extends StatelessWidget {
             ChangeNotifierProvider(create: (_)=> SearchProvider()),
             ChangeNotifierProvider(create: (_)=> ConnectedUsersProvider()),
             ChangeNotifierProvider(create: (_)=> CreateGroupProvider()),
-            // ChangeNotifierProvider<DashboardProvider>.value(value: dashboardProvider),
-            // ChangeNotifierProvider<SignInProvider>.value(value: signProvider),
-            // ChangeNotifierProvider<OtherUserProfileProvider>.value(value: otherUserProfileProvider),
             ChangeNotifierProvider(create: (_)=> DashboardProvider()),
             ChangeNotifierProvider(create: (_)=> OtherUserProfileProvider()),
+            ChangeNotifierProvider(create: (_)=> SuggestionsProvider()),
+            ChangeNotifierProvider(create: (_)=> GraphicProvider()),
+
           ],
             child: GetMaterialApp(
               debugShowCheckedModeBanner: false,
@@ -58,7 +61,7 @@ class MyApp extends StatelessWidget {
                 colorScheme: ColorScheme.fromSeed(seedColor: themeColor,primary: themeColor),
                 useMaterial3: true,
               ),
-              initialRoute: RoutesName.settingScreen,
+              initialRoute: RoutesName.graphicScreen,
               getPages: Routes.routes,
             ),
           );

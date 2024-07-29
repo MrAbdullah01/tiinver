@@ -36,9 +36,9 @@ class ProfileProvider with ChangeNotifier {
 
   List<FollowingUsers> get followingsList => _followingsList;
 
-  GetUserModel? _userModel;
+  GetUserModel _userModel = GetUserModel();
 
-  GetUserModel? get userModel => _userModel;
+  GetUserModel get userModel => _userModel;
 
   Users? followerUser;
 
@@ -85,15 +85,15 @@ class ProfileProvider with ChangeNotifier {
           _userModel = GetUserModel.fromJson(jsonResponse['userData']);
 
           // Assign values to variables
-          nameController.text = _userModel!.firstname!;
-          qualificationController.text = _userModel!.qualification!;
-          workController.text = _userModel!.work!;
-          schoolController.text = _userModel!.school!;
-          locationController.text = _userModel!.location!;
+          nameController.text = _userModel.firstname!;
+          qualificationController.text = _userModel.qualification!;
+          workController.text = _userModel.work!;
+          schoolController.text = _userModel.school!;
+          locationController.text = _userModel.location!;
+          notifyListeners();
 
           //log("*******${name}******");
 
-          notifyListeners();
         } else {
           throw Exception('Failed to load users');
         }

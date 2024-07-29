@@ -62,14 +62,9 @@ class Endpoint{
     return 'https://tiinver.com/api/v1/allcomment/$activityId';
   }
 
-  // static String blockUser({
-  //   required String usernameBlocked,
-  //   required String username,
-  //   required String userBlockId,
-  //   required String userID,
-  // }) {
-  //   return '${BaseUrls.BASEURL}block?username_blocked=$usernameBlocked&username=$username&userId=$userID&user_blocked_id=$userBlockId';
-  // }
+  static String getSuggestion(int userId) {
+    return 'https://tiinver.com/api/v1/suggestions/$userId';
+  }
 
   static const report = "${BaseUrls.BASEURL}report";
   static const updateUser = "${BaseUrls.BASEURL}user";

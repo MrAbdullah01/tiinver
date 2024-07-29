@@ -35,6 +35,10 @@ class DashboardProvider extends ChangeNotifier{
 
   Stream<List<Activity>> get timelineStream => _timelineController.stream;
 
+  List<Activity> _timeLine = [];
+
+  List<Activity> get timeLine => _timeLine;
+
   Future<void> fetchTimeline(int id, int limit, int offset,userApiKey) async {
     try {
       final response = await ApiService.get(
@@ -45,10 +49,11 @@ class DashboardProvider extends ChangeNotifier{
       if (response.statusCode == 200) {
         final jsonResponse = json.decode(response.body);
         if (!jsonResponse['error']) {
-          List<Activity> activities = (jsonResponse['activities'] as List)
+          _timeLine = (jsonResponse['activities'] as List)
               .map((activity) => Activity.fromJson(activity))
               .toList();
-          _timelineController.add(activities);
+          _timelineController.add(_timeLine);
+          notifyListeners();
         } else {
           _timelineController.addError('Failed to load timeline');
         }
@@ -170,5 +175,3 @@ class DashboardProvider extends ChangeNotifier{
     super.dispose();
   }
 }
-
-final dashboardProvider = DashboardProvider();

@@ -11,11 +11,13 @@ class TextWidget1 extends StatelessWidget {
         this.maxLines,
         this.decoration,
         this.overFlow,
+        this.decorationColor,
         required this.textColor});
   final String text;
   final double fontSize;
   final FontWeight fontWeight;
   final Color textColor;
+  final Color? decorationColor;
   final bool isTextCenter;
   final int? maxLines;
   final TextDecoration? decoration;
@@ -31,7 +33,7 @@ class TextWidget1 extends StatelessWidget {
       style: TextStyle(
           fontSize: fontSize, fontWeight: fontWeight,
           color: textColor,decoration: decoration,
-        decorationColor: themeColor,decorationThickness: 1
+        decorationColor: decorationColor ?? themeColor,decorationThickness: 1
       ),
     );
   }

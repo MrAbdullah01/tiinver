@@ -71,8 +71,8 @@ class ProfileScreen extends StatelessWidget {
                     child: CircleAvatar(
                       radius: 8.h,
                       backgroundColor: lightGreyColor,
-                      backgroundImage: profileP.userModel!.profile != null ?
-                      NetworkImage(profileP.userModel!.profile.toString())
+                      backgroundImage: profileP.userModel.profile != null ?
+                      NetworkImage(profileP.userModel.profile.toString())
                           : AssetImage(ImagesPath.profileImage),
                     ),
                   ),
@@ -96,14 +96,14 @@ class ProfileScreen extends StatelessWidget {
             SizedBox(height: 20,),
             Consumer<ProfileProvider>(builder: (context, value, child) {
               return Center(
-                child: TextWidget1(text: profileP.userModel!.firstname.toString(), fontSize: 24.dp, fontWeight: FontWeight.w700,
+                child: TextWidget1(text: profileP.userModel.firstname.toString(), fontSize: 24.dp, fontWeight: FontWeight.w700,
                   isTextCenter: true, textColor: themeColor,maxLines: 2,),
               );
             },),
             Consumer<ProfileProvider>(builder: (context, value, child) {
               return Center(
                 child: TextWidget1(
-                    text: profileP.userModel!.username.toString(),
+                    text: profileP.userModel.username.toString(),
                     fontSize: 10.dp, fontWeight: FontWeight.w500,
                     isTextCenter: false, textColor: darkGreyColor),
               );
@@ -122,7 +122,7 @@ class ProfileScreen extends StatelessWidget {
                     return Column(
                       children: [
                         TextWidget1(
-                            text: profileP.userModel!.following.toString(),
+                            text: profileP.userModel.following.toString(),
                             fontSize: 20.dp, fontWeight: FontWeight.w500,
                             isTextCenter: false, textColor: darkGreyColor),
                         TextWidget1(text: "Following", fontSize: 16.dp, fontWeight: FontWeight.w500,
@@ -141,7 +141,7 @@ class ProfileScreen extends StatelessWidget {
                     return Column(
                       children: [
                         TextWidget1(
-                            text: profileP.userModel!.followers.toString(),
+                            text: profileP.userModel.followers.toString(),
                             fontSize: 20.dp, fontWeight: FontWeight.w500,
                             isTextCenter: false, textColor: darkGreyColor),
                         TextWidget1(text: "Followers", fontSize: 16.dp, fontWeight: FontWeight.w500,

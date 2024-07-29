@@ -1,19 +1,44 @@
+import 'package:app_device_info/app_device_info.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_sizer/flutter_sizer.dart';
 import 'package:get/get.dart';
 import 'package:tiinver_project/constants/colors.dart';
 import 'package:tiinver_project/constants/text_widget.dart';
+import 'package:tiinver_project/screens/app_screens/aboutScreen/about_screen.dart';
 import 'package:tiinver_project/screens/app_screens/accountPrivacyScreen/account_privacy_screen.dart';
 import 'package:tiinver_project/screens/app_screens/accountScreen/account_screen.dart';
+import 'package:tiinver_project/screens/app_screens/helpScreen/help_screen.dart';
 import 'package:tiinver_project/screens/app_screens/ringtoneScreen/ringtone_screen.dart';
+import 'package:tiinver_project/screens/app_screens/storageAndData/storage_and_data_screen.dart';
 import 'package:tiinver_project/screens/app_screens/themeScreen/theme_screen.dart';
 
 import '../../../constants/images_path.dart';
 import '../../../widgets/header.dart';
 import 'comp/setting_tile.dart';
 
-class SettingScreen extends StatelessWidget {
+class SettingScreen extends StatefulWidget {
   const SettingScreen({super.key});
+
+  @override
+  State<SettingScreen> createState() => _SettingScreenState();
+}
+
+class _SettingScreenState extends State<SettingScreen> {
+
+  String version = 'Unknown';
+
+  @override
+  void initState() {
+    super.initState();
+    _initPackageInfo();
+  }
+
+  Future<void> _initPackageInfo() async {
+    final AppDeviceInfo info = await AppDeviceInfo.getInstance();
+    setState(() {
+      version = info.version;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -53,9 +78,15 @@ class SettingScreen extends StatelessWidget {
           SettingTile(title: "Privacy and Security",image: ImagesPath.privacyIcon,onTap: (){
             Get.to(()=> AccountPrivacyScreen());
           },),
-          SettingTile(title: "Storage and Data",image: ImagesPath.storageIcon,onTap: (){},),
-          SettingTile(title: "Help",image: ImagesPath.helpIcon,onTap: (){},),
-          SettingTile(title: "About",image: ImagesPath.infoIcon,onTap: (){},),
+          SettingTile(title: "Storage and Data",image: ImagesPath.storageIcon,onTap: (){
+            Get.to(()=> StorageAndDataScreen());
+          },),
+          SettingTile(title: "Help",image: ImagesPath.helpIcon,onTap: (){
+            Get.to(()=> HelpScreen());
+          },),
+          SettingTile(title: "About",image: ImagesPath.infoIcon,onTap: () async {
+            Get.to(()=> AboutScreen(version: version,));
+          },),
         ],
       ),
     );

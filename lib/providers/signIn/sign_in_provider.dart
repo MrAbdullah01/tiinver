@@ -2,8 +2,10 @@ import 'dart:convert';
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_navigation/get_navigation.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tiinver_project/api_services/sp_services.dart';
 import 'package:tiinver_project/screens/app_screens/bottom_navbar_screen/bottom_navbar_screen.dart';
@@ -16,13 +18,18 @@ import '../../constant.dart';
 import '../../db_keys.dart';
 import '../../models/login/user_login_model.dart';
 import '../../routes/routes_name.dart';
+import '../dashboard/dashboard_provider.dart';
+import '../suggestions/suggestions_provider.dart';
 
 
 class SignInProvider with ChangeNotifier {
 
   bool obscureText = true;
 
-  String? userApiKey; String? userId; String? userEmail; String? userPhone;
+  String? userApiKey;
+  String? userId;
+  String? userEmail;
+  String? userPhone;
 
   bool isLoading = false;
 
@@ -43,7 +50,7 @@ class SignInProvider with ChangeNotifier {
   //   notifyListeners();
   // }
 
-  Future<void> login(String email, String password) async {
+  Future<void> login(String email, String password, context) async {
     isLoading = true;
     notifyListeners();
     try {
@@ -78,6 +85,19 @@ class SignInProvider with ChangeNotifier {
           sp.setString(DbKeys.userId, _user!.id!.toString());
           sp.setString(DbKeys.userEmail, _user!.email!);
           sp.setString(DbKeys.userPhone, _user!.phone!);
+          userApiKey = _user!.apiKey;
+          Provider.of<SuggestionsProvider>(context, listen: false).fetchSuggestions(
+            int.parse(_user!.id.toString()),
+            _user!.apiKey.toString(),
+          );
+
+          Provider.of<DashboardProvider>(context, listen: false).fetchTimeline(
+            int.parse(userId.toString()),
+            100,
+            0,
+            userApiKey.toString(),
+          );
+
         }
       }
       notifyListeners();
@@ -93,30 +113,42 @@ class SignInProvider with ChangeNotifier {
     var sp = await SharedPreferences.getInstance();
     sp.setString(DbKeys.userApiKey, userApiKey);
     sp.setString(DbKeys.userId, userId);
+    notifyListeners();
   }
 
   logout()async {
 
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.setString(DbKeys.userApiKey, "");
+    prefs.setString(DbKeys.userApiKey, "null");
     Get.offAll(()=>SignInScreen());
     notifyListeners();
   }
 
-  getUserApiKey()async {
+  getApiKey() async {
     var  prefs = await SharedPreferencesService.getInstance();
     userApiKey = prefs.getString(DbKeys.userApiKey).toString();
     userId = prefs.getString(DbKeys.userId).toString();
     userPhone = prefs.getString(DbKeys.userPhone).toString();
     userEmail = prefs.getString(DbKeys.userEmail).toString();
+    notifyListeners();
+  }
+
+  getUserApiKey(context) async {
+    log("Message${DbKeys.userApiKey}");
+
+    var  prefs = await SharedPreferencesService.getInstance();
+    userApiKey = prefs.getString(DbKeys.userApiKey).toString();
+    userId = prefs.getString(DbKeys.userId).toString();
+    userPhone = prefs.getString(DbKeys.userPhone).toString();
+    userEmail = prefs.getString(DbKeys.userEmail).toString();
+    notifyListeners();
     debugPrint(userApiKey);
     debugPrint(userId);
-    if(userApiKey != null && userApiKey!.isNotEmpty){
-      Get.to(()=>BottomNavbarScreen());
-    }else{
-      Get.to(()=>OnboardingScreen());
+    if(userApiKey != null && userApiKey != "null"){
+      Navigator.pushNamed(context, RoutesName.bottomNavigationBar);
+    }else {
+      Navigator.pushNamed(context, RoutesName.onboardingScreen);
     }
-    notifyListeners();
   }
 
   hidePassword(){
@@ -125,6 +157,3 @@ class SignInProvider with ChangeNotifier {
   }
 
 }
-
-
-final signProvider = SignInProvider();

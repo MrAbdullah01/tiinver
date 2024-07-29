@@ -110,7 +110,7 @@ class _SignInScreenState extends State<SignInScreen> {
                       press: (){
                         if(formKey.currentState!.validate()){
 
-                            signInProvider.login(emailC.text, passwordC.text);
+                            signInProvider.login(emailC.text, passwordC.text,context);
 
                         }
                       }
