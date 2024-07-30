@@ -1,4 +1,5 @@
 import 'dart:developer';
+import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_sizer/flutter_sizer.dart';
@@ -52,7 +53,7 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
       signInP.userApiKey.toString(),
     );
 
-    log(signInP.userApiKey.toString());
+    debugPrint(signInP.userApiKey.toString());
 
     Provider.of<SuggestionsProvider>(context, listen: false).fetchSuggestions(
       int.parse(signInP.userId.toString()),
@@ -295,7 +296,12 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
         ),
         child: Icon(Icons.add_rounded,color: bgColor,size: 30.dp,),
           backgroundColor: themeColor,
-          onPressed: (){}
+          onPressed: (){
+            Random random = Random();
+
+            int msgId = random.nextInt(1000000000);
+            debugPrint(msgId.toString());
+          }
       ),
     );
   }

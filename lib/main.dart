@@ -8,6 +8,8 @@ import 'package:tiinver_project/providers/createGroup/create_group_provider.dart
 import 'package:tiinver_project/providers/dashboard/dashboard_provider.dart';
 import 'package:tiinver_project/providers/forgot/forgot_provider.dart';
 import 'package:tiinver_project/providers/graphic/graphic_provider.dart';
+import 'package:tiinver_project/providers/message/message_provider.dart';
+import 'package:tiinver_project/providers/notification/notification_provider.dart';
 import 'package:tiinver_project/providers/onboard/onboard_provider.dart';
 import 'package:tiinver_project/providers/otherUserProfile/other_user_profile_provider.dart';
 import 'package:tiinver_project/providers/otp/otp_provider.dart';
@@ -52,6 +54,8 @@ class MyApp extends StatelessWidget {
             ChangeNotifierProvider(create: (_)=> OtherUserProfileProvider()),
             ChangeNotifierProvider(create: (_)=> SuggestionsProvider()),
             ChangeNotifierProvider(create: (_)=> GraphicProvider()),
+            ChangeNotifierProvider(create: (_)=> NotificationProvider()),
+            ChangeNotifierProvider(create: (_)=> MessageProvider()),
 
           ],
             child: GetMaterialApp(
@@ -61,7 +65,7 @@ class MyApp extends StatelessWidget {
                 colorScheme: ColorScheme.fromSeed(seedColor: themeColor,primary: themeColor),
                 useMaterial3: true,
               ),
-              initialRoute: RoutesName.graphicScreen,
+              initialRoute: RoutesName.splashScreen,
               getPages: Routes.routes,
             ),
           );

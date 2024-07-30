@@ -4,13 +4,14 @@ import 'package:flutter/material.dart';
 
 class DrawingPainter extends CustomPainter {
   final List<Offset?> points;
+  final Color pointerColor;
 
-  DrawingPainter(this.points);
+  DrawingPainter(this.points,this.pointerColor);
 
   @override
   void paint(Canvas canvas, Size size) {
     final paint = Paint()
-      ..color = Colors.black
+      ..color = pointerColor
       ..strokeCap = StrokeCap.round
       ..strokeWidth = 5.0;
 

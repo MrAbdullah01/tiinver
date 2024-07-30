@@ -11,18 +11,37 @@ class GraphicProvider with ChangeNotifier {
 
   TextEditingController _textController = TextEditingController();
   Color _backgroundColor = Colors.white;
+  Color _textColor = Colors.black;
+  Color _pointerColor = Colors.black;
   XFile? _image;
   bool _isBackground = false;
   bool _isDrawing = false;
   List<Offset?> _points = [];
+  List<List<Offset?>> _undoStack = [];
+  List<List<Offset?>> _redoStack = [];
 
   TextEditingController get textController => _textController;
   Color get backgroundColor => _backgroundColor;
+  Color get textColor => _textColor;
+  Color get pointerColor => _pointerColor;
   XFile? get image => _image;
   bool get isBackground => _isBackground;
   bool get isDrawing => _isDrawing;
   List<Offset?> get points => _points;
 
+  clearData(){
+    _textController.text = "";
+    _backgroundColor = Colors.white;
+    _textColor = Colors.black;
+    _pointerColor = Colors.black;
+    _image = null;
+    _isDrawing = false;
+    _isBackground = false;
+    _points.clear();
+    _undoStack.clear();
+    _redoStack.clear();
+    notifyListeners();
+  }
 
   void pickImage() async {
     final picker = ImagePicker();
@@ -35,17 +54,14 @@ class GraphicProvider with ChangeNotifier {
 
   textBackground() {
     _isBackground = !_isBackground;
+    _isDrawing = false;
     notifyListeners();
-
-    log(_isBackground.toString());
-
   }
 
   Future<String> getPersonalFolder() async {
     final downloadsDirectory = await AndroidPathProvider.downloadsPath;
     final personalFolderPath = '$downloadsDirectory/Tiinver App';
     Directory personalFolder = Directory(personalFolderPath);
-
     if (!await personalFolder.exists()) {
       personalFolder.createSync(recursive: true);
     }
@@ -62,7 +78,13 @@ class GraphicProvider with ChangeNotifier {
   }
 
   void pickColor(Color color) {
-    _backgroundColor = color;
+    if(_isBackground){
+      _textColor = color;
+    }else if(_isDrawing){
+      _pointerColor = color;
+    }else{
+      _backgroundColor = color;
+    }
     notifyListeners();
   }
 
@@ -74,7 +96,6 @@ class GraphicProvider with ChangeNotifier {
 
   Future<String> saveImage(Uint8List imageBytes) async {
     if (await requestPermissions()) {
-      // Use android_path_provider to get the Downloads directory
       final uniqueFileName = await generateUniqueFileName('png');
       final imageFile = File(uniqueFileName);
       await imageFile.writeAsBytes(imageBytes);
@@ -86,6 +107,7 @@ class GraphicProvider with ChangeNotifier {
 
   void startDrawing() {
     _isDrawing = !_isDrawing;
+    _isBackground = false;
     notifyListeners();
   }
 
@@ -96,7 +118,28 @@ class GraphicProvider with ChangeNotifier {
 
   void clearPoints() {
     _points.clear();
+    _undoStack.clear();
+    _redoStack.clear();
     notifyListeners();
   }
 
+  void undo() {
+    if (_points.isNotEmpty) {
+      _redoStack.add(List.from(_points));
+      _points = _undoStack.removeLast();
+      notifyListeners();
+    }
+  }
+
+  void redo() {
+    if (_redoStack.isNotEmpty) {
+      _undoStack.add(List.from(_points));
+      _points = _redoStack.removeLast();
+      notifyListeners();
+    }
+  }
+
+  void saveForUndo() {
+    _undoStack.add(List.from(_points));
+  }
 }

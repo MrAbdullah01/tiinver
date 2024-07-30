@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_sizer/flutter_sizer.dart';
 import 'package:get/get.dart';
 import 'package:tiinver_project/constants/colors.dart';
+import 'package:tiinver_project/screens/app_screens/group_chat_screen/group_chat_screen.dart';
 import 'package:tiinver_project/screens/app_screens/invite_contact_screen/invite_contact_screen.dart';
 import 'package:tiinver_project/screens/app_screens/msg_screen/msg_screen.dart';
 import 'package:tiinver_project/widgets/header.dart';
@@ -65,6 +66,7 @@ class ChatHomeScreen extends StatelessWidget {
                   image: ImagesPath.profileImage);
             },),
           ),
+
           SizedBox(height: 20,),
           InkWell(
             splashColor: Colors.transparent,
@@ -123,7 +125,7 @@ class ChatHomeScreen extends StatelessWidget {
           child: Image.asset(ImagesPath.addUserIcon,height: 3.h,),
           backgroundColor: themeColor,
           onPressed: (){
-            Get.to(()=>InviteContactScreen());
+            Get.to(()=>GroupChatScreen());
           }
       ),
     );

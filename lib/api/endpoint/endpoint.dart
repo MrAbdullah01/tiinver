@@ -37,6 +37,7 @@ class Endpoint{
   static const comment = "${BaseUrls.BASEURL}comment";
   static const isPhoneOrEmailExists = "${BaseUrls.BASEURL}isPhoneOrEmailExiste";
   static const blockUser = "${BaseUrls.BASEURL}block";
+  static const privateMessage = "${BaseUrls.BASEURL}createmessage";
 
   static String followers(int userId, int followerId) {
     return 'https://tiinver.com/api/v1/followers/$userId/$followerId';
@@ -64,6 +65,10 @@ class Endpoint{
 
   static String getSuggestion(int userId) {
     return 'https://tiinver.com/api/v1/suggestions/$userId';
+  }
+
+  static String getNotification(int userId) {
+    return 'https://tiinver.com/api/v1/notification/$userId';
   }
 
   static const report = "${BaseUrls.BASEURL}report";
