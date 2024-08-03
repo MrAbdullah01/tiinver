@@ -8,6 +8,7 @@ import 'package:get/get_navigation/get_navigation.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tiinver_project/api_services/sp_services.dart';
+import 'package:tiinver_project/constants/firebase.dart';
 import 'package:tiinver_project/screens/app_screens/bottom_navbar_screen/bottom_navbar_screen.dart';
 import 'package:tiinver_project/screens/auth_screens/onboarding_screen/onboarding_screen.dart';
 import 'package:tiinver_project/screens/auth_screens/signin_screen/sign_in_screen.dart';
@@ -26,10 +27,15 @@ class SignInProvider with ChangeNotifier {
 
   bool obscureText = true;
 
-  String? userApiKey;
-  String? userId;
-  String? userEmail;
-  String? userPhone;
+  String? _userApiKey;
+  String? _userId;
+  String? _userEmail;
+  String? _userPhone;
+
+  String? get userApiKey => _userApiKey;
+  String? get userId => _userId;
+  String? get userEmail => _userEmail;
+  String? get userPhone => _userPhone;
 
   bool isLoading = false;
 
@@ -79,13 +85,15 @@ class SignInProvider with ChangeNotifier {
         }else{
           Get.snackbar("success", message);
           Get.offAllNamed(RoutesName.bottomNavigationBar);
+
           _user = UserLoginModel.fromJson(jsonResponse['user']);
+
           var sp = await SharedPreferences.getInstance();
           sp.setString(DbKeys.userApiKey, _user!.apiKey!);
           sp.setString(DbKeys.userId, _user!.id!.toString());
           sp.setString(DbKeys.userEmail, _user!.email!);
           sp.setString(DbKeys.userPhone, _user!.phone!);
-          userApiKey = _user!.apiKey;
+          _userApiKey = _user!.apiKey;
           Provider.of<SuggestionsProvider>(context, listen: false).fetchSuggestions(
             int.parse(_user!.id.toString()),
             _user!.apiKey.toString(),
@@ -109,10 +117,12 @@ class SignInProvider with ChangeNotifier {
     }
   }
 
-  storeApiKeyAndId({required String userApiKey,required String userId}) async {
+  storeApiKeyAndId({required String apiKey,required String id}) async {
     var sp = await SharedPreferences.getInstance();
-    sp.setString(DbKeys.userApiKey, userApiKey);
-    sp.setString(DbKeys.userId, userId);
+    _userApiKey = apiKey;
+    _userId = id;
+    sp.setString(DbKeys.userApiKey, apiKey);
+    sp.setString(DbKeys.userId, id);
     notifyListeners();
   }
 
@@ -126,10 +136,10 @@ class SignInProvider with ChangeNotifier {
 
   getApiKey() async {
     var  prefs = await SharedPreferencesService.getInstance();
-    userApiKey = prefs.getString(DbKeys.userApiKey).toString();
-    userId = prefs.getString(DbKeys.userId).toString();
-    userPhone = prefs.getString(DbKeys.userPhone).toString();
-    userEmail = prefs.getString(DbKeys.userEmail).toString();
+    _userApiKey = prefs.getString(DbKeys.userApiKey).toString();
+    _userId = prefs.getString(DbKeys.userId).toString();
+    _userPhone = prefs.getString(DbKeys.userPhone).toString();
+    _userEmail = prefs.getString(DbKeys.userEmail).toString();
     notifyListeners();
   }
 
@@ -137,17 +147,17 @@ class SignInProvider with ChangeNotifier {
     log("Message${DbKeys.userApiKey}");
 
     var  prefs = await SharedPreferencesService.getInstance();
-    userApiKey = prefs.getString(DbKeys.userApiKey).toString();
-    userId = prefs.getString(DbKeys.userId).toString();
-    userPhone = prefs.getString(DbKeys.userPhone).toString();
-    userEmail = prefs.getString(DbKeys.userEmail).toString();
+    _userApiKey = prefs.getString(DbKeys.userApiKey).toString();
+    _userId = prefs.getString(DbKeys.userId).toString();
+    _userPhone = prefs.getString(DbKeys.userPhone).toString();
+    _userEmail = prefs.getString(DbKeys.userEmail).toString();
     notifyListeners();
     debugPrint(userApiKey);
     debugPrint(userId);
     if(userApiKey != null && userApiKey != "null"){
-      Navigator.pushNamed(context, RoutesName.bottomNavigationBar);
+      Navigator.pushReplacementNamed(context, RoutesName.bottomNavigationBar);
     }else {
-      Navigator.pushNamed(context, RoutesName.onboardingScreen);
+      Navigator.pushReplacementNamed(context, RoutesName.onboardingScreen);
     }
   }
 

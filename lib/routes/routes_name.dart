@@ -9,4 +9,5 @@ class RoutesName{
   static const bottomNavigationBar = "/bottom_navigation_bar";
   static const settingScreen = "/setting_screen";
   static const graphicScreen = "/graphic_screen";
+  static const cameraScreen = "/camera_screen";
 }

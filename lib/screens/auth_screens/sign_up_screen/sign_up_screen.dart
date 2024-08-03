@@ -1,8 +1,10 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_sizer/flutter_sizer.dart';
 import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 import 'package:tiinver_project/constants/colors.dart';
+import 'package:tiinver_project/providers/signIn/sign_in_provider.dart';
 import 'package:tiinver_project/widgets/header.dart';
 
 import '../../../constants/images_path.dart';
@@ -107,7 +109,10 @@ class SignUpScreen extends StatelessWidget {
                   radius: 15,
                   width: 70.w,
                   title: "Sign up",
-                  press: (){
+                  press: () async {
+                    // FirebaseFirestore.instance.collection("user").doc("31434324").set({
+                    //       "userId" : "093214309413241"
+                    //     });
                     if(signUpP.passwordC.text == signUpP.confirmPasswordC.text){
                       if(formKey.currentState!.validate()){
                         otpP.otpSend(signUpP.emailC.text);

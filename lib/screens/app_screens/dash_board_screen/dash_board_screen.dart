@@ -12,6 +12,7 @@ import 'package:tiinver_project/models/suggestionsModel/suggestions_model.dart';
 import 'package:tiinver_project/providers/dashboard/dashboard_provider.dart';
 import 'package:tiinver_project/providers/profile/profile_provider.dart';
 import 'package:tiinver_project/providers/suggestions/suggestions_provider.dart';
+import 'package:tiinver_project/routes/routes_name.dart';
 import 'package:tiinver_project/screens/app_screens/other_user_profile_screen/comp/dialogue_box.dart';
 
 import 'package:tiinver_project/widgets/header.dart';
@@ -27,7 +28,7 @@ import '../search_screen/search_screen.dart';
 import 'comp/media_widget.dart';
 
 class DashBoardScreen extends StatefulWidget {
-  DashBoardScreen({super.key});
+  const DashBoardScreen({super.key});
 
   @override
   State<DashBoardScreen> createState() => _DashBoardScreenState();
@@ -44,7 +45,7 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
     super.initState();
     var signInP = Provider.of<SignInProvider>(context, listen: false);
 
-    // Provider.of<ProfileProvider>(context,listen: false).getUserProfile(context);
+    Provider.of<ProfileProvider>(context,listen: false).getUserProfile(context);
 
     Provider.of<DashboardProvider>(context, listen: false).fetchTimeline(
       int.parse(signInP.userId.toString()),
@@ -59,8 +60,6 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
       int.parse(signInP.userId.toString()),
       signInP.userApiKey.toString(),
     );
-
-
 
   }
 
@@ -297,10 +296,11 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
         child: Icon(Icons.add_rounded,color: bgColor,size: 30.dp,),
           backgroundColor: themeColor,
           onPressed: (){
-            Random random = Random();
-
-            int msgId = random.nextInt(1000000000);
-            debugPrint(msgId.toString());
+          Navigator.pushNamed(context, RoutesName.cameraScreen);
+            // Random random = Random();
+            //
+            // int msgId = random.nextInt(1000000000);
+            // debugPrint(msgId.toString());
           }
       ),
     );

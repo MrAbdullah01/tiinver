@@ -15,16 +15,22 @@ import 'package:tiinver_project/providers/graphic/graphic_provider.dart';
 
 import '../../../constants/colors.dart';
 import '../../../constants/images_path.dart';
+import '../../../firebase/chat/firebase_chat.dart';
+import '../../../models/chatModel/chat_model.dart';
+import '../../../models/msgModel/msg_model.dart';
 import '../../../providers/graphic/comp/drawiing_paint.dart';
+import '../../../providers/uploadingProgressProvider/uploading_progress_provider.dart';
 
 class GraphicScreen extends StatelessWidget {
-  GraphicScreen({super.key});
-
+  GraphicScreen({super.key, required this.user});
+  final ChatUser user;
+  List<Message> _list = [];
   final GlobalKey _repaintBoundaryKey = GlobalKey();
 
   @override
   Widget build(BuildContext context) {
     var graphicP = Provider.of<GraphicProvider>(context, listen: false);
+    var uploadingProgressBarProvider = Provider.of<UploadingProgressBarProvider>(context, listen: false);
     return SafeArea(
       child: Scaffold(
         extendBodyBehindAppBar: true,
@@ -252,6 +258,7 @@ class GraphicScreen extends StatelessWidget {
                         InkWell(
                           onTap: () {
                             _saveImage(context);
+                            Get.back();
                           },
                           child: Container(
                             height: 50,
@@ -307,7 +314,9 @@ class GraphicScreen extends StatelessWidget {
   }
 
   Future<void> _saveImage(BuildContext context) async {
+    var uploadingProgressBarProvider = Provider.of<UploadingProgressBarProvider>(context, listen: false);
     try {
+      uploadingProgressBarProvider.setVisibility(true);
       RenderRepaintBoundary boundary =
       _repaintBoundaryKey.currentContext!.findRenderObject()
       as RenderRepaintBoundary;
@@ -318,11 +327,16 @@ class GraphicScreen extends StatelessWidget {
         Uint8List pngBytes = byteData.buffer.asUint8List();
         String imagePath =
         await context.read<GraphicProvider>().saveImage(pngBytes);
-        ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('Image saved to $imagePath')));
+        await FirebaseChat.sendChatImage(_list, user, File(imagePath));
+        // Get.back();
+        // ScaffoldMessenger.of(context).showSnackBar(
+        //     SnackBar(content: Text('Image saved to $imagePath')));
       }
     } catch (e) {
       print(e);
+    } finally{
+      uploadingProgressBarProvider.setVisibility(false);
+
     }
   }
 }

@@ -3,12 +3,16 @@ import 'package:flutter_sizer/flutter_sizer.dart';
 import 'package:provider/provider.dart';
 import 'package:tiinver_project/constants/colors.dart';
 import 'package:tiinver_project/constants/text_widget.dart';
+import 'package:tiinver_project/firebase/chat/firebase_account_handling.dart';
+import 'package:tiinver_project/providers/signIn/sign_in_provider.dart';
 import 'package:tiinver_project/screens/app_screens/group_creation_screen/group_creation_screen.dart';
 import 'package:tiinver_project/widgets/field_widget.dart';
 import 'package:tiinver_project/widgets/header.dart';
 
 import '../../../constants/images_path.dart';
+import '../../../providers/chat/chat_provider.dart';
 import '../../../providers/connectedUsers/connected_users_provider.dart';
+import '../chat_screen/chat_screen.dart';
 
 class InviteContactScreen extends StatelessWidget {
   InviteContactScreen({super.key});
@@ -17,6 +21,8 @@ class InviteContactScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
+    var signInP = Provider.of<SignInProvider>(context,listen: false);
 
     return Scaffold(
       backgroundColor: bgColor,
@@ -85,12 +91,28 @@ class InviteContactScreen extends StatelessWidget {
                   }
 
                   return ListView.builder(
-                    itemCount: 20,
+                    itemCount: provider.connectedUsers.length,
                     itemBuilder: (context, index) {
                       final user = provider.connectedUsers[index];
                       return Padding(
                         padding: const EdgeInsets.symmetric(vertical: 8.0),
                         child: ListTile(
+                          onTap: () async {
+                            FirebaseAccountHandling.addChatUserToMyContact(context, user.userId.toString());
+                            debugPrint(user.userId.toString());
+                            // if (user.userId != null) {
+                            //   String chatId = await Provider.of<ChatProvider>(context, listen: false)
+                            //       .createChat(signInP.userId.toString(), user.userId.toString());
+                            //   Navigator.push(
+                            //     context,
+                            //     MaterialPageRoute(builder: (context) => ChatScreen(
+                            //       chatId: chatId,
+                            //       senderId: signInP.userId.toString(),
+                            //       receiverId: user.userId.toString(),
+                            //     )),
+                            //   );
+                            // }
+                          },
                           leading: CircleAvatar(
                             radius: 3.5.h,
                             backgroundImage: NetworkImage(user.profile!),

@@ -1,6 +1,6 @@
 import 'dart:convert';
 import 'dart:developer';
-
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:provider/provider.dart';
@@ -26,9 +26,9 @@ class SignUpProvider extends ChangeNotifier{
 
   bool obscureText2 = true;
 
-  UserSignUpModel? _userSignUPModel;
+  UserSignUp _userSignUPModel = UserSignUp();
 
-  UserSignUpModel? get userSignUPModel => _userSignUPModel;
+  UserSignUp get userSignUPModel => _userSignUPModel;
 
   String? userApiKey;
 
@@ -36,9 +36,7 @@ class SignUpProvider extends ChangeNotifier{
 
   bool isLoading = false;
 
-  UserSignUpModel? _user;
-
-  UserSignUpModel? get user => _user;
+  var fireStore = FirebaseFirestore.instance;
 
   Future<void> signUp(BuildContext context) async {
     isLoading = true;
@@ -74,29 +72,60 @@ class SignUpProvider extends ChangeNotifier{
           Get.snackbar("error", message);
         }else{
           Get.snackbar("success", message);
-          final user = UserSignUpModel.fromJson(jsonResponse);
+
+          _userSignUPModel = UserSignUp.fromJson(jsonResponse['user']);
+
+          fireStore.collection("users").doc(_userSignUPModel.id.toString()).set({
+            "id" : _userSignUPModel.id.toString(),
+            "apiKey" : _userSignUPModel.apiKey.toString(),
+            "email" : _userSignUPModel.email.toString(),
+            "phone" : _userSignUPModel.phone.toString(),
+            "subscribe" : _userSignUPModel.subscribe.toString(),
+            "blocked_users" : _userSignUPModel.blockedUsers,
+            "type" : _userSignUPModel.type.toString(),
+            "username" : _userSignUPModel.username.toString(),
+            "firstname" : _userSignUPModel.firstname.toString(),
+            "lastname" : _userSignUPModel.lastname.toString(),
+            "profile" : _userSignUPModel.profile.toString(),
+            "verify" : _userSignUPModel.verify.toString(),
+            "active" : _userSignUPModel.active.toString(),
+            "followers" : _userSignUPModel.followers.toString(),
+            "following" : _userSignUPModel.following.toString(),
+            "location" : _userSignUPModel.location.toString(),
+            "school" : _userSignUPModel.school.toString(),
+            "qualification" : _userSignUPModel.qualification.toString(),
+            "birthday" : _userSignUPModel.birthday.toString(),
+            "work" : _userSignUPModel.work.toString(),
+            "coinsAmount" : _userSignUPModel.coinsAmount.toString(),
+            "stamp" : _userSignUPModel.stamp.toString(),
+          });
+
+          Provider.of<SignInProvider>(context,listen: false).
+          storeApiKeyAndId(
+              apiKey: _userSignUPModel.apiKey.toString(),
+              id: _userSignUPModel.id.toString());
+          Get.offAllNamed(RoutesName.bottomNavigationBar);
+
           var sp = await SharedPreferences.getInstance();
-          sp.setString(DbKeys.userApiKey, jsonDecode(res.body)["user"]["apiKey"].toString());
-          sp.setString(DbKeys.userId, jsonDecode(res.body)["user"]["id"].toString());
-          sp.setString(DbKeys.userEmail, jsonDecode(res.body)["user"]["email"].toString());
-          sp.setString(DbKeys.userPhone, jsonDecode(res.body)["user"]["phone"].toString());
+          sp.setString(DbKeys.userApiKey, _userSignUPModel.apiKey.toString());
+          sp.setString(DbKeys.userId, _userSignUPModel.id.toString());
+          sp.setString(DbKeys.userEmail, _userSignUPModel.email.toString());
+          sp.setString(DbKeys.userPhone, _userSignUPModel.phone.toString());
+
           Provider.of<SuggestionsProvider>(context, listen: false).fetchSuggestions(
-            int.parse(jsonDecode(res.body)["user"]["id"].toString()),
-            jsonDecode(res.body)["user"]["apiKey"].toString(),
+            int.parse(_userSignUPModel.id.toString()),
+            jsonDecode(_userSignUPModel.apiKey.toString()),
           );
 
           Provider.of<DashboardProvider>(context, listen: false).fetchTimeline(
-            int.parse(jsonDecode(res.body)["user"]["id"].toString()),
+            int.parse(_userSignUPModel.id.toString()),
             100,
             0,
-            jsonDecode(res.body)["user"]["apiKey"].toString(),
+            _userSignUPModel.apiKey.toString(),
           );
-          // sp.setString('userModel', json.encode(user.toJson()));
-          Provider.of<SignInProvider>(context,listen: false).
-          storeApiKeyAndId(
-              userApiKey: jsonDecode(res.body)["user"]["apiKey"].toString(),
-              userId: jsonDecode(res.body)["user"]["id"].toString());
-          Get.offAllNamed(RoutesName.bottomNavigationBar);
+
+          sp.setString('userModel', json.encode(_userSignUPModel.toJson()));
+
           notifyListeners();
         }
       }
@@ -108,17 +137,6 @@ class SignUpProvider extends ChangeNotifier{
       notifyListeners();
     }
   }
-  // getUserApiKey()async {
-  //   SharedPreferences prefs = await SharedPreferences.getInstance();
-  //   userApiKey = prefs.getString(DbKeys.userApiKey);
-  //   debugPrint(userApiKey);
-  //   if(userApiKey != null && userApiKey!.isNotEmpty){
-  //     Get.to(()=>BottomNavbarScreen());
-  //   }else{
-  //     Get.to(()=>OnboardingScreen());
-  //   }
-  //   notifyListeners();
-  //}
 
   hidePassword(){
     obscureText1 = !obscureText1;

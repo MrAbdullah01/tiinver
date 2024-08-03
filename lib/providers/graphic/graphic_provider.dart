@@ -1,4 +1,3 @@
-import 'dart:developer';
 import 'dart:io';
 import 'dart:typed_data';
 
@@ -20,6 +19,7 @@ class GraphicProvider with ChangeNotifier {
   List<List<Offset?>> _undoStack = [];
   List<List<Offset?>> _redoStack = [];
 
+
   TextEditingController get textController => _textController;
   Color get backgroundColor => _backgroundColor;
   Color get textColor => _textColor;
@@ -28,6 +28,8 @@ class GraphicProvider with ChangeNotifier {
   bool get isBackground => _isBackground;
   bool get isDrawing => _isDrawing;
   List<Offset?> get points => _points;
+
+
 
   clearData(){
     _textController.text = "";
@@ -142,4 +144,26 @@ class GraphicProvider with ChangeNotifier {
   void saveForUndo() {
     _undoStack.add(List.from(_points));
   }
+
+  // Future<void> initializeCamera() async {
+  //   _cameraController = CameraController();
+  //   await _cameraController!.initialize();
+  //   _isInitialized = true;
+  //   notifyListeners();
+  // }
+  //
+  // void disposeCamera() {
+  //   _cameraController?.dispose();
+  //   _isInitialized = false;
+  //   notifyListeners();
+  // }
+  //
+  // Future<void> takePicture() async {
+  //   if (_cameraController != null) {
+  //     final filePath = await _cameraController!.takePicture();
+  //     print("Picture saved at: $filePath");
+  //   }
+  // }
+
+
 }

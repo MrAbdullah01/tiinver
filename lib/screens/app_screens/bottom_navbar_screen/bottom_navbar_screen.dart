@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:tiinver_project/constants/colors.dart';
+import 'package:tiinver_project/providers/chat/chat_provider.dart';
 import 'package:tiinver_project/providers/profile/profile_provider.dart';
 import 'package:tiinver_project/providers/signIn/sign_in_provider.dart';
 
-import '../../../providers/dashboard/dashboard_provider.dart';
-import '../../../providers/suggestions/suggestions_provider.dart';
 import '../chat_home_screen/chat_home_screen.dart';
 import '../dash_board_screen/dash_board_screen.dart';
 import '../notification_screen/notification_screen.dart';
@@ -28,6 +27,7 @@ class _BottomNavbarScreenState extends State<BottomNavbarScreen> {
     super.initState();
     _pageController = PageController();
     Provider.of<SignInProvider>(context,listen: false).getApiKey();
+    //Provider.of<ChatProvider>(context,listen: false).getApiKey();
     Provider.of<ProfileProvider>(context,listen: false).getUserProfile(context);
     //var signInP = Provider.of<SignInProvider>(context, listen: false);
 
@@ -49,7 +49,7 @@ class _BottomNavbarScreenState extends State<BottomNavbarScreen> {
 
   @override
   Widget build(BuildContext context) {
-    //var signP = Provider.of<SignInProvider>(context,listen: false);
+    var signP = Provider.of<SignInProvider>(context,listen: false);
     //debugPrint(signP.userId.toString());
     return Scaffold(
       backgroundColor: themeColor,
@@ -62,9 +62,9 @@ class _BottomNavbarScreenState extends State<BottomNavbarScreen> {
         },
         children: <Widget>[
           DashBoardScreen(),
-          ChatHomeScreen(),
+          ChatListScreen(),
           NotificationScreen(),
-          ProfileScreen()
+          ProfileScreen(),
         ],
       ),
       bottomNavigationBar: BottomNavigationBar(

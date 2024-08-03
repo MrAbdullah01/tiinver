@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_sizer/flutter_sizer.dart';
+import 'package:provider/provider.dart';
 import 'package:tiinver_project/constants/colors.dart';
+import 'package:tiinver_project/providers/signIn/sign_in_provider.dart';
 import 'package:tiinver_project/widgets/header.dart';
 import 'package:tiinver_project/widgets/submit_button.dart';
 
@@ -11,6 +13,7 @@ class AccountScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var signP = Provider.of<SignInProvider>(context,listen: false);
     return Scaffold(
       backgroundColor: bgColor,
       appBar: Header().header1(
@@ -29,7 +32,7 @@ class AccountScreen extends StatelessWidget {
           children: [
             SizedBox(height: 100,),
             SubmitButton(title: "Log Out", press: () {
-
+              signP.logout();
             },),
             SizedBox(height: 20,),
             SubmitButton(title: "Delete My Account", press: () {

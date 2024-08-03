@@ -1,3 +1,4 @@
+import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_sizer/flutter_sizer.dart';
@@ -21,12 +22,13 @@ class _SplashScreenState extends State<SplashScreen> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    Provider.of<SignInProvider>(context,listen: false).getUserApiKey(context);
+    Timer(Duration(seconds: 3), () {
+      Provider.of<SignInProvider>(context,listen: false).getUserApiKey(context);
+    },);
   }
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       backgroundColor: bgColor,
       body: Center(

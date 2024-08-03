@@ -121,33 +121,33 @@ class UserSignUp {
   }
 
   UserSignUp.fromJson(dynamic json) {
-    _id = json['id'];
-    _apiKey = json['apiKey'];
-    _email = json['email'];
-    _phone = json['phone'];
-    _subscribe = json['subscribe'];
+    _id = json['id'] ?? "";
+    _apiKey = json['apiKey']?? "";
+    _email = json['email']?? "";
+    _phone = json['phone']?? "";
+    _subscribe = json['subscribe']?? "";
     if (json['blocked_users'] != null) {
       _blockedUsers = [];
       json['blocked_users'].forEach((v) {
         _blockedUsers?.add(v); // Use the correct type for blocked_users if known
       });
     }
-    _type = json['type'];
-    _username = json['username'];
-    _firstname = json['firstname'];
-    _lastname = json['lastname'];
-    _profile = json['profile'];
-    _verify = json['verify'];
-    _active = json['active'];
-    _followers = json['followers'];
-    _following = json['following'];
-    _location = json['location'];
-    _school = json['school'];
-    _qualification = json['qualification'];
-    _birthday = json['birthday'];
-    _work = json['work'];
-    _coinsAmount = json['coinsAmount'];
-    _stamp = json['stamp'];
+    _type = json['type']?? "";
+    _username = json['username']?? "";
+    _firstname = json['firstname']?? "";
+    _lastname = json['lastname']?? "";
+    _profile = json['profile']?? "";
+    _verify = json['verify']?? "";
+    _active = json['active']?? "";
+    _followers = json['followers']?? "";
+    _following = json['following']?? "";
+    _location = json['location']?? "";
+    _school = json['school']?? "";
+    _qualification = json['qualification']?? "";
+    _birthday = json['birthday']?? "";
+    _work = json['work']?? "";
+    _coinsAmount = json['coinsAmount']?? "";
+    _stamp = json['stamp']?? "";
   }
   num? _id;
   String? _apiKey;

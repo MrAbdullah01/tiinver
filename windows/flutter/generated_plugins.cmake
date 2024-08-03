@@ -3,10 +3,16 @@
 #
 
 list(APPEND FLUTTER_PLUGIN_LIST
+  audioplayers_windows
+  cloud_firestore
   connectivity_plus
   desktop_drop
   file_selector_windows
+  firebase_core
+  firebase_storage
+  geolocator_windows
   media_kit_video
+  record_windows
   screen_brightness_windows
   share_plus
   thumblr_windows

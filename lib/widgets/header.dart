@@ -31,7 +31,11 @@ class Header {
                 onTap: (){
                   Get.back();
                 },
-                child: NavigateButton(icon: CupertinoIcons.back, height: 30, width: 30, iconSize: 6.w,)),
+                child: NavigateButton(
+                  icon: CupertinoIcons.back,
+                  height: 30,
+                  width: 30,
+                  iconSize: 6.w,)),
           ),
         )
     );

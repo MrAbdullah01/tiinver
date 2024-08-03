@@ -1,8 +1,11 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_sizer/flutter_sizer.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'package:provider/provider.dart';
+import 'package:tiinver_project/providers/chat/chat_provider.dart';
+import 'package:tiinver_project/providers/chatActivityProvider/chat_activity_provider.dart';
 import 'package:tiinver_project/providers/connectedUsers/connected_users_provider.dart';
 import 'package:tiinver_project/providers/createGroup/create_group_provider.dart';
 import 'package:tiinver_project/providers/dashboard/dashboard_provider.dart';
@@ -18,16 +21,22 @@ import 'package:tiinver_project/providers/search/search_provider.dart';
 import 'package:tiinver_project/providers/signIn/sign_in_provider.dart';
 import 'package:tiinver_project/providers/signUp/sign_up_provider.dart';
 import 'package:tiinver_project/providers/suggestions/suggestions_provider.dart';
+import 'package:tiinver_project/providers/uploadingProgressProvider/uploading_progress_provider.dart';
 import 'package:tiinver_project/routes/routes.dart';
 import 'package:tiinver_project/routes/routes_name.dart';
 
 import 'constants/colors.dart';
+import 'firebase_options.dart';
+import 'gloabal_key.dart';
 
-void main() {
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp
   ]);
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   runApp(const MyApp());
 }
 
@@ -56,9 +65,13 @@ class MyApp extends StatelessWidget {
             ChangeNotifierProvider(create: (_)=> GraphicProvider()),
             ChangeNotifierProvider(create: (_)=> NotificationProvider()),
             ChangeNotifierProvider(create: (_)=> MessageProvider()),
+            ChangeNotifierProvider(create: (_)=> ChatProvider()),
+            ChangeNotifierProvider(create: (_)=> ChatActivitySendButtonProvider()),
+            ChangeNotifierProvider(create: (_)=> UploadingProgressBarProvider()),
 
           ],
             child: GetMaterialApp(
+              navigatorKey: navigatorKey,
               debugShowCheckedModeBanner: false,
               title: 'Tiinver',
               theme: ThemeData(
