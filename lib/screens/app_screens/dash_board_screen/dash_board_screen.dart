@@ -1,6 +1,3 @@
-import 'dart:developer';
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_sizer/flutter_sizer.dart';
 import 'package:get/get.dart';
@@ -8,7 +5,6 @@ import 'package:provider/provider.dart';
 import 'package:tiinver_project/constants/colors.dart';
 import 'package:tiinver_project/constants/images_path.dart';
 import 'package:tiinver_project/constants/text_widget.dart';
-import 'package:tiinver_project/models/suggestionsModel/suggestions_model.dart';
 import 'package:tiinver_project/providers/dashboard/dashboard_provider.dart';
 import 'package:tiinver_project/providers/profile/profile_provider.dart';
 import 'package:tiinver_project/providers/suggestions/suggestions_provider.dart';
@@ -18,7 +14,6 @@ import 'package:tiinver_project/screens/app_screens/other_user_profile_screen/co
 import 'package:tiinver_project/widgets/header.dart';
 import 'package:tiinver_project/widgets/submit_button.dart';
 
-import '../../../models/feedTimeLineModel/feed_time_line_model.dart';
 import '../../../providers/search/search_provider.dart';
 import '../../../providers/signIn/sign_in_provider.dart';
 import '../../../widgets/image_loader_widget.dart';

@@ -3,16 +3,14 @@ import 'package:flutter_sizer/flutter_sizer.dart';
 import 'package:provider/provider.dart';
 import 'package:tiinver_project/constants/colors.dart';
 import 'package:tiinver_project/constants/text_widget.dart';
-import 'package:tiinver_project/firebase/chat/firebase_account_handling.dart';
 import 'package:tiinver_project/providers/signIn/sign_in_provider.dart';
 import 'package:tiinver_project/screens/app_screens/group_creation_screen/group_creation_screen.dart';
 import 'package:tiinver_project/widgets/field_widget.dart';
 import 'package:tiinver_project/widgets/header.dart';
 
 import '../../../constants/images_path.dart';
-import '../../../providers/chat/chat_provider.dart';
+import '../../../firebase/chat/firebase_account_handling.dart';
 import '../../../providers/connectedUsers/connected_users_provider.dart';
-import '../chat_screen/chat_screen.dart';
 
 class InviteContactScreen extends StatelessWidget {
   InviteContactScreen({super.key});
@@ -46,8 +44,8 @@ class InviteContactScreen extends StatelessWidget {
                   width: 50,
                   padding: EdgeInsets.all(10),
                   decoration: BoxDecoration(
-                    color: themeColor,
-                    shape: BoxShape.circle
+                      color: themeColor,
+                      shape: BoxShape.circle
                   ),
                   child: Image.asset(ImagesPath.addUserIcon),
                 ),
@@ -70,7 +68,7 @@ class InviteContactScreen extends StatelessWidget {
                 SizedBox(
                   width: 70.w,
                   child: InputField(
-                      inputController: searchC,
+                    inputController: searchC,
                     hintText: "Search in Tiinver",
                   ),
                 ),
@@ -79,7 +77,7 @@ class InviteContactScreen extends StatelessWidget {
           ),
           Expanded(
             child: ChangeNotifierProvider(
-              create: (_) => ConnectedUsersProvider()..getUserProfile(context),
+              create: (_) => ConnectedUsersProvider()..fetchConnectedUsers(context),
               child: Consumer<ConnectedUsersProvider>(
                 builder: (context, provider, child) {
                   if (provider.isLoading) {
@@ -131,16 +129,18 @@ class InviteContactScreen extends StatelessWidget {
         ],
       ),
       floatingActionButton: FloatingActionButton(
-        backgroundColor: themeColor,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(50)),
-        child: Padding(
-          padding: const EdgeInsets.all(15.0),
-          child: Image.asset(ImagesPath.sendIcon,color: bgColor),
-        ),
+          backgroundColor: themeColor,
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(50)),
+          child: Padding(
+            padding: const EdgeInsets.all(15.0),
+            child: Image.asset(ImagesPath.sendIcon,color: bgColor),
+          ),
           onPressed: (){
-          Navigator.push(context, MaterialPageRoute(builder: (context)=>GroupCreationScreen()));
+            Navigator.push(context, MaterialPageRoute(builder: (context)=>GroupCreationScreen()));
           }
       ),
     );
   }
 }
+
+

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:tiinver_project/constants/colors.dart';
-import 'package:tiinver_project/providers/chat/chat_provider.dart';
 import 'package:tiinver_project/providers/profile/profile_provider.dart';
 import 'package:tiinver_project/providers/signIn/sign_in_provider.dart';
 
@@ -49,7 +48,7 @@ class _BottomNavbarScreenState extends State<BottomNavbarScreen> {
 
   @override
   Widget build(BuildContext context) {
-    var signP = Provider.of<SignInProvider>(context,listen: false);
+    //var signP = Provider.of<SignInProvider>(context,listen: false);
     //debugPrint(signP.userId.toString());
     return Scaffold(
       backgroundColor: themeColor,

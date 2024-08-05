@@ -3,13 +3,10 @@ import 'dart:convert';
 import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
-import 'package:provider/provider.dart';
 import 'package:tiinver_project/api/endpoint/endpoint.dart';
 import '../../api/api_services/api_services.dart';
 import '../../constant.dart';
 import '../../models/feedTimeLineModel/feed_time_line_model.dart';
-import '../signIn/sign_in_provider.dart';
 
 class DashboardProvider extends ChangeNotifier{
 

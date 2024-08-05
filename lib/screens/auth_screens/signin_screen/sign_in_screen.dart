@@ -9,8 +9,6 @@ import 'package:tiinver_project/constants/text_widget.dart';
 import 'package:tiinver_project/widgets/field_widget.dart';
 import 'package:tiinver_project/widgets/header.dart';
 import 'package:tiinver_project/widgets/submit_button.dart';
-
-import '../../../providers/signIn/sign_in_provider.dart';
 import '../../../providers/signIn/sign_in_provider.dart';
 import '../forget_password_screen/forget_password_screen.dart';
 import '../sign_up_screen/sign_up_screen.dart';

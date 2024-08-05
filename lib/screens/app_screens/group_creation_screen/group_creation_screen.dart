@@ -9,7 +9,6 @@ import 'package:tiinver_project/widgets/field_widget.dart';
 import 'package:tiinver_project/widgets/header.dart';
 
 import '../../../constants/images_path.dart';
-import '../group_chat_screen/group_chat_screen.dart';
 
 class GroupCreationScreen extends StatefulWidget {
   GroupCreationScreen({super.key});

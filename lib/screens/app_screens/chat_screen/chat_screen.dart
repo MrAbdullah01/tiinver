@@ -341,6 +341,7 @@ class _ChatScreenState extends State<ChatScreen> {
                               onTap: () {
                                 Get.to(()=>GraphicScreen(
                                   user: widget.user,
+                                  isCamera: false,
                                 ));
                               },
                               child: SizedBox(
@@ -534,8 +535,8 @@ class _ChatScreenState extends State<ChatScreen> {
 //     return Column();
 //   }
 // }
-
-//Consumer<ChatProvider>(
+//
+// Consumer<ChatProvider>(
 //       builder: (context, provider, child) {
 //         return StreamBuilder<QuerySnapshot>(
 //           stream: provider.getMessages(chatId),
@@ -562,7 +563,7 @@ class _ChatScreenState extends State<ChatScreen> {
 //         );
 //       },
 //     )
-
+//
 // class MessageBubble extends StatelessWidget {
 //   final String text;
 //   final Timestamp timestamp;
@@ -852,3 +853,94 @@ class _ChatScreenState extends State<ChatScreen> {
 //           ),
 //         ],
 //       ),
+
+
+// import 'package:flutter/material.dart';
+// import 'package:provider/provider.dart';
+// import '../../../models/chatModel/chat_model.dart';
+// import '../../../providers/chat/chat_provider.dart';
+//
+// class ChatScreen extends StatelessWidget {
+//   final String chatId;
+//   final String senderId;
+//   final String receiverId;
+//
+//   ChatScreen({
+//     required this.chatId,
+//     required this.senderId,
+//     required this.receiverId,
+//   });
+//
+//   @override
+//   Widget build(BuildContext context) {
+//     final chatProvider = Provider.of<ChatProvider>(context, listen: false);
+//     final messageController = TextEditingController();
+//
+//     return Scaffold(
+//       appBar: AppBar(
+//         title: Text('Chat'),
+//       ),
+//       body: Column(
+//         children: [
+//           Expanded(
+//             child: Consumer<ChatProvider>(
+//               builder: (context, chatProvider, child) {
+//                 final chatMessages = chatProvider.messages;
+//
+//                 if (chatMessages.isEmpty) {
+//                   return Center(child: Text('No messages available'));
+//                 }
+//
+//                 return ListView.builder(
+//                   itemCount: chatMessages.length,
+//                   itemBuilder: (context, index) {
+//                     final message = chatMessages[index];
+//                     return ListTile(
+//                       title: Text(message.senderId == senderId ? 'Me' : 'User ${message.receiverId}'),
+//                       subtitle: Text(message.text),
+//                     );
+//                   },
+//                 );
+//               },
+//             ),
+//           ),
+//           Padding(
+//             padding: const EdgeInsets.all(8.0),
+//             child: Row(
+//               children: [
+//                 Expanded(
+//                   child: TextField(
+//                     controller: messageController,
+//                     decoration: InputDecoration(
+//                       hintText: 'Enter your message',
+//                       border: OutlineInputBorder(),
+//                     ),
+//                   ),
+//                 ),
+//                 IconButton(
+//                   icon: Icon(Icons.send),
+//                   onPressed: () {
+//                     final message = ChatMessage(
+//                       id: '',
+//                       chatId: chatId,
+//                       senderId: senderId,
+//                       receiverId: receiverId,
+//                       text: messageController.text,
+//                       timestamp: DateTime.now(),
+//                     );
+//
+//                     chatProvider.sendMessage(message);
+//                     messageController.clear();
+//                   },
+//                 ),
+//               ],
+//             ),
+//           ),
+//         ],
+//       ),
+//     );
+//   }
+// }
+
+
+

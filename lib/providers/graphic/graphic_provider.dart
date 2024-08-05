@@ -1,12 +1,23 @@
+import 'dart:convert';
+import 'dart:developer';
 import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:android_path_provider/android_path_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:tiinver_project/providers/signIn/sign_in_provider.dart';
+
+import '../../api/api_services/api_services.dart';
+import '../../api/endpoint/endpoint.dart';
+import '../../constant.dart';
 
 class GraphicProvider with ChangeNotifier {
+
+  // SignInProvider signInProvider = SignInProvider();
 
   TextEditingController _textController = TextEditingController();
   Color _backgroundColor = Colors.white;
@@ -15,6 +26,7 @@ class GraphicProvider with ChangeNotifier {
   XFile? _image;
   bool _isBackground = false;
   bool _isDrawing = false;
+  bool _isLoading = false;
   List<Offset?> _points = [];
   List<List<Offset?>> _undoStack = [];
   List<List<Offset?>> _redoStack = [];
@@ -27,8 +39,11 @@ class GraphicProvider with ChangeNotifier {
   XFile? get image => _image;
   bool get isBackground => _isBackground;
   bool get isDrawing => _isDrawing;
+  bool get isLoading => _isLoading;
   List<Offset?> get points => _points;
 
+
+  SignInProvider _signInProvider = SignInProvider();
 
 
   clearData(){
@@ -43,6 +58,13 @@ class GraphicProvider with ChangeNotifier {
     _undoStack.clear();
     _redoStack.clear();
     notifyListeners();
+  }
+
+  pickingImageFromCamera(pickedFile){
+    if (pickedFile != null) {
+      _image = pickedFile;
+      notifyListeners();
+    }
   }
 
   void pickImage() async {
@@ -145,25 +167,52 @@ class GraphicProvider with ChangeNotifier {
     _undoStack.add(List.from(_points));
   }
 
-  // Future<void> initializeCamera() async {
-  //   _cameraController = CameraController();
-  //   await _cameraController!.initialize();
-  //   _isInitialized = true;
-  //   notifyListeners();
-  // }
-  //
-  // void disposeCamera() {
-  //   _cameraController?.dispose();
-  //   _isInitialized = false;
-  //   notifyListeners();
-  // }
-  //
-  // Future<void> takePicture() async {
-  //   if (_cameraController != null) {
-  //     final filePath = await _cameraController!.takePicture();
-  //     print("Picture saved at: $filePath");
-  //   }
-  // }
+  Future<void> addActivity({
+    required String userId,
+    required String apiKey,
+    required String message,
+    required String image,
+  }) async {
+    _isLoading = true;
+    notifyListeners();
+    try {
+
+      final body = {
+        'actor': userId,
+        'verb': "post",
+        'object': "photos",
+        'object_url': image,
+        'message': message,
+      };
+
+      final res = await ApiService.post(
+          requestBody: postEncode(body),
+          headers: header2(apiKey),
+          endPoint: Endpoint.addActivity
+      );
+
+      log("message: ${res.body}");
+      if(res.statusCode == 200 || res.statusCode == 201){
+
+        final jsonResponse = jsonDecode(res.body);
+        final error = jsonResponse['error'];
+        final message = jsonResponse['message'];
+        log("message: ${res.body}");
+
+        if(error){
+          Get.snackbar("error", message);
+        }else{
+          Get.snackbar("success", message);
+        }
+      }
+      notifyListeners();
+    } catch (error) {
+      debugPrint(error.toString());
+    }finally{
+      _isLoading = false;
+      notifyListeners();
+    }
+  }
 
 
 }

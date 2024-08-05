@@ -1,16 +1,17 @@
 import 'dart:io';
 import 'package:android_path_provider/android_path_provider.dart';
 import 'package:camerawesome/camerawesome_plugin.dart';
-import 'package:camerawesome/pigeon.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_sizer/flutter_sizer.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_navigation/get_navigation.dart';
-import 'package:path_provider/path_provider.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:provider/provider.dart';
 import 'package:tiinver_project/constants/colors.dart';
-import 'package:tiinver_project/models/chatModel/chat_model.dart';
-import 'package:tiinver_project/screens/app_screens/graphicScreen/graphic_screen.dart';
+import 'package:tiinver_project/providers/graphic/graphic_provider.dart';
 import 'package:tiinver_project/widgets/submit_button.dart';
+
+import '../graphicScreen/graphic_screen.dart';
 
 class CameraScreen extends StatelessWidget {
   const CameraScreen({super.key});
@@ -81,6 +82,7 @@ class ImageViewer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var graphicP = Provider.of<GraphicProvider>(context,listen: false);
     return Scaffold(
       backgroundColor: textColor,
       appBar: AppBar(
@@ -90,7 +92,8 @@ class ImageViewer extends StatelessWidget {
           SubmitButton(
               width: 20.w,
               title: "Next", press: (){
-                // Get.to(()=>GraphicScreen());
+                graphicP.pickingImageFromCamera(XFile(filePath));
+                Get.to(()=>GraphicScreen(isCamera: true,));
           }),
           SizedBox(width: 20,),
         ],

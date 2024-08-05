@@ -8,9 +8,6 @@ import 'package:get/get_navigation/get_navigation.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tiinver_project/api_services/sp_services.dart';
-import 'package:tiinver_project/constants/firebase.dart';
-import 'package:tiinver_project/screens/app_screens/bottom_navbar_screen/bottom_navbar_screen.dart';
-import 'package:tiinver_project/screens/auth_screens/onboarding_screen/onboarding_screen.dart';
 import 'package:tiinver_project/screens/auth_screens/signin_screen/sign_in_screen.dart';
 
 import '../../api/api_services/api_services.dart';

@@ -1,17 +1,11 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_sizer/flutter_sizer.dart';
 import 'package:get/get.dart';
 import 'package:pinput/pinput.dart';
 import 'package:provider/provider.dart';
-import 'package:tiinver_project/constant.dart';
 import 'package:tiinver_project/constants/colors.dart';
 import 'package:tiinver_project/constants/images_path.dart';
 import 'package:tiinver_project/constants/text_widget.dart';
-import 'package:tiinver_project/db_keys.dart';
-
-import '../../../api_services/sp_services.dart';
 import '../../../providers/otp/otp_provider.dart';
 import '../../../providers/signUp/sign_up_provider.dart';
 

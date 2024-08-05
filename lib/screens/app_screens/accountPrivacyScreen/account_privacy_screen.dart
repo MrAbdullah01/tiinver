@@ -5,7 +5,6 @@ import '../../../constants/colors.dart';
 import '../../../constants/images_path.dart';
 import '../../../constants/text_widget.dart';
 import '../../../widgets/header.dart';
-import '../../../widgets/submit_button.dart';
 
 class AccountPrivacyScreen extends StatefulWidget {
   const AccountPrivacyScreen({super.key});

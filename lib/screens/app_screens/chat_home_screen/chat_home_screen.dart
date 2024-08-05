@@ -202,6 +202,9 @@
 //                   image: ImagesPath.profileImage);
 //             },)
 
+
+
+
 import 'package:flutter/material.dart';
 import 'package:flutter_sizer/flutter_sizer.dart';
 import 'package:get/get_core/src/get_main.dart';
@@ -213,8 +216,6 @@ import 'package:tiinver_project/widgets/header.dart';
 import '../../../constants/colors.dart';
 import '../../../firebase/chat/firebase_chat.dart';
 import '../../../models/chatModel/chat_model.dart';
-import '../../../providers/chat/chat_provider.dart';
-import '../chat_screen/chat_screen.dart';
 import 'comp/chat_tile.dart';
 
 class ChatListScreen extends StatefulWidget {
@@ -232,7 +233,7 @@ class _ChatListScreenState extends State<ChatListScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final chatProvider = Provider.of<ChatProvider>(context,listen: false);
+    // final chatProvider = Provider.of<ChatProvider>(context,listen: false);
     final signInP = Provider.of<SignInProvider>(context,listen: false);
 
     // if (signInP.userId != null) {
@@ -303,5 +304,98 @@ class _ChatListScreenState extends State<ChatListScreen> {
     );
   }
 }
+
+// import 'package:flutter/material.dart';
+// import 'package:provider/provider.dart';
+// import 'package:tiinver_project/constants/colors.dart';
+// import 'package:tiinver_project/providers/signIn/sign_in_provider.dart';
+//
+// import '../../../models/connectedUsers/connected_users_model.dart';
+// import '../../../providers/chat/chat_provider.dart';
+// import '../../../providers/connectedUsers/connected_users_provider.dart';
+// import '../chat_screen/chat_screen.dart';
+// import '../invite_contact_screen/invite_contact_screen.dart';
+//
+//
+// class ChatListScreen extends StatelessWidget {
+//   const ChatListScreen({super.key});
+//
+//   @override
+//   Widget build(BuildContext context) {
+//     final chatProvider = Provider.of<ChatProvider>(context, listen: false);
+//     final signProvider = Provider.of<SignInProvider>(context, listen: false);
+//     final connectedUsersProvider = Provider.of<ConnectedUsersProvider>(context, listen: false);
+//
+//     chatProvider.loadChats();
+//
+//     return Scaffold(
+//       backgroundColor: bgColor,
+//       appBar: AppBar(
+//         title: Text('Chats'),
+//       ),
+//       body: Consumer<ChatProvider>(
+//         builder: (context, chatProvider, child) {
+//           if (chatProvider.chats.isEmpty) {
+//             return Center(child: Text('No chats available'));
+//           }
+//
+//           return ListView.builder(
+//             itemCount: chatProvider.chats.length,
+//             itemBuilder: (context, index) {
+//               final chat = chatProvider.chats[index];
+//               final user = connectedUsersProvider.connectedUsers.firstWhere(
+//                     (user) => user.userId == chat.connectedUserId,
+//                 orElse: () => ConnectedUser(userId: -1),
+//               );
+//
+//               if (user.userId == signProvider.userId) {
+//                 return ListTile(
+//                   title: Text('Unknown User'),
+//                   subtitle: Text('Chat ID: ${chat.id}'),
+//                 );
+//               }
+//
+//               return ListTile(
+//                 tileColor: themeColor,
+//                 title: Text('${user.firstname} ${user.lastname}', style: TextStyle()),
+//                 onTap: () {
+//                   Navigator.of(context).push(
+//                     MaterialPageRoute(
+//                       builder: (context) => ChatScreen(
+//                         chatId: chat.id,
+//                         senderId: chat.userId,
+//                         receiverId: chat.connectedUserId,
+//                       ),
+//                     ),
+//                   );
+//                 },
+//               );
+//             },
+//           );
+//         },
+//       ),
+//       floatingActionButton: FloatingActionButton(
+//         shape: RoundedRectangleBorder(
+//           borderRadius: BorderRadius.circular(100),
+//         ),
+//         child: Icon(
+//           Icons.add_rounded,
+//           color: Colors.white,
+//           size: 30,
+//         ),
+//         backgroundColor: Colors.blue,
+//         onPressed: () {
+//           Navigator.push(
+//             context,
+//             MaterialPageRoute(builder: (context) => InviteContactScreen()),
+//           );
+//         },
+//       ),
+//     );
+//   }
+// }
+
+
+
 
 

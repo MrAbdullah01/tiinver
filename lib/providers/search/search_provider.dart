@@ -1,7 +1,6 @@
 import 'dart:convert';
 import 'dart:developer';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import '../../api/api_services/api_services.dart';
 import '../../api/endpoint/endpoint.dart';
 import '../../constant.dart';

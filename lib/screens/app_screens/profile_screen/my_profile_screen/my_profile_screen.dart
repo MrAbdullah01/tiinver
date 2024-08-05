@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:tiinver_project/constants/colors.dart';
 import 'package:tiinver_project/constants/images_path.dart';
-import 'package:tiinver_project/models/getUserModel/get_user_model.dart';
-import 'package:tiinver_project/models/login/user_login_model.dart';
 import 'package:tiinver_project/providers/profile/profile_provider.dart';
 import 'package:tiinver_project/providers/signIn/sign_in_provider.dart';
 import 'package:tiinver_project/screens/app_screens/edit_profile_screen/edit_profile_screen.dart';

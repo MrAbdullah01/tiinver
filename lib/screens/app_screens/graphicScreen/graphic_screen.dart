@@ -1,8 +1,6 @@
 import 'dart:io';
 import 'dart:typed_data';
 import 'dart:ui' as ui;
-
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
@@ -12,6 +10,7 @@ import 'package:get/get_navigation/get_navigation.dart';
 import 'package:provider/provider.dart';
 import 'package:tiinver_project/constants/text_widget.dart';
 import 'package:tiinver_project/providers/graphic/graphic_provider.dart';
+import 'package:tiinver_project/screens/app_screens/addActivityScreen/add_activity_screen.dart';
 
 import '../../../constants/colors.dart';
 import '../../../constants/images_path.dart';
@@ -22,8 +21,9 @@ import '../../../providers/graphic/comp/drawiing_paint.dart';
 import '../../../providers/uploadingProgressProvider/uploading_progress_provider.dart';
 
 class GraphicScreen extends StatelessWidget {
-  GraphicScreen({super.key, required this.user});
-  final ChatUser user;
+  GraphicScreen({super.key,this.user ,required this.isCamera});
+  bool isCamera;
+  ChatUser? user;
   List<Message> _list = [];
   final GlobalKey _repaintBoundaryKey = GlobalKey();
 
@@ -257,8 +257,14 @@ class GraphicScreen extends StatelessWidget {
                         ),
                         InkWell(
                           onTap: () {
-                            _saveImage(context);
-                            Get.back();
+                            if(isCamera){
+                              _sendPost(context);
+                            }else{
+                              _saveImage(context).whenComplete((){
+                                graphicP.clearData();
+                              });
+                            }
+                            // Get.back();
                           },
                           child: Container(
                             height: 50,
@@ -327,8 +333,8 @@ class GraphicScreen extends StatelessWidget {
         Uint8List pngBytes = byteData.buffer.asUint8List();
         String imagePath =
         await context.read<GraphicProvider>().saveImage(pngBytes);
-        await FirebaseChat.sendChatImage(_list, user, File(imagePath));
-        // Get.back();
+        await FirebaseChat.sendChatImage(_list, user!, File(imagePath));
+        Get.back();
         // ScaffoldMessenger.of(context).showSnackBar(
         //     SnackBar(content: Text('Image saved to $imagePath')));
       }
@@ -337,6 +343,30 @@ class GraphicScreen extends StatelessWidget {
     } finally{
       uploadingProgressBarProvider.setVisibility(false);
 
+    }
+  }
+
+  Future<void> _sendPost(BuildContext context) async {
+    try {
+      RenderRepaintBoundary boundary =
+      _repaintBoundaryKey.currentContext!.findRenderObject()
+      as RenderRepaintBoundary;
+      ui.Image image = await boundary.toImage();
+      ByteData? byteData =
+      await image.toByteData(format: ui.ImageByteFormat.png);
+      if (byteData != null) {
+        Uint8List pngBytes = byteData.buffer.asUint8List();
+        String imagePath =
+        await context.read<GraphicProvider>().saveImage(pngBytes);
+        Get.to(()=>AddActivityScreen(imageFilePath: File(imagePath)));
+
+        // await FirebaseChat.sendChatImage(_list, user!, File(imagePath));
+        // Get.back();
+        // ScaffoldMessenger.of(context).showSnackBar(
+        //     SnackBar(content: Text('Image saved to $imagePath')));
+      }
+    } catch (e) {
+      print(e);
     }
   }
 }

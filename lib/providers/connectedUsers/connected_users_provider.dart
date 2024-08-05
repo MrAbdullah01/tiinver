@@ -20,7 +20,7 @@ class ConnectedUsersProvider extends ChangeNotifier{
 
   //
 
-  getUserProfile(context) async {
+  fetchConnectedUsers(context) async {
     try{
 
       _isLoading = true;

@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_navigation/get_navigation.dart';
 import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tiinver_project/models/getUserModel/get_user_model.dart';
 import 'package:tiinver_project/providers/signIn/sign_in_provider.dart';
 import '../../api/api_services/api_services.dart';

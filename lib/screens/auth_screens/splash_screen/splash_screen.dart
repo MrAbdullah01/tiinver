@@ -1,12 +1,10 @@
 import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_sizer/flutter_sizer.dart';
 import 'package:provider/provider.dart';
 import 'package:tiinver_project/constants/colors.dart';
 import 'package:tiinver_project/constants/images_path.dart';
 import 'package:tiinver_project/constants/text_widget.dart';
-
 import '../../../providers/signIn/sign_in_provider.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -29,6 +27,9 @@ class _SplashScreenState extends State<SplashScreen> {
 
   @override
   Widget build(BuildContext context) {
+    // final chatProvider = Provider.of<ChatProvider>(context, listen: false);
+    //final connectedUsersProvider = Provider.of<ConnectedUsersProvider>(context, listen: false);
+
     return Scaffold(
       backgroundColor: bgColor,
       body: Center(

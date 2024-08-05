@@ -3,7 +3,6 @@ import 'package:flutter_sizer/flutter_sizer.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_navigation/get_navigation.dart';
 import 'package:provider/provider.dart';
-import 'package:tiinver_project/providers/signIn/sign_in_provider.dart';
 import 'package:tiinver_project/widgets/header.dart';
 
 import '../../../constants/colors.dart';

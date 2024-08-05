@@ -2,7 +2,6 @@ import 'package:get/get.dart';
 import 'package:tiinver_project/routes/routes_name.dart';
 import 'package:tiinver_project/screens/app_screens/bottom_navbar_screen/bottom_navbar_screen.dart';
 import 'package:tiinver_project/screens/app_screens/camera/camera.dart';
-import 'package:tiinver_project/screens/app_screens/graphicScreen/graphic_screen.dart';
 import 'package:tiinver_project/screens/app_screens/settingScreen/setting_screen.dart';
 import 'package:tiinver_project/screens/auth_screens/forget_password_screen/forget_password_screen.dart';
 import 'package:tiinver_project/screens/auth_screens/new_password_screen/new_password_screen.dart';
@@ -12,7 +11,6 @@ import 'package:tiinver_project/screens/auth_screens/sign_up_screen/sign_up_scre
 import 'package:tiinver_project/screens/auth_screens/signin_screen/sign_in_screen.dart';
 import 'package:tiinver_project/screens/auth_screens/splash_screen/splash_screen.dart';
 
-import '../models/chatModel/chat_model.dart';
 
 class Routes{
   static final routes  =[
