@@ -9,11 +9,14 @@ import 'package:tiinver_project/providers/signIn/sign_in_provider.dart';
 import '../../api/api_services/api_services.dart';
 import '../../api/endpoint/endpoint.dart';
 import '../../constant.dart';
+import '../../gloabal_key.dart';
 import '../../models/followersModel/followers_model.dart';
 import '../../models/followingModel/following_model.dart';
 import '../../models/register/user_sign_up_model.dart';
 
 class ProfileProvider with ChangeNotifier {
+
+  final signProvider = GlobalProviderAccess.signProvider;
 
   var nameController = TextEditingController();
   var locationController = TextEditingController();
@@ -21,7 +24,9 @@ class ProfileProvider with ChangeNotifier {
   var qualificationController = TextEditingController();
   var schoolController = TextEditingController();
 
-  bool isLoading = false;
+  bool _isLoading = false;
+
+  bool get  isLoading => _isLoading;
 
   UserSignUpModel? _user;
 
@@ -39,7 +44,7 @@ class ProfileProvider with ChangeNotifier {
 
   GetUserModel get userModel => _userModel;
 
-  Users? followerUser;
+  Users followerUser = Users();
 
   // Future<void> loadUserProfileFromPreferences() async {
   //   var sp = await SharedPreferences.getInstance();
@@ -68,7 +73,7 @@ class ProfileProvider with ChangeNotifier {
   getUserProfile(context) async {
     try{
 
-      isLoading = true;
+      // isLoading = true;
 
       var res = await ApiService.get(
           Endpoint.getUser(
@@ -101,8 +106,8 @@ class ProfileProvider with ChangeNotifier {
     }catch(e){
       print(e);
     }
-    finally{
-    }
+    // finally{
+    // }
   }
 
   Future<void> updateProfile({
@@ -114,7 +119,7 @@ class ProfileProvider with ChangeNotifier {
     required String location,
     required String userApiKey,
   }) async {
-    isLoading = true;
+    _isLoading = true;
     notifyListeners();
     try {
 
@@ -152,7 +157,7 @@ class ProfileProvider with ChangeNotifier {
     } catch (error) {
       debugPrint(error.toString());
     }finally{
-      isLoading = false;
+      _isLoading = false;
       notifyListeners();
     }
   }
@@ -160,7 +165,7 @@ class ProfileProvider with ChangeNotifier {
   followers(int userId,context)async{
     try{
 
-      isLoading = true;
+      _isLoading = true;
 
       var res = await ApiService.get(Endpoint.followers(userId, userId),header2(Provider.of<SignInProvider>(context,listen: false).userApiKey));
 
@@ -180,13 +185,15 @@ class ProfileProvider with ChangeNotifier {
       print(e);
     }
     finally{
+      _isLoading = false;
+      notifyListeners();
     }
   }
 
   following(int userId,context)async{
     try{
 
-      isLoading = true;
+      _isLoading = true;
 
       var res = await ApiService.get(
           Endpoint.following(
@@ -209,6 +216,8 @@ class ProfileProvider with ChangeNotifier {
       print(e);
     }
     finally{
+      _isLoading = false;
+      notifyListeners();
     }
   }
 
@@ -217,7 +226,7 @@ class ProfileProvider with ChangeNotifier {
     required String userId,
     required String userApiKey,
   }) async {
-    isLoading = true;
+    _isLoading = true;
     notifyListeners();
     try {
 
@@ -250,7 +259,49 @@ class ProfileProvider with ChangeNotifier {
     } catch (error) {
       debugPrint(error.toString());
     }finally{
-      isLoading = false;
+      _isLoading = false;
+      notifyListeners();
+    }
+  }
+
+  Future<void> deleteAccount({
+    required String userId,
+    required String userApiKey,
+  }) async {
+    _isLoading = true;
+    notifyListeners();
+    try {
+
+      final body = {
+        'userId': userId,
+      };
+
+      final res = await ApiService.post(
+          requestBody: postEncode(body),
+          headers: header2(signProvider!.userApiKey),
+          endPoint: Endpoint.deleteAccount
+      );
+
+      log("message: ${res.body}");
+      if(res.statusCode == 200 || res.statusCode == 201){
+
+        final jsonResponse = jsonDecode(res.body);
+        final error = jsonResponse['error'];
+        final msg = jsonResponse['user'];
+        log("message: ${res.body}");
+
+        if(error){
+          Get.snackbar("Error", "Something went wrong!");
+        }else{
+          Get.snackbar("Successful", msg);
+          signProvider!.logout();
+        }
+      }
+      notifyListeners();
+    } catch (error) {
+      debugPrint(error.toString());
+    }finally{
+      _isLoading = false;
       notifyListeners();
     }
   }

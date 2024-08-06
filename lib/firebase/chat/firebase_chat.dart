@@ -12,10 +12,14 @@ import '../../providers/signIn/sign_in_provider.dart';
 
 class FirebaseChat {
 
-  final signProvider = GlobalProviderAccess.signProvider;
+  final SignInProvider signInProvider;
+
+  FirebaseChat(this.signInProvider);
+
+  // final signProvider = GlobalProviderAccess.signProvider;
 
   //static FirebaseAuth get auth => FirebaseAuth.instance;
-  static FirebaseFirestore firestore = FirebaseFirestore.instance;
+  static FirebaseFirestore fireStore = FirebaseFirestore.instance;
   static FirebaseStorage storage = FirebaseStorage.instance;
   static SignInProvider? get user => GlobalProviderAccess.signProvider;
 
@@ -61,7 +65,7 @@ class FirebaseChat {
   }
 
   static Stream<QuerySnapshot<Map<String, dynamic>>> getMyContactsUid() {
-    return firestore
+    return fireStore
         .collection('users')
         .doc(user!.userId)
         .collection('myContacts')
@@ -69,7 +73,7 @@ class FirebaseChat {
   }
 
   static Stream<QuerySnapshot<Map<String, dynamic>>> getAllUsers(List<String> userIds) {
-    return firestore
+    return fireStore
         .collection('users')
         .where('id',
         whereIn: userIds.isEmpty
@@ -79,7 +83,7 @@ class FirebaseChat {
   }
 
   static Future<void> sendFirstMessage(ChatUser chatUser, String msg, Type type) async {
-    await firestore
+    await fireStore
         .collection('users')
         .doc(chatUser.id)
         .collection('myContacts')
@@ -92,7 +96,7 @@ class FirebaseChat {
   }
 
   static Stream<QuerySnapshot<Map<String, dynamic>>> getAllMessages(ChatUser user) {
-    return firestore
+    return fireStore
         .collection('allChats/${getConversationID(user.id)}/userMessages/')
         .orderBy('sent', descending: true)
         .snapshots();
@@ -107,21 +111,21 @@ class FirebaseChat {
         type: type,
         fromUserUid: user!.userId.toString(),
         sent: time);
-    final ref = firestore.collection('allChats/${getConversationID(chatUser.id)}/userMessages/');
+    final ref = fireStore.collection('allChats/${getConversationID(chatUser.id)}/userMessages/');
     await ref.doc(time).set(message.toJson()).then((value) =>
         sendPushNotification(chatUser, type == Type.text ? msg : 'image')
     );
   }
 
   static Future<void> updateMessageReadStatus(Message message) async {
-    firestore
+    fireStore
         .collection('allChats/${getConversationID(message.fromUserUid)}/userMessages/')
         .doc(message.sent)
         .update({'read': DateTime.now().millisecondsSinceEpoch.toString()});
   }
 
   static Stream<QuerySnapshot<Map<String, dynamic>>> getLastMessage(ChatUser user) {
-    return firestore.collection('allChats/${getConversationID(user.id)}/userMessages/')
+    return fireStore.collection('allChats/${getConversationID(user.id)}/userMessages/')
         .orderBy('sent', descending: true)
         .limit(1)
         .snapshots();
@@ -153,7 +157,7 @@ class FirebaseChat {
   }
 
   static Future<void> deleteMessage(Message message) async {
-    await firestore.collection('allChats/${getConversationID(message.toUserUid)}/userMessages/')
+    await fireStore.collection('allChats/${getConversationID(message.toUserUid)}/userMessages/')
         .doc(message.sent)
         .delete();
     if(message.type == Type.voice){
@@ -164,7 +168,7 @@ class FirebaseChat {
   }
 
   static Future<void> createGroup(String groupName, List<String> memberUids) async {
-    final groupId = firestore.collection('allGroups').doc().id;
+    final groupId = fireStore.collection('allGroups').doc().id;
     final group = {
       'documentId': groupId,
       'groupName': groupName,
@@ -173,11 +177,11 @@ class FirebaseChat {
     };
 
     // Add group info to Firestore
-    await firestore.collection('groups').doc(groupId).set(group);
+    await fireStore.collection('groups').doc(groupId).set(group);
 
     // Add group to each member's 'myContacts' collection
     for (var uid in memberUids) {
-      await firestore
+      await fireStore
           .collection('users')
           .doc(uid)
           .collection('myContacts')
@@ -187,7 +191,7 @@ class FirebaseChat {
   }
 
   static Future<void> addGroupMember(String groupId, String userUid) async {
-    final groupRef = firestore.collection('allGroups').doc(groupId);
+    final groupRef = fireStore.collection('allGroups').doc(groupId);
     await groupRef.update({
       'memberUids': FieldValue.arrayUnion([userUid])
     });
@@ -196,7 +200,7 @@ class FirebaseChat {
     final groupDoc = await groupRef.get();
     if (groupDoc.exists) {
       final groupName = groupDoc['name'];
-      await firestore
+      await fireStore
           .collection('users')
           .doc(userUid)
           .collection('myContacts')
@@ -206,13 +210,13 @@ class FirebaseChat {
   }
 
   static Future<void> removeGroupMember(String groupId, String userUid) async {
-    final groupRef = firestore.collection('allGroups').doc(groupId);
+    final groupRef = fireStore.collection('allGroups').doc(groupId);
     await groupRef.update({
       'memberUids': FieldValue.arrayRemove([userUid])
     });
 
     // Remove group from the user's 'myContacts' collection
-    await firestore
+    await fireStore
         .collection('users')
         .doc(userUid)
         .collection('myContacts')

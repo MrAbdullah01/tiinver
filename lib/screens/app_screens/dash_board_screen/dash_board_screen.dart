@@ -38,24 +38,31 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
   void initState() {
     // TODO: implement initState
     super.initState();
+
     var signInP = Provider.of<SignInProvider>(context, listen: false);
 
     Provider.of<ProfileProvider>(context,listen: false).getUserProfile(context);
 
-    Provider.of<DashboardProvider>(context, listen: false).fetchTimeline(
-      int.parse(signInP.userId.toString()),
-      100,
-      0,
-      signInP.userApiKey.toString(),
-    );
+    Future.delayed(Duration.zero).then((value) {
+      Provider.of<DashboardProvider>(context,listen: false).fetchTimeline(
+        int.parse(signInP.userId.toString()),
+        100,
+        0,
+        signInP.userApiKey.toString(),
+      );
+    },);
 
+    Future.delayed(Duration.zero).then((value) {
+      Provider.of<SuggestionsProvider>(context,listen: false).fetchSuggestions(
+        int.parse(signInP.userId.toString()),
+        signInP.userApiKey.toString(),
+      );
+      // Provider.of<SuggestionsProvider>(context, listen: false).fetchSuggestions(
+      //   int.parse(signInP.userId.toString()),
+      //   signInP.userApiKey.toString(),
+      // );
+    },);
     debugPrint(signInP.userApiKey.toString());
-
-    Provider.of<SuggestionsProvider>(context, listen: false).fetchSuggestions(
-      int.parse(signInP.userId.toString()),
-      signInP.userApiKey.toString(),
-    );
-
   }
 
   @override

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:tiinver_project/constants/colors.dart';
+import 'package:tiinver_project/providers/dashboard/dashboard_provider.dart';
 import 'package:tiinver_project/providers/profile/profile_provider.dart';
 import 'package:tiinver_project/providers/signIn/sign_in_provider.dart';
 
@@ -25,8 +26,8 @@ class _BottomNavbarScreenState extends State<BottomNavbarScreen> {
   void initState() {
     super.initState();
     _pageController = PageController();
+
     Provider.of<SignInProvider>(context,listen: false).getApiKey();
-    //Provider.of<ChatProvider>(context,listen: false).getApiKey();
     Provider.of<ProfileProvider>(context,listen: false).getUserProfile(context);
     //var signInP = Provider.of<SignInProvider>(context, listen: false);
 
@@ -43,55 +44,54 @@ class _BottomNavbarScreenState extends State<BottomNavbarScreen> {
     setState(() {
       _selectedIndex = index;
     });
-    _pageController.jumpToPage(index);
   }
 
   @override
   Widget build(BuildContext context) {
-    //var signP = Provider.of<SignInProvider>(context,listen: false);
+    var dashBoardP = Provider.of<DashboardProvider>(context,listen: false);
     //debugPrint(signP.userId.toString());
     return Scaffold(
       backgroundColor: themeColor,
-      body: PageView(
-        controller: _pageController,
-        onPageChanged: (index) {
-          setState(() {
-            _selectedIndex = index;
-          });
+      body: Consumer<DashboardProvider>(builder: (context, value, child) {
+        return IndexedStack(
+          index: value.currentIndex,
+          children: <Widget>[
+            DashBoardScreen(),
+            ChatListScreen(),
+            NotificationScreen(),
+            ProfileScreen(),
+          ],
+        );
+      },),
+      bottomNavigationBar: BottomNavigationBar(
+        currentIndex: dashBoardP.currentIndex,
+        selectedItemColor: bgColor,
+        type: BottomNavigationBarType.fixed,
+        unselectedItemColor: bgColor,
+        backgroundColor: themeColor,
+        showSelectedLabels: true,
+        onTap: (index) {
+          dashBoardP.setIndex(index);
         },
-        children: <Widget>[
-          DashBoardScreen(),
-          ChatListScreen(),
-          NotificationScreen(),
-          ProfileScreen(),
+        items: const <BottomNavigationBarItem>[
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home,),
+            label: "Home",
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.chat_rounded,),
+            label: "Chat",
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.notifications,),
+            label: "Notifications",
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.person,),
+            label: "My Profile",
+          ),
         ],
       ),
-      bottomNavigationBar: BottomNavigationBar(
-          currentIndex: _selectedIndex,
-          selectedItemColor: bgColor,
-          type: BottomNavigationBarType.fixed,
-          unselectedItemColor: bgColor,
-          backgroundColor: themeColor,
-          showSelectedLabels: true,
-          onTap: _onItemTapped,
-          items: const <BottomNavigationBarItem>[
-            BottomNavigationBarItem(
-                icon: Icon(Icons.home,),
-                label: "Home",
-            ),
-            BottomNavigationBarItem(
-                icon: Icon(Icons.chat_rounded,),
-                label: "Chat",
-            ),
-            BottomNavigationBarItem(
-                icon: Icon(Icons.notifications,),
-                label: "Notifications",
-            ),
-            BottomNavigationBarItem(
-                icon: Icon(Icons.person,),
-                label: "My Profile",
-            ),
-          ]),
     );
   }
 }

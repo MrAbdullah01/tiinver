@@ -13,6 +13,7 @@ import 'package:tiinver_project/screens/auth_screens/signin_screen/sign_in_scree
 import '../../api/api_services/api_services.dart';
 import '../../api/endpoint/endpoint.dart';
 import '../../constant.dart';
+import '../../constants/firebase.dart';
 import '../../db_keys.dart';
 import '../../models/login/user_login_model.dart';
 import '../../routes/routes_name.dart';
@@ -36,9 +37,9 @@ class SignInProvider with ChangeNotifier {
 
   bool isLoading = false;
 
-  UserLoginModel? _user;
+  UserLoginModel _user = UserLoginModel();
 
-  UserLoginModel? get user => _user;
+  UserLoginModel get user => _user;
 
   // SignInProvider() {
   //   loadUserFromPreferences();
@@ -85,15 +86,40 @@ class SignInProvider with ChangeNotifier {
 
           _user = UserLoginModel.fromJson(jsonResponse['user']);
 
+          fireStore.collection("users").doc(_user.id.toString()).set({
+            "id" : _user.id.toString(),
+            "apiKey" : _user.apiKey.toString(),
+            "email" : _user.email.toString(),
+            "phone" : _user.phone.toString(),
+            "subscribe" : _user.subscribe.toString(),
+            "blocked_users" : _user.blockedUsers,
+            "type" : _user.type.toString(),
+            "username" : _user.username.toString(),
+            "firstname" : _user.firstname.toString(),
+            "lastname" : _user.lastname.toString(),
+            "profile" : _user.profile.toString(),
+            "verify" : _user.verify.toString(),
+            "active" : _user.active.toString(),
+            "followers" : _user.followers.toString(),
+            "following" : _user.following.toString(),
+            "location" : _user.location.toString(),
+            "school" : _user.school.toString(),
+            "qualification" : _user.qualification.toString(),
+            "birthday" : _user.birthday.toString(),
+            "work" : _user.work.toString(),
+            "coinsAmount" : _user.coinsAmount.toString(),
+            "stamp" : _user.stamp.toString(),
+          });
+
           var sp = await SharedPreferences.getInstance();
-          sp.setString(DbKeys.userApiKey, _user!.apiKey!);
-          sp.setString(DbKeys.userId, _user!.id!.toString());
-          sp.setString(DbKeys.userEmail, _user!.email!);
-          sp.setString(DbKeys.userPhone, _user!.phone!);
-          _userApiKey = _user!.apiKey;
+          sp.setString(DbKeys.userApiKey, _user.apiKey!);
+          sp.setString(DbKeys.userId, _user.id!.toString());
+          sp.setString(DbKeys.userEmail, _user.email!);
+          sp.setString(DbKeys.userPhone, _user.phone!);
+          _userApiKey = _user.apiKey;
           Provider.of<SuggestionsProvider>(context, listen: false).fetchSuggestions(
-            int.parse(_user!.id.toString()),
-            _user!.apiKey.toString(),
+            int.parse(_user.id.toString()),
+            _user.apiKey.toString(),
           );
 
           Provider.of<DashboardProvider>(context, listen: false).fetchTimeline(

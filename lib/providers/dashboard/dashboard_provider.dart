@@ -36,6 +36,15 @@ class DashboardProvider extends ChangeNotifier{
 
   List<Activity> get timeLine => _timeLine;
 
+  int _currentIndex = 0;
+
+  int get currentIndex => _currentIndex;
+
+  void setIndex(int index) {
+    _currentIndex = index;
+    notifyListeners();
+  }
+
   Future<void> fetchTimeline(int id, int limit, int offset,userApiKey) async {
     try {
       final response = await ApiService.get(

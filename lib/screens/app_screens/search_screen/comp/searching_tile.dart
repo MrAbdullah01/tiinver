@@ -59,7 +59,7 @@ class SearchingTile extends StatelessWidget {
           ),
           SubmitButton(
             height: 3.h,
-              width: 17.w,
+              width: 20.w,
               textSize: 10.dp,
               radius: 5,
               title: buttonText,

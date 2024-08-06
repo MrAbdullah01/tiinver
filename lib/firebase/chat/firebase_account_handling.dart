@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:provider/provider.dart';
 import 'package:tiinver_project/providers/signIn/sign_in_provider.dart';
 import '../../gloabal_key.dart';
 import '../../models/chatModel/chat_model.dart';
@@ -8,7 +9,11 @@ import 'firebase_chat.dart';
 
 class FirebaseAccountHandling{
 
-  var _signProvider = GlobalProviderAccess.signProvider;
+  // var _signProvider = GlobalProviderAccess.signProvider;
+
+  FirebaseAccountHandling(this.signInProvider);
+
+  final SignInProvider signInProvider;
 
   static FirebaseFirestore firestore = FirebaseFirestore.instance;
   // static FirebaseAuth get auth => FirebaseAuth.instance;
@@ -143,6 +148,10 @@ class FirebaseAccountHandling{
   }
 
   static Future<void> createGroupWithContacts(BuildContext context, String groupName, List<ChatUser> selectedContacts) async {
+
+    final signInProvider = Provider.of<SignInProvider>(context, listen: false);
+    FirebaseChat users = FirebaseChat(signInProvider);
+
     List<String> memberUids = selectedContacts.map((contact) => contact.id).toList();
     memberUids.add(user!.userId.toString()); // Add the current user to the group
 

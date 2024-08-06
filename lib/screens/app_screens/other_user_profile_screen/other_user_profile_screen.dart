@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_sizer/flutter_sizer.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 import 'package:provider/provider.dart';
 import 'package:tiinver_project/constants/colors.dart';
 import 'package:tiinver_project/constants/images_path.dart';
@@ -14,6 +13,7 @@ import 'package:tiinver_project/screens/app_screens/user_following_screen/user_f
 import 'package:tiinver_project/widgets/header.dart';
 
 import '../../../constants/text_widget.dart';
+import '../../../firebase/chat/firebase_account_handling.dart';
 import '../../../providers/signIn/sign_in_provider.dart';
 import '../user_followers_screen/user_followers_screen.dart';
 import 'comp/dialogue_box.dart';
@@ -72,7 +72,8 @@ class OtherUserProfileScreen extends StatelessWidget {
                                     blockUserId: otherUserProfileP.userModel!.id!.toString());
                               }
                           );
-                        },);
+                        },
+                    );
                   },
                   value: 'Item 2',
                   child: TextWidget1(text: "Block", fontSize: 16.dp,
@@ -143,6 +144,9 @@ class OtherUserProfileScreen extends StatelessWidget {
                             followNumber: value.userModel!.followers!.toString(),
                             followText: "Followers",
                             buttonText: "Message",
+                            onTap: () {
+                              FirebaseAccountHandling.addChatUserToMyContact(context, value.userModel!.id!.toString());
+                            },
                           ),
                         ),
                       ],

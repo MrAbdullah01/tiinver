@@ -86,29 +86,36 @@ class EditProfileScreen extends StatelessWidget {
                 ],
               );
             },),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                SubmitButton(
-                  width: 40.w,
-                    title: "Save",
-                    press: (){
+            Consumer<ProfileProvider>(builder: (context, value, child) {
+              return Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  value.isLoading ?
+                  SizedBox(
+                    height: 30,
+                    width: 30,
+                    child: CircularProgressIndicator(),
+                  )
+                      : SubmitButton(
+                      width: 40.w,
+                      title: "Save",
+                      press: (){
 
-                    Provider.of<ProfileProvider>(context,listen: false)
-                        .updateProfile(
-                      userApiKey: signInP.userApiKey.toString(),
-                        id: signInP.userId.toString(),
-                        name: provider.nameController.text,
-                        qualification: provider.qualificationController.text,
-                        workAt: provider.workController.text,
-                        school: provider.schoolController.text,
-                        location: provider.locationController.text
-                    );
+                        provider.updateProfile(
+                            userApiKey: signInP.userApiKey.toString(),
+                            id: signInP.userId.toString(),
+                            name: provider.nameController.text,
+                            qualification: provider.qualificationController.text,
+                            workAt: provider.workController.text,
+                            school: provider.schoolController.text,
+                            location: provider.locationController.text
+                        );
 
-                    }
-                )
-              ],
-            )
+                      }
+                  )
+                ],
+              );
+            },)
           ],
         ),
       ),

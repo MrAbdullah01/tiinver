@@ -8,6 +8,7 @@ import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 import 'package:tiinver_project/constants/colors.dart';
 import 'package:tiinver_project/constants/images_path.dart';
+import 'package:tiinver_project/providers/signIn/sign_in_provider.dart';
 import 'package:tiinver_project/screens/app_screens/graphicScreen/graphic_screen.dart';
 import 'package:tiinver_project/widgets/image_loader_widget.dart';
 import '../../../firebase/chat/firebase_account_handling.dart';
@@ -125,7 +126,11 @@ class _ChatScreenState extends State<ChatScreen> {
   Widget build(BuildContext context) {
     // var chatEmojiProvider = Provider.of<ChatActivityEmojiProvider>(context, listen: false);
     var chatSendButtonProvider = Provider.of<ChatActivitySendButtonProvider>(context, listen: false);
+    var signInProvider = Provider.of<SignInProvider>(context, listen: false);
     var uploadingProgressBarProvider = Provider.of<UploadingProgressBarProvider>(context, listen: false);
+
+    final firebaseAccountHandling = FirebaseAccountHandling(signInProvider);
+
     return GestureDetector(
       onTap: FocusScope.of(context).unfocus,
       child: Scaffold(

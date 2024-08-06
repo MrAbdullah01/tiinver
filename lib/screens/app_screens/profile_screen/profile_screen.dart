@@ -19,8 +19,12 @@ class ProfileScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
     final provider = Provider.of<SignInProvider>(context, listen: false);
     final profileP = Provider.of<ProfileProvider>(context, listen: false);
+
+    profileP.getUserProfile(context);
+
     return DefaultTabController(
         length: 2,
         child: Scaffold(
