@@ -73,6 +73,14 @@ class Activity {
     );
   }
 
+  bool isImages() {
+    return object == 'photos';
+  }
+
+  bool isVideos() {
+    return object == 'videos';
+  }
+
   bool isImage() {
     return objectUrl != null && (objectUrl!.endsWith('.jpg') || objectUrl!.endsWith('.jpeg') || objectUrl!.endsWith('.png'));
   }

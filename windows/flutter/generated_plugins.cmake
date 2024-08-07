@@ -10,7 +10,6 @@ list(APPEND FLUTTER_PLUGIN_LIST
   file_selector_windows
   firebase_core
   firebase_storage
-  geolocator_windows
   media_kit_video
   record_windows
   screen_brightness_windows

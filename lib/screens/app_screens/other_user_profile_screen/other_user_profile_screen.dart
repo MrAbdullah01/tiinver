@@ -156,71 +156,73 @@ class OtherUserProfileScreen extends StatelessWidget {
               );
             },),
             SizedBox(height: 30,),
-            GridView.builder(
-              physics: NeverScrollableScrollPhysics(),
-              shrinkWrap: true,
-              padding: EdgeInsets.symmetric(horizontal: 20),
-              itemCount: 10,
-              itemBuilder: (BuildContext context, int index) {
-                return Stack(
-                  children: [
-                    ClipRRect(
-                      borderRadius: BorderRadius.circular(20),
-                      child: Container(
-                        width: 45.w,
-                        child: Image.asset(ImagesPath.dashBoardImage,fit: BoxFit.cover,),
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 8.0,vertical: 10),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Row(
-                            children: [
-                              CircleAvatar(
-                                radius: 2.5.h,
-                                backgroundImage: AssetImage(ImagesPath.profileImage),
-                              ),
-                              SizedBox(width: 10,),
-                              TextWidget1(text: "Reminder", fontSize: 10.dp, fontWeight: FontWeight.w700, isTextCenter: false, textColor: bgColor),
-                            ],
-                          ),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              TextWidget1(text: "Infinity Image", fontSize: 10.dp, fontWeight: FontWeight.w700, isTextCenter: false, textColor: bgColor),
-                              SizedBox(height: 6,),
-                              Row(
-                                children: [
-                                  SizedBox(
-                                      width: 4.w,
-                                      child: Image.asset(ImagesPath.likeIcon)),
-                                  SizedBox(width: 5,),
-                                  TextWidget1(text: "10k", fontSize: 10.dp, fontWeight: FontWeight.w700, isTextCenter: false, textColor: bgColor),
-                                  SizedBox(width: 5,),
-                                  SizedBox(
-                                      width: 4.w,
-                                      child: Image.asset(ImagesPath.chatIcon)),
-                                  SizedBox(width: 10,),
-                                  TextWidget1(text: "1278", fontSize: 10.dp, fontWeight: FontWeight.w700, isTextCenter: false, textColor: bgColor),
 
-                                ],
-                              )
-                            ],
-                          )
-                        ],
-                      ),
-                    )
-                  ],
-                );
-              }, gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2,
-                mainAxisExtent: 25.h,
-                crossAxisSpacing: 10,
-                mainAxisSpacing: 10
-            ),
-            ),
+            Center(child: TextWidget1(text: "No Data Found", fontSize: 16.dp, fontWeight: FontWeight.w800, isTextCenter: false, textColor: textColor)),
+            // GridView.builder(
+            //   physics: NeverScrollableScrollPhysics(),
+            //   shrinkWrap: true,
+            //   padding: EdgeInsets.symmetric(horizontal: 20),
+            //   itemCount: 10,
+            //   itemBuilder: (BuildContext context, int index) {
+            //     return Stack(
+            //       children: [
+            //         ClipRRect(
+            //           borderRadius: BorderRadius.circular(20),
+            //           child: Container(
+            //             width: 45.w,
+            //             child: Image.asset(ImagesPath.dashBoardImage,fit: BoxFit.cover,),
+            //           ),
+            //         ),
+            //         Padding(
+            //           padding: const EdgeInsets.symmetric(horizontal: 8.0,vertical: 10),
+            //           child: Column(
+            //             mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            //             children: [
+            //               Row(
+            //                 children: [
+            //                   CircleAvatar(
+            //                     radius: 2.5.h,
+            //                     backgroundImage: AssetImage(ImagesPath.profileImage),
+            //                   ),
+            //                   SizedBox(width: 10,),
+            //                   TextWidget1(text: "Reminder", fontSize: 10.dp, fontWeight: FontWeight.w700, isTextCenter: false, textColor: bgColor),
+            //                 ],
+            //               ),
+            //               Column(
+            //                 crossAxisAlignment: CrossAxisAlignment.start,
+            //                 children: [
+            //                   TextWidget1(text: "Infinity Image", fontSize: 10.dp, fontWeight: FontWeight.w700, isTextCenter: false, textColor: bgColor),
+            //                   SizedBox(height: 6,),
+            //                   Row(
+            //                     children: [
+            //                       SizedBox(
+            //                           width: 4.w,
+            //                           child: Image.asset(ImagesPath.likeIcon)),
+            //                       SizedBox(width: 5,),
+            //                       TextWidget1(text: "10k", fontSize: 10.dp, fontWeight: FontWeight.w700, isTextCenter: false, textColor: bgColor),
+            //                       SizedBox(width: 5,),
+            //                       SizedBox(
+            //                           width: 4.w,
+            //                           child: Image.asset(ImagesPath.chatIcon)),
+            //                       SizedBox(width: 10,),
+            //                       TextWidget1(text: "1278", fontSize: 10.dp, fontWeight: FontWeight.w700, isTextCenter: false, textColor: bgColor),
+            //
+            //                     ],
+            //                   )
+            //                 ],
+            //               )
+            //             ],
+            //           ),
+            //         )
+            //       ],
+            //     );
+            //   }, gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+            //     crossAxisCount: 2,
+            //     mainAxisExtent: 25.h,
+            //     crossAxisSpacing: 10,
+            //     mainAxisSpacing: 10
+            // ),
+            // ),
           ],
         ),
       ),

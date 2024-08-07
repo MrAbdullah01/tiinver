@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_sizer/flutter_sizer.dart';
 import 'package:get/get.dart';
 import 'package:provider/provider.dart';
+import 'package:stream_chat_flutter/stream_chat_flutter.dart';
 import 'package:tiinver_project/constants/colors.dart';
 import 'package:tiinver_project/constants/text_widget.dart';
 import 'package:tiinver_project/providers/signIn/sign_in_provider.dart';
@@ -9,6 +10,7 @@ import 'package:tiinver_project/screens/app_screens/settingScreen/setting_screen
 import 'package:tiinver_project/screens/app_screens/user_followers_screen/user_followers_screen.dart';
 import 'package:tiinver_project/screens/app_screens/user_following_screen/user_following_screen.dart';
 import 'package:tiinver_project/widgets/header.dart';
+import 'package:tiinver_project/widgets/image_loader_widget.dart';
 import '../../../constants/images_path.dart';
 import '../../../providers/profile/profile_provider.dart';
 import 'media_screen/media_screen.dart';
@@ -60,23 +62,38 @@ class ProfileScreen extends StatelessWidget {
               child: Stack(
                 alignment: Alignment.topRight,
                 children: [
-                  Container(
-                    padding: EdgeInsets.all(5),
-                    decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: bgColor,
-                        border: Border.all(
-                            color: themeColor,
-                            width: 2.dp
-                        )
-                    ),
-                    child: CircleAvatar(
-                      radius: 8.h,
-                      backgroundColor: lightGreyColor,
-                      backgroundImage: profileP.userModel.profile != null ?
-                      NetworkImage(profileP.userModel.profile.toString())
-                          : AssetImage(ImagesPath.profileImage),
-                    ),
+                  FutureBuilder(
+                    future: Connectivity().checkConnectivity(),
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return CircularProgressIndicator();
+                      } else if (snapshot.data == ConnectivityResult.none) {
+                        return Icon(Icons.wifi_off);
+                      } else {
+                        return Container(
+                          padding: EdgeInsets.all(5),
+                          decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              color: bgColor,
+                              border: Border.all(
+                                  color: themeColor,
+                                  width: 2.dp
+                              )
+                          ),
+                          child: ClipRRect(
+                              borderRadius: BorderRadius.circular(100),
+                              child: Container(
+                                height: 150,width: 150,
+                                decoration: BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    color: lightGreyColor
+                                ),
+                                child: ImageLoaderWidget(imageUrl: profileP.userModel.profile.toString()),
+                              )
+                          ),
+                        );
+                      }
+                      },
                   ),
                   Positioned(
                     top: 20,

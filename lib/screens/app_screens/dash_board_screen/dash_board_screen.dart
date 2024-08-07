@@ -9,7 +9,9 @@ import 'package:tiinver_project/providers/dashboard/dashboard_provider.dart';
 import 'package:tiinver_project/providers/profile/profile_provider.dart';
 import 'package:tiinver_project/providers/suggestions/suggestions_provider.dart';
 import 'package:tiinver_project/routes/routes_name.dart';
+import 'package:tiinver_project/screens/app_screens/graphicScreen/graphic_screen.dart';
 import 'package:tiinver_project/screens/app_screens/other_user_profile_screen/comp/dialogue_box.dart';
+import 'package:tiinver_project/screens/app_screens/settingScreen/setting_screen.dart';
 
 import 'package:tiinver_project/widgets/header.dart';
 import 'package:tiinver_project/widgets/submit_button.dart';
@@ -108,18 +110,7 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
                   fontWeight: FontWeight.w700, isTextCenter: false, textColor: themeColor),),
             PopupMenuItem(
               onTap: (){
-                // showDialog(
-                //   context: context,
-                //   builder: (context) {
-                //     return DialogueBox().customDialogue(
-                //         context,
-                //         title: "Block Reminder ?",
-                //         subTitle: "If you block the user you are not gona "
-                //             "see his activity on tinver",
-                //         primaryButtonText: "Block",
-                //         primaryTap: (){}
-                //     );
-                //   },);
+                Get.to(()=>SettingScreen());
               },
               value: 'Item 2',
               child: TextWidget1(text: "Parameter", fontSize: 16.dp,
@@ -159,9 +150,13 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
                           children: [
                             ClipRRect(
                               borderRadius: BorderRadius.circular(100),
-                              child: SizedBox(
+                              child: Container(
                                 height: 40,
                                 width: 40,
+                                decoration: BoxDecoration(
+                                    color: lightGreyColor,
+                                    shape: BoxShape.circle
+                                ),
                                 child: ImageLoaderWidget(imageUrl: user.profile.toString()),
                               ),
                             ),
@@ -210,8 +205,10 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
                   var activity = value.timeLine[index];
                   return GestureDetector(
                     onTap: () {
+                      value.setCurrentPage(index);
                       Get.to(() => DetailScreen(
                         activity: activity,
+                        activities: value.timeLine,
                       ));
                     },
                     child: Stack(
@@ -221,7 +218,8 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
                           child: Container(
                             height: 27.h,
                             width: 45.w,
-                            child: MediaWidget(activity: activity),
+                            color: lightGreyColor,
+                            child: MediaWidget(activity: activity,activities: value.timeLine,),
                           ),
                         ),
                         Padding(
@@ -233,9 +231,13 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
                                 children: [
                                   ClipRRect(
                                     borderRadius: BorderRadius.circular(100),
-                                    child: SizedBox(
+                                    child: Container(
                                       height: 40,
                                       width: 40,
+                                      decoration: BoxDecoration(
+                                        color: lightGreyColor,
+                                        shape: BoxShape.circle
+                                      ),
                                       child: ImageLoaderWidget(imageUrl: activity.profile!),
                                     ),
                                   ),
@@ -292,18 +294,57 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
         ],
       ),
       floatingActionButton: FloatingActionButton(
+          heroTag: 'uniqueHeroTag1',
         shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(100)
         ),
-        child: Icon(Icons.add_rounded,color: bgColor,size: 30.dp,),
           backgroundColor: themeColor,
           onPressed: (){
-          Navigator.pushNamed(context, RoutesName.cameraScreen);
+            Get.bottomSheet(
+                Container(
+                  padding: EdgeInsets.all(20),
+                  decoration: BoxDecoration(
+                    color: bgColor,
+                    borderRadius: BorderRadius.vertical(top: Radius.circular(20))
+                  ),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+
+                  ListTile(
+                    onTap: () {
+                      Navigator.pushNamed(context, RoutesName.cameraScreen);
+                      // Get.back();
+                    },
+                    leading: Image.asset(ImagesPath.cameraIcon,height: 3.h,),
+                    title: TextWidget1(text: "Camera", fontSize: 14.dp, fontWeight: FontWeight.w700, isTextCenter: false, textColor: themeColor),
+                  ),
+                  ListTile(
+                    onTap: () {
+                      Provider.of<DashboardProvider>(context,listen: false).pickImage();
+                      // Get.back();
+                    },
+                    leading: Image.asset(ImagesPath.galleryIcon,height: 3.h,),
+                    title: TextWidget1(text: "Gallery", fontSize: 14.dp, fontWeight: FontWeight.w700, isTextCenter: false, textColor: themeColor),
+                  ),
+                  ListTile(
+                    onTap: () {
+                      Get.to(()=>GraphicScreen(isCamera: true));
+                      // Get.back();
+                    },
+                    leading: Image.asset(ImagesPath.editIcon,height: 3.h,),
+                    title: TextWidget1(text: "Animemes", fontSize: 14.dp, fontWeight: FontWeight.w700, isTextCenter: false, textColor: themeColor),
+                  ),
+
+                ],
+              ),
+            ));
             // Random random = Random();
             //
             // int msgId = random.nextInt(1000000000);
             // debugPrint(msgId.toString());
-          }
+          },
+        child: Icon(Icons.add_rounded,color: bgColor,size: 30.dp,)
       ),
     );
   }

@@ -288,6 +288,7 @@ class _ChatListScreenState extends State<ChatListScreen> {
         },
       ),
       floatingActionButton: FloatingActionButton(
+          heroTag: 'uniqueHeroTag2',
           shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(100)
           ),

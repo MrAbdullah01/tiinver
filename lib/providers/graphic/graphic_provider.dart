@@ -9,6 +9,7 @@ import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:tiinver_project/constants/colors.dart';
 import 'package:tiinver_project/providers/signIn/sign_in_provider.dart';
 
 import '../../api/api_services/api_services.dart';
@@ -20,7 +21,7 @@ class GraphicProvider with ChangeNotifier {
   // SignInProvider signInProvider = SignInProvider();
 
   TextEditingController _textController = TextEditingController();
-  Color _backgroundColor = Colors.white;
+  Color _backgroundColor = darkGreyColor;
   Color _textColor = Colors.black;
   Color _pointerColor = Colors.black;
   XFile? _image;

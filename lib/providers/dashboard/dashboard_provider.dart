@@ -1,9 +1,13 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:developer';
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:tiinver_project/api/endpoint/endpoint.dart';
+import 'package:tiinver_project/screens/app_screens/camera/camera.dart';
+import 'package:video_player/video_player.dart';
 import '../../api/api_services/api_services.dart';
 import '../../constant.dart';
 import '../../models/feedTimeLineModel/feed_time_line_model.dart';
@@ -11,6 +15,63 @@ import '../../models/feedTimeLineModel/feed_time_line_model.dart';
 class DashboardProvider extends ChangeNotifier{
 
   bool isLoading = false;
+
+  XFile? _image;
+
+  XFile? get image => _image;
+
+  late VideoPlayerController _controller;
+  VideoPlayerController get controller => _controller;
+
+  PageController _pageController = PageController();
+  int _currentPage = 0;
+
+  void setCurrentPage(int index) {
+    _currentPage = index;
+    notifyListeners();
+  }
+
+  PageController get pageController => _pageController;
+  int get currentPage => _currentPage;
+
+  DashboardProvider() {
+    _pageController.addListener(() {
+      if (_pageController.hasClients) {
+        int newPage = _pageController.page?.toInt() ?? 0;
+        if (_currentPage != newPage) {
+          _currentPage = newPage;
+          notifyListeners();
+        }
+      }
+    });
+  }
+
+  void initialize(String url) {
+    _controller = VideoPlayerController.networkUrl(
+      Uri.parse(url),
+      videoPlayerOptions: VideoPlayerOptions(
+        allowBackgroundPlayback: true,
+      ),
+    )..initialize().then((_) {
+      _controller.play();
+      notifyListeners();
+    });
+
+    _controller.addListener(() {
+      notifyListeners();
+    });
+  }
+
+  void pickImage() async {
+    final picker = ImagePicker();
+    final pickedFile = await picker.pickImage(source: ImageSource.gallery);
+    if (pickedFile != null) {
+      _image = pickedFile;
+      Get.to(()=>ImageViewer(filePath: _image!.path));
+      notifyListeners();
+    }
+  }
+
 
   // List<Comment> _comments = [];
   // bool _loading = false;
@@ -177,7 +238,10 @@ class DashboardProvider extends ChangeNotifier{
 
   @override
   void dispose() {
+    _controller.removeListener(notifyListeners);
+    _controller.dispose();
     _timelineController.close();
+    _pageController.dispose();
     super.dispose();
   }
 }

@@ -1,70 +1,75 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
-import 'package:video_player/video_player.dart';
+import 'package:flutter_sizer/flutter_sizer.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:tiinver_project/models/feedTimeLineModel/feed_time_line_model.dart';
 import 'package:get/get.dart';
+import 'package:video_thumbnail/video_thumbnail.dart';
 import '../../detailScreen/detail_screen.dart';
 
 class MediaWidget extends StatelessWidget {
   final Activity activity;
+  final List<Activity> activities;
 
-  MediaWidget({required this.activity});
+  const MediaWidget({super.key, required this.activity, required this.activities});
 
   @override
   Widget build(BuildContext context) {
-    if (activity.isImage()) {
-      return GestureDetector(
-        onTap: () {
-          Get.to(() => DetailScreen(activity: activity));
-        },
-        child: Image.network(activity.objectUrl!, fit: BoxFit.cover),
-      );
-    } else if (activity.isVideo()) {
-      return GestureDetector(
-        onTap: () {
-          Get.to(() => DetailScreen(activity: activity));
-        },
-        child: VideoWidget(activity: activity),
-      );
-    } else {
-      return Container();
-    }
+    return GestureDetector(
+      onTap: () {
+        Get.to(() => DetailScreen(activity: activity, activities: activities));
+      },
+      child: activity.isVideo()
+          ? VideoWidget(activity: activity)
+          : Image.network(activity.objectUrl!, fit: BoxFit.cover),
+    );
   }
 }
 
 class VideoWidget extends StatefulWidget {
   final Activity activity;
 
-  VideoWidget({required this.activity});
+  const VideoWidget({super.key, required this.activity});
 
   @override
   _VideoWidgetState createState() => _VideoWidgetState();
 }
 
 class _VideoWidgetState extends State<VideoWidget> {
-  late VideoPlayerController _controller;
+  String? _thumbnailPath;
 
   @override
   void initState() {
     super.initState();
-    _controller = VideoPlayerController.networkUrl(Uri.parse(widget.activity.objectUrl!))
-      ..initialize().then((_) {
-        setState(() {}); // When your video has been loaded
-      });
+    _generateThumbnail();
   }
 
-  @override
-  void dispose() {
-    _controller.dispose();
-    super.dispose();
+  Future<void> _generateThumbnail() async {
+    final directory = await getTemporaryDirectory();
+    final thumbnailPath = await VideoThumbnail.thumbnailFile(
+      video: widget.activity.objectUrl!,
+      thumbnailPath: directory.path,
+      imageFormat: ImageFormat.PNG,
+      maxHeight: 300, // specify the height of the thumbnail, maintaining the aspect ratio
+      quality: 75,
+    );
+
+    if (thumbnailPath != null) {
+      setState(() {
+        _thumbnailPath = thumbnailPath;
+      });
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    return _controller.value.isInitialized
-        ? AspectRatio(
-      aspectRatio: _controller.value.aspectRatio,
-      child: VideoPlayer(_controller),
-    )
-        : Center(child: CircularProgressIndicator());
+    return _thumbnailPath != null
+        ? Image.file(File(_thumbnailPath!), fit: BoxFit.cover)
+        : Container(
+      height: 27.h,
+      width: 45.w,
+      color: Colors.grey,
+    );
   }
 }
